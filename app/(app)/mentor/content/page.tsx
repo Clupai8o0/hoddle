@@ -1,4 +1,5 @@
 import { Plus, Eye, Pencil } from "lucide-react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Tag } from "@/components/ui/tag";
@@ -31,15 +32,13 @@ export default async function MentorContentPage() {
           </p>
           <h1 className="font-display font-bold text-3xl text-primary">My Content</h1>
         </div>
-        <Button variant="primary" size="default" disabled title="Content authoring coming soon">
-          <Plus size={15} strokeWidth={1.5} aria-hidden="true" />
-          New article
+        <Button variant="primary" size="default" asChild>
+          <Link href="/mentor/content/new">
+            <Plus size={15} strokeWidth={1.5} aria-hidden="true" />
+            New article
+          </Link>
         </Button>
       </header>
-
-      <p className="font-body text-sm text-on-surface-variant bg-surface-container rounded-lg px-4 py-3">
-        Content authoring (rich-text editor, video embedding, resource uploads) is coming in the next sprint. Articles you create will appear here.
-      </p>
 
       {contentItems.length === 0 ? (
         <div className="bg-surface-container-low rounded-xl p-10 text-center">
@@ -114,15 +113,14 @@ function ContentList({ items }: { items: ContentItem[] }) {
               <Eye size={12} strokeWidth={1.5} aria-hidden="true" />
               {(item.view_count ?? 0).toLocaleString()}
             </span>
-            <button
-              disabled
-              title="Editing coming soon"
-              className="flex items-center gap-1.5 font-body text-xs text-on-surface-variant opacity-40 cursor-not-allowed"
+            <Link
+              href={`/mentor/content/${item.id}/edit`}
+              className="flex items-center gap-1.5 font-body text-xs text-on-surface-variant hover:text-primary transition-colors"
               aria-label={`Edit ${item.title}`}
             >
               <Pencil size={12} strokeWidth={1.5} aria-hidden="true" />
               Edit
-            </button>
+            </Link>
           </div>
         </div>
       ))}
