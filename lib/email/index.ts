@@ -1,6 +1,11 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy-initialized so build-time module evaluation doesn't throw without env vars
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
+}
 
 const FROM = process.env.RESEND_FROM_EMAIL ?? "hello@hoddle.com.au";
 
@@ -18,7 +23,7 @@ export type EmailResult =
 
 export async function sendEmail(opts: SendEmailOptions): Promise<EmailResult> {
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: FROM,
       to: opts.to,
       subject: opts.subject,

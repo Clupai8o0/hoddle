@@ -42,14 +42,14 @@ See `docs/database-schema.md` for full table definitions, RLS policies, and trig
 
 ## 2. Admin: mentor invitation flow
 
-- [ ] `app/(admin)/page.tsx` — admin home with quick links and pending counts
-- [ ] `app/(admin)/mentors/page.tsx` — list of all mentors with verification status
-- [ ] `app/(admin)/mentors/invite/page.tsx` — form to send a mentor invite (email, optional note)
-- [ ] Server action `inviteMentor` — generates token row in `mentor_invites`, sends Resend email with signup link
-- [ ] `app/(auth)/mentor-signup/[token]/page.tsx` — token-gated mentor signup (validates token, runs magic-link auth, sets `profiles.role = 'mentor'`, creates `mentors` row)
-- [ ] `app/(admin)/mentors/[id]/page.tsx` — review mentor profile, mark `verified_at`
-- [ ] `app/(admin)/mentors/[id]/unverify/route.ts` — server action to revoke verification
-- [ ] Admin-only middleware guard on `(admin)` route group
+- [x] `app/(admin)/admin/page.tsx` — admin home with quick links and pending counts
+- [x] `app/(admin)/admin/mentors/page.tsx` — list of all mentors with verification status
+- [x] `app/(admin)/admin/mentors/invite/page.tsx` — form to send a mentor invite (email, optional note)
+- [x] Server action `inviteMentor` — generates token row in `mentor_invites`, sends Resend email with signup link
+- [x] `app/(auth)/mentor-signup/[token]/page.tsx` — token-gated mentor signup (validates token, runs magic-link auth, sets `profiles.role = 'mentor'`, creates `mentors` row)
+- [x] `app/(admin)/admin/mentors/[id]/page.tsx` — review mentor profile, mark `verified_at`
+- [x] `app/(admin)/admin/mentors/[id]/verify-mentor-button.tsx` — server action to verify/revoke verification
+- [x] Admin-only middleware guard on `(admin)` route group
 - [ ] Audit log: write to a simple `admin_actions` table on every verify/unverify (Phase 2.5 nice-to-have, parked)
 
 ## 3. Mentor onboarding & dashboard

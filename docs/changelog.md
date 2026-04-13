@@ -19,7 +19,18 @@ _Phase 2 work in progress. See `todo.md`._
 - `components/providers/query-provider.tsx` — `QueryClientProvider` client wrapper; mounted in `app/(app)/layout.tsx`
 - Route stubs for all Phase 2 surfaces: `/mentors`, `/content`, `/forums`, `/stories`, `/sessions`, `/inbox`
 - `app/(admin)/layout.tsx` — admin-only layout; redirects non-admin users to `/dashboard`
-- `app/(admin)/page.tsx` — admin home stub
+- `app/(admin)/admin/page.tsx` — admin home with live pending-invite and unverified-mentor counts
+- `app/(admin)/admin/mentors/page.tsx` — mentor list with verification status; pending-invites tab
+- `app/(admin)/admin/mentors/invite/page.tsx` — send mentor invite (email + optional note, 7-day expiry)
+- `app/(admin)/admin/mentors/[id]/page.tsx` — mentor profile review with verify/unverify action
+- `app/(auth)/mentor-signup/[token]/page.tsx` — token-gated mentor signup (server-validates invite before render)
+- `app/api/auth/mentor-callback/route.ts` — post-magic-link callback: accepts invite, sets `profiles.role = 'mentor'`, creates `mentors` row
+- `lib/actions/mentor-invites.ts` — `inviteMentor`, `verifyMentor`, `unverifyMentor`, `acceptMentorInvite` server actions
+- `lib/supabase/admin.ts` — service-role Supabase client (server-only) for privileged mutations
+- `lib/validation/mentor-invite.ts` — Zod schema for invite form
+
+### Fixed
+- `lib/email/index.ts` — lazy-initialize Resend client to prevent build-time failure when `RESEND_API_KEY` is not set
 - `AppNav` updated: Mentors, Library, Forums, Sessions links are now live `NavLink`s (replaced Phase 1 placeholder spans)
 - `supabase/migrations/20260413000003_phase2_schema.sql` — full Phase 2 schema: `mentors`, `mentor_invites`, `content_items`, `content_resources`, `content_tags`, `content_item_tags`, `forum_categories` (seeded), `forum_threads`, `forum_posts`, `forum_reactions`, `success_stories`, `live_sessions`, `session_registrations`, `session_questions`, `notifications`, `notification_preferences`, `mentor_recommendations`, `mentor_follows`; new enums `content_type`, `reaction_type`, `story_status`, `session_status`, `notification_type`; `is_admin()`/`is_mentor()` security-definer helpers; storage buckets `content-media`, `content-resources`, `session-recordings`, `story-images` with full RLS; trigger `bump_thread_activity` on `forum_posts` insert
 
