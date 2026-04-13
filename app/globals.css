@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ── Primary — Hoddle Blue ── */
+  --color-primary: #1e3a5f;
+  --color-primary-container: #dbe5f1;
+  --color-on-primary: #fef8f1;
+  --color-on-primary-container: #142845;
+
+  /* ── Secondary — Botanical Green (mentor & success) ── */
+  --color-secondary: #2d6a4f;
+  --color-secondary-container: #dbeee2;
+  --color-on-secondary: #fef8f1;
+  --color-on-secondary-container: #1a3d2e;
+
+  /* ── Tertiary — Encouragement Gold (focus & highlights) ── */
+  --color-tertiary: #b8860b;
+  --color-tertiary-container: #f5e6b8;
+  --color-on-tertiary: #fef8f1;
+  --color-on-tertiary-container: #6b4d00;
+
+  /* ── Surface — Warm Cream Foundation ── */
+  --color-surface: #fef8f1;
+  --color-surface-container-lowest: #fffdf8;
+  --color-surface-container-low: #f9f3eb;
+  --color-surface-container: #f3ede4;
+  --color-surface-container-high: #eee7dd;
+  --color-surface-container-highest: #e8e2d7;
+
+  /* ── Text & On-Surface ── */
+  --color-on-surface: #2a2620;
+  --color-on-surface-variant: #635f56;
+  --color-outline-variant: rgba(42, 38, 32, 0.15);
+
+  /* ── Semantic ── */
+  --color-error: #8b2e2e;
+  --color-error-container: #f5d6d6;
+
+  /* ── Typography ── */
+  --font-display: var(--font-plus-jakarta-sans);
+  --font-body: var(--font-be-vietnam-pro);
+
+  /* ── Elevation ── */
+  --shadow-ambient: 0 12px 40px rgba(30, 58, 95, 0.08);
+
+  /* ── Radius ── */
+  --radius-md: 0.75rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Base layer resets */
+@layer base {
+  html {
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+    background-color: #fef8f1;
+    color: #2a2620;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    min-height: 100dvh;
+  }
 }

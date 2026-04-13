@@ -11,6 +11,18 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 ## [Unreleased]
 
 ### Added
+- Design system primitives: `Button` (primary/secondary/hero/ghost), `Input`, `Textarea`, `Card` (with sub-components), `Tag`, `ProgressPill`, `Avatar`, `Container`, `SectionDivider`, `GlassNav` + `NavLink`.
+- `lib/utils/cn.ts` — clsx + tailwind-merge composition utility.
+- Smoke test page at `/dev/components` rendering every primitive against the Hoddle token set.
+- Phase 1 foundations: installed all dependencies (Supabase SSR, react-hook-form, zod, clsx, tailwind-merge, lucide-react, prettier).
+- Full Hoddle design token set wired into Tailwind v4 `@theme` in `app/globals.css` (primary/secondary/tertiary/surface palette, shadow, radius, typography variables).
+- Plus Jakarta Sans (display) and Be Vietnam Pro (body) configured via `next/font` in root layout.
+- `lib/supabase/server.ts` and `lib/supabase/browser.ts` typed Supabase clients.
+- `lib/supabase/database.types.ts` placeholder (regenerate after first migration).
+- `.env.local.example` with required environment variable keys.
+- Scaffolded route groups `app/(marketing)`, `app/(auth)`, `app/(app)`.
+- `supabase/migrations/` directory for upcoming schema migrations.
+- `.prettierrc` with project formatting conventions.
 - `CLAUDE.md` master briefing covering stack, design non-negotiables, conventions, and the documentation map.
 - `todo.md` with Phase 1 scope (landing + auth + onboarding + student dashboard) and parked Phase 2 items.
 - `docs/architecture.md` describing route groups, Supabase integration, auth flow, and component tiers.

@@ -8,27 +8,29 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 
 ## 0. Foundations
 
-- [ ] Install dependencies: `@supabase/ssr`, `@supabase/supabase-js`, `react-hook-form`, `zod`, `@hookform/resolvers`, `clsx`, `tailwind-merge`, `lucide-react`
-- [ ] Configure `next/font` for Plus Jakarta Sans (display) and Be Vietnam Pro (body)
-- [ ] Wire design tokens from `docs/design.md` into `tailwind.config.ts` (colors, fontFamily, boxShadow, borderRadius)
-- [ ] Add CSS custom properties for the full surface/primary/secondary/tertiary token set to `styles/globals.css`
-- [ ] Set up `lib/supabase/server.ts` and `lib/supabase/browser.ts` clients
-- [ ] Add `.env.local.example` with `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
-- [ ] Configure ESLint + Prettier + TypeScript strict mode
-- [ ] Set up `/supabase/migrations/` directory and initial migration
-- [ ] Create route groups: `app/(marketing)`, `app/(auth)`, `app/(app)`
+- [x] Install dependencies: `@supabase/ssr`, `@supabase/supabase-js`, `react-hook-form`, `zod`, `@hookform/resolvers`, `clsx`, `tailwind-merge`, `lucide-react`
+- [x] Configure `next/font` for Plus Jakarta Sans (display) and Be Vietnam Pro (body)
+- [x] Wire design tokens via Tailwind v4 `@theme` in `app/globals.css` (colors, fonts, shadow, radius) — note: project uses Tailwind v4 CSS-first config, not `tailwind.config.ts`
+- [x] Add CSS custom properties for the full surface/primary/secondary/tertiary token set to `app/globals.css`
+- [x] Set up `lib/supabase/server.ts` and `lib/supabase/browser.ts` clients
+- [x] Add `.env.local.example` with `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+- [x] Configure ESLint + Prettier + TypeScript strict mode
+- [x] Set up `/supabase/migrations/` directory
+- [x] Create route groups: `app/(marketing)`, `app/(auth)`, `app/(app)`
 
 ## 1. Design system primitives (`/components/ui`)
 
-- [ ] `Button` — primary (blue), secondary (surface-container-highest), hero-gradient variants; 48px min height
-- [ ] `Input` — 56px min height, gold focus ring, cream background
-- [ ] `Textarea` — same treatment as Input
-- [ ] `Card` — no borders, tonal layering, md radius, ambient blue-tinted shadow on hover
-- [ ] `Tag` / `Chip` — primary-container and secondary-container variants
-- [ ] `ProgressPill` — pill-style, secondary green fill on secondary-container track
-- [ ] `GlassNav` wrapper — glassmorphism recipe from `docs/design.md` §2
-- [ ] `Container` — page-width wrapper with editorial asymmetric padding
-- [ ] Storybook-free smoke page at `/app/_dev/components` to eyeball every primitive
+- [x] `Button` — primary (blue), secondary (surface-container-highest), hero-gradient variants; 48px min height
+- [x] `Input` — 56px min height, gold focus ring, cream background
+- [x] `Textarea` — same treatment as Input
+- [x] `Card` — no borders, tonal layering, md radius, ambient blue-tinted shadow on hover
+- [x] `Tag` / `Chip` — primary-container and secondary-container variants
+- [x] `ProgressPill` — pill-style, secondary green fill on secondary-container track
+- [x] `Avatar` — initials fallback, sm/md/lg sizes
+- [x] `SectionDivider` — semantic whitespace, 48px/64px
+- [x] `GlassNav` wrapper + `NavLink` — glassmorphism recipe from `docs/design.md` §2
+- [x] `Container` — page-width wrapper with editorial asymmetric padding
+- [x] Smoke page at `app/dev/components` → `/dev/components`
 
 ## 2. Database schema (Supabase)
 
@@ -112,4 +114,11 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 
 ## Shipped
 
-_Nothing yet._
+### Phase 1 — Foundations (2026-04-13)
+- Installed all Phase 1 dependencies (Supabase SSR, react-hook-form, zod, clsx, tailwind-merge, lucide-react)
+- Configured Plus Jakarta Sans + Be Vietnam Pro via `next/font`
+- Wired full Hoddle design token set into Tailwind v4 `@theme` (all colors, shadow, radius, fonts)
+- Set up `lib/supabase/server.ts` and `lib/supabase/browser.ts` with typed Database generics
+- Added `.env.local.example`
+- Configured Prettier
+- Scaffolded route groups `(marketing)`, `(auth)`, `(app)` and `supabase/migrations/`
