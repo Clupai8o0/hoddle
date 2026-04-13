@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Decoding Australian Academic Writing | Hoddle</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#336f54",
+                    "secondary-dim": "#1f5e44",
+                    "on-surface": "#35322b",
+                    "on-secondary": "#e6ffee",
+                    "surface-tint": "#a63c26",
+                    "surface-container-low": "#f9f3eb",
+                    "on-tertiary-fixed-variant": "#6a5100",
+                    "background": "#fef8f1",
+                    "on-surface-variant": "#635f56",
+                    "error": "#ac3149",
+                    "outline-variant": "#b7b1a7",
+                    "secondary-fixed": "#beffdc",
+                    "primary": "#a63c26",
+                    "surface-dim": "#e0d9cd",
+                    "primary-fixed": "#ffac9a",
+                    "on-primary": "#fff7f6",
+                    "on-error": "#fff7f7",
+                    "on-secondary-fixed": "#105239",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#5f4800",
+                    "inverse-primary": "#fe7d61",
+                    "surface-variant": "#e8e2d7",
+                    "tertiary-fixed-dim": "#eac56b",
+                    "surface": "#fef8f1",
+                    "secondary-container": "#beffdc",
+                    "surface-container-high": "#eee7dd",
+                    "inverse-surface": "#0f0e0a",
+                    "tertiary-dim": "#694f00",
+                    "on-error-container": "#68001f",
+                    "surface-bright": "#fef8f1",
+                    "secondary-fixed-dim": "#b1f0ce",
+                    "on-background": "#35322b",
+                    "on-primary-container": "#761a06",
+                    "tertiary": "#775b06",
+                    "inverse-on-surface": "#a19c96",
+                    "on-primary-fixed-variant": "#82230f",
+                    "primary-fixed-dim": "#ff9881",
+                    "surface-container": "#f3ede4",
+                    "error-dim": "#770326",
+                    "secondary": "#2d6a4f",
+                    "tertiary-fixed": "#f9d377",
+                    "error-container": "#f76a80",
+                    "tertiary-container": "#f9d377",
+                    "on-primary-fixed": "#540a00",
+                    "surface-container-highest": "#e8e2d7",
+                    "primary-container": "#ffac9a",
+                    "outline": "#7f7a71",
+                    "on-secondary-container": "#27654a",
+                    "primary-dim": "#95301b",
+                    "on-tertiary-fixed": "#483500",
+                    "on-tertiary": "#fff8f0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fef8f1; color: #35322b; }
+        h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fef8f1]/70 backdrop-blur-xl dark:bg-stone-900/70">
+<div class="flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-bold tracking-tight text-[#a63c26] dark:text-[#cc583f]">Hoddle</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#35322b] opacity-70 hover:opacity-100 transition-colors duration-300" href="#">Discover</a>
+<a class="text-[#35322b] opacity-70 hover:opacity-100 transition-colors duration-300" href="#">Mentors</a>
+<a class="text-[#a63c26] font-bold border-b-2 border-[#a63c26] pb-1" href="#">Library</a>
+<a class="text-[#35322b] opacity-70 hover:opacity-100 transition-colors duration-300" href="#">Community</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<img alt="Student Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-surface-variant" data-alt="Close up portrait of a young adult male student with a warm smile in a sunlit university courtyard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB21aG2R_BTjHxoXZqQ0fECpeV2ixRBEqtRYx1O5NdmsbAJsExxduZ6bs2gr_ckHyAc8-KR91htnnpdldGqCEtWsA7oscVKKFpFpZm4i8nEA-EcSEZZBru6D_1WxJ-CqhBqQ7_K8eQdN0lODYoLtwXAaBhA5svRSADLcNaPIN2XobqlZ1geDuS8-qbJ6D2iCN16EcwnbW3mSg0H5LRuESE5e1_mTr8d3024blYD2mUIMcpbqH7fLykVGApr6qn3KFPDFG7yQCtEcOw"/>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-20 max-w-screen-2xl mx-auto px-6 md:px-12">
+<!-- Breadcrumb & Header -->
+<div class="mb-12">
+<nav class="flex items-center gap-2 text-sm text-on-surface-variant mb-6 tracking-wide uppercase font-medium">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Content</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-on-surface opacity-50">Decoding Australian Academic Writing</span>
+</nav>
+<div class="max-w-4xl">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4 inline-block">Academic Success</span>
+<h1 class="text-4xl md:text-6xl font-extrabold text-on-surface tracking-tight mb-8 leading-[1.1]">
+                    Decoding Australian Academic Writing: From 'Pass' to 'High Distinction'
+                </h1>
+<div class="flex flex-wrap items-center justify-between gap-6 border-y border-outline-variant/10 py-6">
+<div class="flex items-center gap-4">
+<img alt="Raj Sharma" class="w-12 h-12 rounded-full object-cover" data-alt="Professional headshot of a friendly South Asian male academic mentor in a soft-lit office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHpxz71-d7BHz4Y4cXx6SM4V2AzIW4Q8xgab1dIyx-RZHkSBJbqERcK2u1jAe54-p4QuYutJacXaOnJmHor80rWkH31i-wXY0Z16EI5P1n-Pp4vDyCj-i38bHe84oNea4EUT2uTQ77xo557LDQl2q2RFyg450cIMoQoGxaXi0HEbp1hg_LP2fVFLg3RMkknF19ssKl_KyuTD-OyOOqep1m-4aH3suxvYcLgi7C0zFXhXvD7O5jn2W2HrJGBNcvpuolWFDlunXvz9A"/>
+<div>
+<p class="font-bold text-on-surface">Raj Sharma</p>
+<p class="text-sm text-on-surface-variant">Published 2 days ago • 8 min read</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low hover:bg-surface-container-high transition-colors rounded-full text-sm font-medium">
+<span class="material-symbols-outlined text-xl">bookmark</span>
+                            Save
+                        </button>
+<button class="p-2 bg-surface-container-low hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined text-xl">share</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+<!-- Article Body -->
+<article class="lg:col-span-8 space-y-8 text-lg leading-relaxed text-on-surface/90">
+<div class="aspect-video w-full rounded-2xl overflow-hidden mb-12">
+<img alt="Academic Writing" class="w-full h-full object-cover" data-alt="Close up of a wooden desk with a fountain pen, open notebook with elegant cursive, and a coffee cup in soft morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcTAuw5zCEZBsVGbZ255haCyepn0CHb2kisg74xsCY6gJKBS3UdILZHTbPkJufD0m2VdYtI3pc1qT6ZiGDIls20MHiNAVNLIE_VqxVDqzG51-SrJenVh81rwdjoz_v_-mRGkPSY8lCaf5gQ-LyKuT_Z76DnAUeUWni9s4o8uAJ4dwwGcXMX0GmTKwkmN9JzSOAf093UkcFeNmrJyTntJ6ZHW-uJYKKiTsUtMYL-W_YkVrQ6SCu7IYBiH1Rnj4dRxQoZ8WBW79R6KM"/>
+</div>
+<p class="text-xl font-medium text-on-surface leading-normal italic">
+                    The Australian academic landscape often feels like a riddle wrapped in an enigma for international students. You might be fluent in English, but "Academic English" in the Melbourne context is a different beast entirely.
+                </p>
+<p>
+                    Transitioning to an Australian university requires more than just grammar and vocabulary. It requires a fundamental shift in how you construct arguments. In many cultures, academic writing is circular or poetic; in Australia, it is linear, direct, and ruthlessly analytical.
+                </p>
+<blockquote class="my-12 px-8 py-4 border-l-4 border-primary bg-surface-container-low rounded-r-xl italic text-2xl font-headline font-semibold text-primary">
+                    "The biggest shift isn't the language—it's the structure and critical analysis."
+                </blockquote>
+<h2 class="text-3xl font-bold text-on-surface mt-12 mb-6">1. The Power of Criticality</h2>
+<p>
+                    In Australian higher education, simply summarizing what an author said will likely only net you a 'Pass'. To reach the 'Distinction' or 'High Distinction' (HD) tier, you must engage in <strong>critical analysis</strong>. This means questioning the methodology, identifying biases, and comparing conflicting perspectives.
+                </p>
+<ul class="space-y-4 my-8 list-none">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<span>Identify the core argument (the 'thesis') of every source you read.</span>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<span>Look for what is <em>missing</em> in the research just as much as what is there.</span>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<span>Connect different ideas to form your own unique voice.</span>
+</li>
+</ul>
+<h2 class="text-3xl font-bold text-on-surface mt-12 mb-6">2. Structural Integrity (PEEL)</h2>
+<p>
+                    Most tutors in Melbourne look for the PEEL method in paragraph construction. It's the blueprint of a successful essay:
+                </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+<div class="p-6 bg-surface-container-highest rounded-xl">
+<h4 class="font-bold text-primary mb-2">Point</h4>
+<p class="text-sm">Start with a clear topic sentence that states the paragraph's main idea.</p>
+</div>
+<div class="p-6 bg-surface-container-highest rounded-xl">
+<h4 class="font-bold text-primary mb-2">Evidence</h4>
+<p class="text-sm">Back up your point with citations from credible, peer-reviewed sources.</p>
+</div>
+<div class="p-6 bg-surface-container-highest rounded-xl">
+<h4 class="font-bold text-primary mb-2">Explanation</h4>
+<p class="text-sm">Explain how the evidence supports your point in your own words.</p>
+</div>
+<div class="p-6 bg-surface-container-highest rounded-xl">
+<h4 class="font-bold text-primary mb-2">Link</h4>
+<p class="text-sm">Connect the paragraph back to your overall thesis or the next paragraph.</p>
+</div>
+</div>
+<p>
+                    Ultimately, academic writing is a conversation. You are joining a global community of scholars. By mastering these structural nuances, you aren't just following rules—you're ensuring your valuable perspective is heard clearly in the lecture halls of Melbourne and beyond.
+                </p>
+<!-- Reactions -->
+<div class="mt-20 pt-12 border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div>
+<h3 class="text-xl font-bold mb-2">Was this helpful?</h3>
+<p class="text-on-surface-variant text-sm">94 students found this helpful</p>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-3 px-6 py-3 rounded-full border-2 border-outline-variant hover:border-secondary hover:text-secondary transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">thumb_up</span>
+<span class="font-bold">Yes</span>
+</button>
+<button class="flex items-center gap-3 px-6 py-3 rounded-full border-2 border-outline-variant hover:border-error hover:text-error transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">thumb_down</span>
+<span class="font-bold">No</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Comment Section -->
+<section class="mt-20">
+<h3 class="text-2xl font-bold mb-8">Community Discussion</h3>
+<!-- Comment Input -->
+<div class="bg-surface-container-low p-6 rounded-2xl mb-12">
+<textarea class="w-full bg-surface-container-lowest border-none rounded-xl p-4 focus:ring-2 focus:ring-tertiary min-h-[120px] text-on-surface" placeholder="Add your thoughts or ask a question..."></textarea>
+<div class="flex items-center justify-between mt-4">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative inline-block w-10 h-5 transition duration-200 ease-in-out bg-outline-variant rounded-full group-hover:bg-on-surface-variant">
+<input class="sr-only peer" type="checkbox"/>
+<span class="absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform peer-checked:translate-x-5"></span>
+</div>
+<span class="text-sm font-medium text-on-surface-variant">Post anonymously</span>
+</label>
+<button class="bg-primary text-on-primary px-8 py-2.5 rounded-full font-bold hover:bg-primary-dim transition-colors">Post Comment</button>
+</div>
+</div>
+<!-- Threaded Comments -->
+<div class="space-y-10">
+<div class="flex gap-4">
+<img alt="User" class="w-10 h-10 rounded-full flex-shrink-0 object-cover" data-alt="Profile photo of a young smiling woman with long dark hair in a bright cafe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyt7KcD90ZsytnZYtPTDnUXGiNM3h6KHkblelmO0SzF28F5ToMPCu6lbVLYpAvQVY3qsAEYCU4sc16nwJO6oEY-pZfWfMy9hLtUwCb3-qJb8YWxk1-QLsMe6IDma7eNwEDyIshKwP8W9NrP4XQw1bWypQNk9l0zC58pCyUSXZoJUj9ExKcc6G3np7PETGbUCewS0WP-i82HWu-4_OTlVxieZmRgWrMUlZMVkFe6cyyC5utWmZ0Nsne2o5YUKLxONl5aKfCDyBf7Hs"/>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="font-bold">Mei Lin</span>
+<span class="text-xs text-on-surface-variant">3 hours ago</span>
+</div>
+<p class="text-on-surface/80">This PEEL method is a lifesaver. I always struggled with where to put my citations. Quick question: how many citations are too many for one paragraph?</p>
+<button class="text-sm font-bold text-primary mt-2">Reply</button>
+<!-- Reply -->
+<div class="mt-6 flex gap-4 pl-4 border-l-2 border-outline-variant/30">
+<img alt="Raj Sharma" class="w-8 h-8 rounded-full flex-shrink-0 object-cover" data-alt="Professional headshot of a friendly South Asian male academic mentor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF-5_MXFBvW5ouhp6J1srv3d2GJr--93jgxAtRA2Fe2pZum4hyDL0rneUmPUiYbxweE4BrfJEG0xluRRPCGvmlNu0QtnPvOqr6FA4m9PGMTyJAzPne4JtA7dtOw-VtkrzIEDYphVR9rPADfdAG_Q8ELbGhudWTszqgXIU4grsxhDLtPvcDbqf8i85V5kvp3a77LdH5nQm2alH6bRGjiTf78Li_KNPglK-DGCe1LQaM8bKcKNtn95RBsBSP655vAlw_2QVSrq7Lr4Y"/>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-bold">Raj Sharma</span>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">Mentor</span>
+</div>
+<p class="text-on-surface/80">Great question, Mei! Typically 1-2 strong citations are enough. Avoid 'patchworking' where your whole paragraph is just other people's quotes!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</article>
+<!-- Sidebar -->
+<aside class="lg:col-span-4 space-y-8">
+<!-- Mentor Card -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/10 sticky top-28">
+<div class="relative mb-6">
+<img alt="Raj Sharma" class="w-24 h-24 rounded-2xl object-cover" data-alt="Close up portrait of Raj Sharma, a friendly mentor smiling at the camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_z_kVVEQq_5l5-lC79kqB9Bg0Dc-ANWVE3MGJn_-Ebam6oDgjlgcR4p_Zehm_ol9nyT9OjvZkrbOJ-deelq-Se3CKhNlZpgy1yuq8ipoCga31J_Zz6xc4ZnARBdP4RV46BL8yFoEFqUtvWeC5WUmXQUT7ZZaBR_FE4I1eqHywOg5SDbuLXzNiWpWuZ6E9rD_vxATn3L716YvH2E13wWN0NR0qQlGCRghGb6n_V8Fy4AJpsTT8K7QLcMMecS6BnpPQPZ89j0D26ek"/>
+<div class="absolute -bottom-2 -right-2 bg-secondary text-white w-10 h-10 rounded-full flex items-center justify-center border-4 border-surface-container-lowest">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<h3 class="text-2xl font-bold text-on-surface mb-1">Raj Sharma</h3>
+<p class="text-secondary font-semibold text-sm mb-4">Academic Excellence Mentor</p>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+                        Specializing in helping international postgrads master the art of critical analysis and thesis structuring. 5+ years experience at UniMelb.
+                    </p>
+<a class="inline-flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all group" href="#">
+                        View full profile
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+<div class="mt-8 pt-8 border-t border-outline-variant/10">
+<h4 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Quick Resources</h4>
+<div class="space-y-4">
+<button class="w-full py-3 px-4 bg-surface-container-high rounded-xl text-left text-sm font-bold flex items-center justify-between hover:bg-primary-container hover:text-on-primary-container transition-colors">
+                                Essay Checklist
+                                <span class="material-symbols-outlined text-lg">download</span>
+</button>
+<button class="w-full py-3 px-4 bg-surface-container-high rounded-xl text-left text-sm font-bold flex items-center justify-between hover:bg-primary-container hover:text-on-primary-container transition-colors">
+                                PEEL Worksheet
+                                <span class="material-symbols-outlined text-lg">description</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Related Content -->
+<section class="mt-32">
+<h2 class="text-3xl font-bold mb-10">Continue Learning</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-2xl overflow-hidden mb-4 relative">
+<img alt="Referencing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Overhead shot of many books stacked with highlighters and post-it notes in a cozy library" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ5WK5__Sr_hFxfwPEYc0RVrfixZr1JjTrrEq6U3DhTSiTp64i0bT-e-hZgAfuNvy_Fk_689zgUNVWEO4tcsUttlWQRic9rNSmbH1nbvzGH-qVMqnD5vVqqLJHyQIpzWM5m1uBDuJOeVQCYQAQCS9R-zrMw5Mm9Al3rGsgHwl-lw4PQyxmspjctRPJH4VI9wU1wJ8tQRPsxvoLeHegZZQSpEgHEdDp4cUqD8kNzR50yhb6YtKQvyKMU1GgRQ50z-AyClqreUNRVQ0"/>
+<span class="absolute top-4 left-4 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full uppercase">8 min read</span>
+</div>
+<h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">Referencing 101: APA, Harvard, and Beyond</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2">Master the art of giving credit where it's due and avoid the pitfalls of plagiarism.</p>
+</div>
+<!-- Card 2 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-2xl overflow-hidden mb-4 relative">
+<img alt="Critical Review" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A person writing deeply in a notebook with multiple open tabs on a laptop in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPRRbX8llL1ncMRVk4d2wEVPitX2TUnX3SI9NgnrsVVwhLPaweXCoJr0uAUCNHqUL7PifUOBnROzQpz8nXzIPCqbxOZnYpHdY9qL68CadmIuPy6Al7QxlMkKeZhc1WR2k7N1PLPwkWq-FkFusraNI1DA6SLaNQBipw5hlOc4YI60iFa6-HKLPoSh8EGOcfG7MtWpZkbyVN_h_e595PFouvUfXoQRqUzIJahZ4hGwreOGfTLG-5uqKNy1lecy1ABOBIgBZlIkOjYho"/>
+<span class="absolute top-4 left-4 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full uppercase">12 min read</span>
+</div>
+<h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">How to write a Critical Review</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2">A step-by-step guide on breaking down academic papers and finding their flaws.</p>
+</div>
+<!-- Card 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-2xl overflow-hidden mb-4 relative">
+<img alt="Time Management" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Minimalist desk calendar with a focus on a specific date marked with a red circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTiaLaDb6rhNzRv-eqY6PKpOsEq8pJOTGyTuVOmUkMq8oIANRh_MmZybBPPDrqpDhn2MDK6P8Lh8OWjjMepG3c97KCyk0JryOzczo-upFLxahvv4JfLnMQ_0qL8ucQhpS0Kg3UAbT0SF4TiC-gviD64BZk5CkWsULmK5qEyTvcpQ-MWvhAAAC_tWtqfLXaXMSdCiOdHvGxCzmXna2CcUSBwP8AJ23ffW7yNrayC420wpoA_T4XeE5G77HIf5GNiRMXxpSIqoptYyg"/>
+<span class="absolute top-4 left-4 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full uppercase">6 min read</span>
+</div>
+<h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-2">Time Management for Essays</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2">How to start your 3,000-word essay without the night-before panic.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-[#fef8f1] dark:bg-stone-950 mt-20 border-t border-outline-variant/10">
+<div class="w-full px-12 py-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-screen-2xl mx-auto">
+<div>
+<div class="text-lg font-bold text-[#a63c26] mb-4">Hoddle</div>
+<p class="text-[#35322b]/70 max-w-md text-sm mb-6 leading-relaxed">
+                    Designed for the dreamers and the doers. Hoddle is Melbourne’s premium academic sanctuary for international students navigating Australian university life.
+                </p>
+<p class="text-[#35322b]/70 text-sm">© 2024 Hoddle Melbourne. A Sanctuary for International Students.</p>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col gap-4">
+<a class="text-[#35322b]/70 hover:text-[#a63c26] transition text-sm" href="#">Privacy Policy</a>
+<a class="text-[#35322b]/70 hover:text-[#a63c26] transition text-sm" href="#">Terms of Service</a>
+</div>
+<div class="flex flex-col gap-4">
+<a class="text-[#35322b]/70 hover:text-[#a63c26] transition text-sm" href="#">Melbourne Guide</a>
+<a class="text-[#35322b]/70 hover:text-[#a63c26] transition text-sm" href="#">Contact Us</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Mobile Navigation -->
+<div class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-[#fef8f1]/80 backdrop-blur-2xl shadow-[0_-12px_40px_rgba(53,50,43,0.04)] rounded-t-3xl">
+<a class="flex flex-col items-center justify-center text-[#35322b]/60 p-2" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[11px] font-medium uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#35322b]/60 p-2" href="#">
+<span class="material-symbols-outlined">diversity_3</span>
+<span class="text-[11px] font-medium uppercase tracking-widest mt-1">Mentors</span>
+</a>
+<div class="flex flex-col items-center justify-center bg-[#a63c26] text-white rounded-full p-3 scale-110 -translate-y-2 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">forum</span>
+</div>
+<a class="flex flex-col items-center justify-center text-[#35322b]/60 p-2" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[11px] font-medium uppercase tracking-widest mt-1">Profile</span>
+</a>
+</div>
+</body></html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;family=Be+Vietnam+Pro:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error": "#fff7f7",
+            "secondary": "#2d6a4f",
+            "outline": "#7f7a71",
+            "on-tertiary-fixed": "#483500",
+            "on-tertiary-container": "#5f4800",
+            "inverse-surface": "#0f0e0a",
+            "on-surface": "#35322b",
+            "on-surface-variant": "#635f56",
+            "on-primary": "#fff7f6",
+            "surface-container-highest": "#e8e2d7",
+            "background": "#fef8f1",
+            "primary": "#a63c26",
+            "secondary-dim": "#1f5e44",
+            "inverse-on-surface": "#a19c96",
+            "error-dim": "#770326",
+            "on-tertiary": "#fff8f0",
+            "on-secondary": "#e6ffee",
+            "on-primary-container": "#761a06",
+            "error": "#ac3149",
+            "on-primary-fixed": "#540a00",
+            "on-secondary-fixed": "#105239",
+            "secondary-container": "#beffdc",
+            "surface-bright": "#fef8f1",
+            "surface-variant": "#e8e2d7",
+            "surface": "#fef8f1",
+            "primary-dim": "#95301b",
+            "tertiary": "#775b06",
+            "primary-fixed-dim": "#ff9881",
+            "on-background": "#35322b",
+            "tertiary-fixed-dim": "#eac56b",
+            "secondary-fixed": "#beffdc",
+            "on-error-container": "#68001f",
+            "tertiary-container": "#f9d377",
+            "on-secondary-fixed-variant": "#336f54",
+            "primary-fixed": "#ffac9a",
+            "surface-tint": "#a63c26",
+            "on-tertiary-fixed-variant": "#6a5100",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#f9d377",
+            "outline-variant": "#b7b1a7",
+            "on-secondary-container": "#27654a",
+            "surface-container": "#f3ede4",
+            "primary-container": "#ffac9a",
+            "surface-container-high": "#eee7dd",
+            "secondary-fixed-dim": "#b1f0ce",
+            "on-primary-fixed-variant": "#82230f",
+            "tertiary-dim": "#694f00",
+            "surface-dim": "#e0d9cd",
+            "error-container": "#f76a80",
+            "inverse-primary": "#fe7d61",
+            "surface-container-low": "#f9f3eb"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Be Vietnam Pro"],
+            "label": ["Be Vietnam Pro"]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    body { font-family: 'Be Vietnam Pro', sans-serif; }
+    h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar Implementation -->
+<nav class="fixed top-0 w-full z-50 bg-[#fef8f1]/70 dark:bg-stone-900/70 backdrop-blur-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)]">
+<div class="flex justify-between items-center px-8 py-4 max-w-[1440px] mx-auto">
+<div class="text-2xl font-bold italic text-[#a63c26] dark:text-[#cc583f] font-['Plus_Jakarta_Sans'] tracking-tight">Hoddle</div>
+<div class="hidden md:flex items-center gap-8 font-['Plus_Jakarta_Sans'] tracking-tight">
+<a class="text-stone-600 dark:text-stone-400 hover:text-[#a63c26] transition-all duration-300 hover:opacity-80" href="#">Explore</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-[#a63c26] transition-all duration-300 hover:opacity-80" href="#">Mentors</a>
+<a class="text-[#a63c26] dark:text-[#cc583f] font-semibold border-b-2 border-[#a63c26] pb-1 transition-all duration-300 hover:opacity-80" href="#">Forum</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-[#a63c26] transition-all duration-300 hover:opacity-80" href="#">Impact</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="hidden lg:block bg-primary text-on-primary px-6 py-2.5 rounded-xl font-semibold active:scale-95 duration-150 transition-all">Find a Mentor</button>
+<img alt="User profile" class="w-10 h-10 rounded-full object-cover border-2 border-surface-container-highest" data-alt="Close up portrait of a young professional smiling softly with warm natural light hitting their face" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3E3Cc973LEcIotNZ0UL-f5G6HkPZp4UKqfnT6mzwgbvQvxDnP0rHOa0ct0UB8wyi7X-iWTBpZa5Hh0oB8_0iYaZcm4Zralw_KW4hoVTdc_k0ZIOf8AADnwKnBLkouTmP38rOj0dA_iY21H2GFyN6y36FoAJrlaow-1Q4rY16dhZKaVnEvQzyQA6OR-8fkVI15t3phUYxr5vTDJ9nvaR1PbjoW8TFLAoJyaWYpRoJiGBoqdiP2MAdnZfOKkkBIFhfZHzhO1iyDH6c"/>
+</div>
+</div>
+</nav>
+<main class="pt-28 pb-32 px-6 max-w-4xl mx-auto">
+<!-- Thread Header Section -->
+<header class="mb-12">
+<div class="flex items-center gap-3 mb-4">
+<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Finance &amp; Work</span>
+<span class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 2 hours ago
+        </span>
+</div>
+<h1 class="text-3xl md:text-4xl font-extrabold text-on-surface tracking-tight mb-6 leading-tight">Help with Myki fines? I accidentally tapped off but it didn't register.</h1>
+<div class="flex items-center gap-4">
+<img alt="Arjun K." class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a young south asian student in a denim jacket standing against a soft blurred background of a city street" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrs8KM_MNyRDNeX4-H_be470zeWwGP5T26It6a4fTuVaMC7nz3vntBSoC46skmXrUEkTCmyf024dQFp5jHm9S8Dt4ZHrb1lNnyi1MuwsF_3RKj-wfy-yiOT3oYyfbzXuVOrvn9r9AuBspDSXR8Pdh5QHUmSn1wfZc2HmXk-L9cJgMUtX3JFQoSl7RcUjhGjBcnYbWKFVh8p79z9dGdcjlZoyLpjpONUWX9hNgXY-m-8HBYWsJDlGhxpANmjOkL2YB4TM7RN9v3vMg"/>
+<div>
+<p class="font-bold text-on-surface">Arjun K.</p>
+<p class="text-sm text-on-surface-variant">First-year Monash Student</p>
+</div>
+</div>
+</header>
+<!-- Original Post Content -->
+<article class="bg-surface-container-lowest rounded-3xl p-8 md:p-10 mb-8 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary/20"></div>
+<div class="prose prose-stone max-w-none text-on-surface leading-relaxed text-lg">
+<p>Hey everyone, I'm a bit stressed. This morning at Flinders Street, I'm certain I tapped my Myki on the reader when exiting, but it didn't make the usual beep. I was in a rush for a lecture and didn't double-check. </p>
+<p class="mt-4">Now I've checked my balance and it shows a 'Default Fare' and I'm worried if an Inspector saw me, would I get a fine? Has anyone successfully appealed a fine where the reader was just glitchy? I'm on a tight budget and the $280+ fine would really hurt.</p>
+</div>
+<div class="mt-10 flex flex-wrap gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-colors group">
+<span class="material-symbols-outlined text-xl group-hover:fill-current" data-icon="thumb_up">thumb_up</span>
+<span class="text-sm font-bold">Helpful</span>
+<span class="text-xs opacity-60">12</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="sync">sync</span>
+<span class="text-sm font-bold">Same</span>
+<span class="text-xs opacity-60">5</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full text-on-surface-variant hover:bg-tertiary-container hover:text-on-tertiary-container transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
+<span class="text-sm font-bold">Thanks</span>
+<span class="text-xs opacity-60">3</span>
+</button>
+</div>
+</article>
+<!-- Mentor Answer Section -->
+<section class="mb-12">
+<div class="flex items-center gap-2 mb-4 px-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<h2 class="text-lg font-bold text-secondary uppercase tracking-wider">Mentor Verified Answer</h2>
+</div>
+<div class="bg-secondary-container/30 border-2 border-secondary/10 rounded-3xl p-8 md:p-10 relative">
+<div class="absolute -top-4 -right-4 bg-secondary text-on-secondary px-4 py-2 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">workspace_premium</span> Best Answer
+        </div>
+<div class="flex items-start gap-6 mb-6">
+<img alt="Raj Sharma" class="w-16 h-16 rounded-2xl object-cover shadow-sm" data-alt="Professional headshot of a middle-aged South Asian man with glasses, wearing a sharp blazer in a bright modern office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvUuu04RZXgGL0njQKEbpZLdex7uzvy1XKEYx0EnJ3MejXQSxr0XW1DH2DAdU3gb_Fb4HzkjeL-pTHl21-xs0YQ8hGQ1aKd3uMY81_gxBHMTLM8KX5ZQZUr95UtgZ9uY3dqR2XPW9J7klFYSgrMDhnxG362fd70uZ3UyTdbeAk1OYg2EdzaxVN9GIDzlQsLSjdv2v5BLlzLoYhW0Poh3CGN_9CeaGmYjMXXGQYv6JLfKx6u1n5UP8ck1wgUDOKHrW9sEJKPxDC8eU"/>
+<div>
+<h3 class="text-xl font-bold text-on-surface-variant">Raj Sharma</h3>
+<p class="text-secondary font-medium">Senior Community Mentor • 5 years in Melbourne</p>
+</div>
+</div>
+<div class="text-on-surface text-lg leading-relaxed mb-8">
+<p>Don't panic, Arjun! Since you weren't stopped by an Authorized Officer (Inspector) at the time, you haven't been "fined" yet. The 'Default Fare' is just PTV's way of charging the maximum daily rate because the system doesn't know where you ended your journey.</p>
+<ul class="mt-4 space-y-3 list-none">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>Go to the <strong>PTV website</strong> and register your Myki card if you haven't already.</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>You can apply for a <strong>fare adjustment</strong> online by explaining the reader didn't register your tap-off.</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span>They are usually very understanding with students, especially if your travel history shows consistent tap-ons.</span>
+</li>
+</ul>
+</div>
+<button class="bg-secondary text-on-secondary px-8 py-3 rounded-xl font-bold flex items-center gap-3 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">chat_bubble</span> Reply to Raj
+        </button>
+</div>
+</section>
+<!-- Reply Thread -->
+<section class="space-y-6">
+<h3 class="text-xl font-bold px-2 mb-6">Replies (4)</h3>
+<!-- Reply 1 -->
+<div class="flex gap-4 p-6 bg-surface-container-low rounded-2xl">
+<img alt="User" class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a young woman with a friendly expression and natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWdfYf8HCF_MpaNQoGD2nUI5dKFL8smHAscUUwtgaTkAhRapw5UFqbWozTX8VqLQUruUrj_gg7VM2bbkMMsnLx1ASyWmMHLK4-FgLlrrqZqJXVrjpOLHGd43zzizBFLHCCpgn-W5OXNZJL10KV-QFrXere9SS2ZbXK_dEUthN8XV7BT67xojltMfnznSw1dwIo80lsSmPxkituNEdtihEZRI6_IXSKTjke77QE-L2CVlLcss4K52NDnimJAxCYuXqwxevxeWRMcDU"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="font-bold text-on-surface">Sarah M.</span>
+<span class="text-xs text-on-surface-variant">1 hour ago</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed">Raj is right! I had this happen at Melbourne Central last month. I called them up and they refunded the default fare difference within 3 days. Just make sure your card is registered!</p>
+<div class="mt-4 flex items-center gap-4">
+<button class="text-primary flex items-center gap-1 text-sm font-bold">
+<span class="material-symbols-outlined text-sm">thumb_up</span> 4
+            </button>
+<button class="text-on-surface-variant text-sm font-medium">Reply</button>
+</div>
+</div>
+</div>
+<!-- Reply 2 -->
+<div class="flex gap-4 p-6 bg-surface-container-low rounded-2xl">
+<img alt="User" class="w-10 h-10 rounded-full object-cover" data-alt="Young man with short hair looking into the camera with a calm expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9x0_F4sw61w2j32kai1WVSYETaJeoyOazALCF_liHuExJn9582Ij5Mv4BHf-3MNwl__RS1y_qTasuPYd9LVOlfiqdYROCtxhfaH2ZlDHtEoJaIS6ryiDCiF7KyEVOBllAlhq3C13qhF2qQN-ew4K4qWzdCj9CVEYphpUh43DhhmS691Yt49i40g3JGVt2pvqgqXh57W_dKa_wLjRycZeBpvmecOsMfU-_wkG3HNhTOd-ME7JADTcS86lSilQXTtH1IfoC_M-9dPo"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-2">
+<span class="font-bold text-on-surface">Wei L.</span>
+<span class="text-xs text-on-surface-variant">45 mins ago</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed">The readers at Flinders are notoriously slow during peak hour. I always wait for the green light now, even if there's a queue behind me.</p>
+<div class="mt-4 flex items-center gap-4">
+<button class="text-on-surface-variant flex items-center gap-1 text-sm font-bold">
+<span class="material-symbols-outlined text-sm">thumb_up</span> 2
+            </button>
+<button class="text-on-surface-variant text-sm font-medium">Reply</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Reply Input Box -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md border-t border-outline-variant/10 px-6 py-4 z-40">
+<div class="max-w-4xl mx-auto flex items-end gap-4">
+<div class="flex-1 relative">
+<textarea class="w-full bg-surface-container-high border-none rounded-2xl px-6 py-4 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/20 resize-none min-h-[56px]" placeholder="Share your experience or ask a follow-up..." rows="1"></textarea>
+</div>
+<button class="bg-primary text-on-primary w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<!-- BottomNavBar for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-[#fef8f1]/80 dark:bg-stone-950/80 backdrop-blur-lg shadow-[0_-8px_30px_rgba(53,50,43,0.08)] rounded-t-[2rem]">
+<div class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 p-2 hover:text-[#a63c26] transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 p-2 hover:text-[#a63c26] transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Discover</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#a63c26] text-white rounded-full p-3 -translate-y-2 transition-transform active:scale-90 duration-200">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Messages</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 p-2 hover:text-[#a63c26] transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Profile</span>
+</div>
+</nav>
+</body></html>

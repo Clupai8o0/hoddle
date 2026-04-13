@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hoddle Melbourne - Mentor Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#fff7f7",
+                        "secondary": "#2d6a4f",
+                        "outline": "#7f7a71",
+                        "on-tertiary-fixed": "#483500",
+                        "on-tertiary-container": "#5f4800",
+                        "inverse-surface": "#0f0e0a",
+                        "on-surface": "#35322b",
+                        "on-surface-variant": "#635f56",
+                        "on-primary": "#fff7f6",
+                        "surface-container-highest": "#e8e2d7",
+                        "background": "#fef8f1",
+                        "primary": "#a63c26",
+                        "secondary-dim": "#1f5e44",
+                        "inverse-on-surface": "#a19c96",
+                        "error-dim": "#770326",
+                        "on-tertiary": "#fff8f0",
+                        "on-secondary": "#e6ffee",
+                        "on-primary-container": "#761a06",
+                        "error": "#ac3149",
+                        "on-primary-fixed": "#540a00",
+                        "on-secondary-fixed": "#105239",
+                        "secondary-container": "#beffdc",
+                        "surface-bright": "#fef8f1",
+                        "surface-variant": "#e8e2d7",
+                        "surface": "#fef8f1",
+                        "primary-dim": "#95301b",
+                        "tertiary": "#775b06",
+                        "primary-fixed-dim": "#ff9881",
+                        "on-background": "#35322b",
+                        "tertiary-fixed-dim": "#eac56b",
+                        "secondary-fixed": "#beffdc",
+                        "on-error-container": "#68001f",
+                        "tertiary-container": "#f9d377",
+                        "on-secondary-fixed-variant": "#336f54",
+                        "primary-fixed": "#ffac9a",
+                        "surface-tint": "#a63c26",
+                        "on-tertiary-fixed-variant": "#6a5100",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#f9d377",
+                        "outline-variant": "#b7b1a7",
+                        "on-secondary-container": "#27654a",
+                        "surface-container": "#f3ede4",
+                        "primary-container": "#ffac9a",
+                        "surface-container-high": "#eee7dd",
+                        "secondary-fixed-dim": "#b1f0ce",
+                        "on-primary-fixed-variant": "#82230f",
+                        "tertiary-dim": "#694f00",
+                        "surface-dim": "#e0d9cd",
+                        "error-container": "#f76a80",
+                        "inverse-primary": "#fe7d61",
+                        "surface-container-low": "#f9f3eb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Be Vietnam Pro"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #fef8f1;
+            color: #35322b;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fef8f1]/70 backdrop-blur-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)]">
+<div class="flex justify-between items-center px-8 py-4 max-w-[1440px] mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold italic text-[#a63c26] font-['Plus_Jakarta_Sans'] tracking-tight">Hoddle</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-stone-600 hover:text-[#a63c26] font-['Plus_Jakarta_Sans'] transition-all duration-300" href="#">Explore</a>
+<a class="text-stone-600 hover:text-[#a63c26] font-['Plus_Jakarta_Sans'] transition-all duration-300" href="#">Mentors</a>
+<a class="text-stone-600 hover:text-[#a63c26] font-['Plus_Jakarta_Sans'] transition-all duration-300" href="#">Forum</a>
+<a class="text-stone-600 hover:text-[#a63c26] font-['Plus_Jakarta_Sans'] transition-all duration-300" href="#">Impact</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-semibold shadow-sm hover:translate-y-[-1px] transition-all">Find a Mentor</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container-highest">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="professional portrait of a friendly man with a warm smile in a well-lit modern creative office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABhAYl5zQGPRGumbLJh4fEPTy7_PqOi-vtD8FEDVEcS76GylH2vXgHAfeEWi6CIdP2krmsaGSvjuyahFXujI8pLpH0fRtIrka9Q2kV8c27dUVn9XGMMMsVltLNu9wiSMeQavXJC0zNmAuOnQp0CiU_1FmSzp9eKyYsEx5_7HWG2lc6KH4so5tc1OX21MZUlq09JIFudc3wV0cxIVclXX1qXkmhaAtRwzPG3kNdz4rz7guYirgp3PNTg-4at2P_yqy_314GW7mqO6A"/>
+</div>
+</div>
+</div>
+</nav>
+<div class="flex min-h-screen pt-20">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full w-72 bg-[#f8f0e5] p-6 gap-2 fixed left-0 top-20 rounded-r-3xl z-40">
+<div class="mb-8">
+<h3 class="font-headline text-[#a63c26] font-black tracking-tighter text-xl">Welcome back, Raj</h3>
+<p class="text-stone-600 text-sm font-body leading-relaxed">Senior Design Mentor</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="bg-[#a63c26]/10 text-[#a63c26] font-bold rounded-xl flex items-center gap-3 p-4 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-stone-600 hover:bg-stone-100/50 flex items-center gap-3 p-4 rounded-xl hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>
+<span>My Matches</span>
+</a>
+<a class="text-stone-600 hover:bg-stone-100/50 flex items-center gap-3 p-4 rounded-xl hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span>Resource Library</span>
+</a>
+<a class="text-stone-600 hover:bg-stone-100/50 flex items-center gap-3 p-4 rounded-xl hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span>Melbourne Guide</span>
+</a>
+<a class="text-stone-600 hover:bg-stone-100/50 flex items-center gap-3 p-4 rounded-xl hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-10">
+<button class="w-full bg-secondary text-on-secondary py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+                    Schedule Session
+                </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-72 p-8 pb-32">
+<div class="max-w-6xl mx-auto space-y-12">
+<!-- Impact Stats Grid -->
+<section>
+<header class="mb-6">
+<h2 class="text-3xl font-bold tracking-tight text-on-surface">Your Impact Overview</h2>
+<p class="text-on-surface-variant italic">Reflecting the warmth you've shared with the student community.</p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Stats Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)] group">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-primary-container text-on-primary-container p-2 rounded-lg material-symbols-outlined" data-icon="group">group</span>
+<span class="text-secondary text-xs font-bold uppercase tracking-widest">+12%</span>
+</div>
+<div class="text-4xl font-bold text-on-surface mb-1">142</div>
+<div class="text-on-surface-variant text-sm font-medium">Students reached</div>
+</div>
+<!-- Stats Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)]">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-tertiary-container text-on-tertiary-container p-2 rounded-lg material-symbols-outlined" data-icon="visibility">visibility</span>
+<span class="text-secondary text-xs font-bold uppercase tracking-widest">+8%</span>
+</div>
+<div class="text-4xl font-bold text-on-surface mb-1">1.2k</div>
+<div class="text-on-surface-variant text-sm font-medium">Content views</div>
+</div>
+<!-- Stats Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)]">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-secondary-container text-on-secondary-container p-2 rounded-lg material-symbols-outlined" data-icon="forum">forum</span>
+<span class="text-primary text-xs font-bold uppercase tracking-widest">Active</span>
+</div>
+<div class="text-4xl font-bold text-on-surface mb-1">45</div>
+<div class="text-on-surface-variant text-sm font-medium">Questions answered</div>
+</div>
+<!-- Stats Card 4 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)]">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-[#f3ede4] text-tertiary p-2 rounded-lg material-symbols-outlined" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-secondary text-xs font-bold uppercase tracking-widest">Top 5%</span>
+</div>
+<div class="text-4xl font-bold text-on-surface mb-1">4.7</div>
+<div class="text-on-surface-variant text-sm font-medium">Avg rating</div>
+</div>
+</div>
+</section>
+<!-- Asymmetric Layout: Content & Inbox -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- LEFT COLUMN: MY CONTENT (8 cols) -->
+<div class="lg:col-span-8 space-y-8">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-2xl font-bold text-on-surface">My Shared Wisdom</h3>
+<p class="text-on-surface-variant">Your library of articles and tutorials.</p>
+</div>
+<button class="text-primary font-bold flex items-center gap-2 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+                                Create new content
+                            </button>
+</div>
+<div class="space-y-4">
+<!-- Content Item 1 -->
+<div class="bg-surface-container-low p-5 rounded-2xl flex items-center gap-6 group hover:bg-surface-container transition-colors">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0">
+<img alt="Article thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="close-up of a stylish designer workspace with a laptop, coffee, and sunlight streaming through a window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvquHL1cu0e0TloBgkv_Qj1G-qb5abDCIkMfVpuJSFtnRVl3o8iyUpMQThmJYetLTOZGzwPlmFYYp3VcPckCUJ41yhgHB8pUzuuW1Y0p119C_BO9xrdivQbSWokU1AeRAdTXatMiZFzrRZSUFepiPhx_YupoO7KEZ8p4yk7YcLRE_1fvvUW1pLYI6XpfVniEXBmXTuEIWDOL62g2ncu940kov52j9CLUEka6CFVEEp6QNGbwmQ1FUOKE4wbLGmWbXv_6STIK2XvEA"/>
+</div>
+<div class="flex-1">
+<span class="text-[10px] uppercase tracking-widest font-bold text-secondary mb-1 block">Article</span>
+<h4 class="text-lg font-bold text-on-surface mb-2">Navigating the Melbourne Tech Scene</h4>
+<div class="flex gap-6 text-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs" data-icon="visibility">visibility</span> 842 views</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span> 4.9 rating</span>
+</div>
+</div>
+<button class="p-3 rounded-full hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="edit">edit</span>
+</button>
+</div>
+<!-- Content Item 2 -->
+<div class="bg-surface-container-low p-5 rounded-2xl flex items-center gap-6 group hover:bg-surface-container transition-colors">
+<div class="w-24 h-24 rounded-xl overflow-hidden shrink-0">
+<img alt="Video thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="group of diverse university students collaborating over papers in a bright modern library" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9_ZLWbBdLOW4_elUbuA0xUKhUP2DKfMCVenSV38iAIdT06pirhmOsLy356KjwRNuTTlikyaf7dKfLpn6UkET1UApCj0Q5FyJpX_xnAVcKBMM-11QqSs5np-7VAa2AsJYgx0vVMDf50Bx0fRDdEqV2F4FHjOFcEMXTrHSQ07o8L_j7-KYZqgACSzSstlR0ojTRH8YKINwpzDB6XG6VZhnIiZnNdlx61SZECcp2-kcKAoev9naKHB6dV1-09AbJR1UdnTK-n2TCR20"/>
+</div>
+<div class="flex-1">
+<span class="text-[10px] uppercase tracking-widest font-bold text-primary mb-1 block">Video</span>
+<h4 class="text-lg font-bold text-on-surface mb-2">Effective Portfolio Reviews</h4>
+<div class="flex gap-6 text-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs" data-icon="play_circle">play_circle</span> 315 views</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span> 4.8 rating</span>
+</div>
+</div>
+<button class="p-3 rounded-full hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: UPCOMING & QUESTIONS (4 cols) -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Upcoming Session -->
+<div class="bg-primary-container/30 p-6 rounded-3xl border-2 border-primary/10 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -translate-y-12 translate-x-12"></div>
+<span class="bg-primary text-on-primary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block">Upcoming</span>
+<h4 class="text-xl font-bold text-on-primary-container mb-1">Portfolio Deep-Dive Q&amp;A</h4>
+<p class="text-on-primary-fixed-variant text-sm mb-6">Today, 5:30 PM • 12 Students RSVP'd</p>
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-bold shadow-md">Enter Session</button>
+</div>
+<!-- Questions Inbox -->
+<div class="space-y-4">
+<h3 class="text-xl font-bold text-on-surface flex items-center gap-2">
+                                Inbox
+                                <span class="bg-error text-on-error text-xs rounded-full px-2 py-0.5">3</span>
+</h3>
+<div class="bg-surface-container-high p-4 rounded-xl space-y-4">
+<div class="pb-4 border-b border-outline-variant/20">
+<p class="text-sm font-semibold text-on-surface mb-1 truncate">"How do I apply for internships in Melbourne?"</p>
+<div class="flex justify-between items-center">
+<span class="text-[11px] text-on-surface-variant">From: Mei L.</span>
+<button class="text-secondary text-sm font-bold flex items-center gap-1">Answer <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span></button>
+</div>
+</div>
+<div>
+<p class="text-sm font-semibold text-on-surface mb-1 truncate">"Recommendation for Figma courses?"</p>
+<div class="flex justify-between items-center">
+<span class="text-[11px] text-on-surface-variant">From: Omar K.</span>
+<button class="text-secondary text-sm font-bold flex items-center gap-1">Answer <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- My Badges Section (Bento Style) -->
+<section>
+<header class="mb-6">
+<h2 class="text-2xl font-bold text-on-surface">Your Mentor Milestone Journey</h2>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Earned Badge -->
+<div class="bg-white p-6 rounded-3xl flex flex-col items-center text-center shadow-[0_8px_30px_rgba(53,50,43,0.04)] border border-outline-variant/10">
+<div class="w-16 h-16 bg-secondary-container text-secondary rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<h4 class="font-bold text-on-surface">Trusted Guide</h4>
+<p class="text-xs text-on-surface-variant mt-1 mb-4">Completed 10+ student sessions with 5-star ratings.</p>
+<div class="w-full bg-secondary-container/30 h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-full"></div>
+</div>
+</div>
+<!-- Progressing Badge -->
+<div class="bg-white p-6 rounded-3xl flex flex-col items-center text-center shadow-[0_8px_30px_rgba(53,50,43,0.04)] border border-outline-variant/10">
+<div class="w-16 h-16 bg-primary-container text-primary rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+</div>
+<h4 class="font-bold text-on-surface">Content King</h4>
+<p class="text-xs text-on-surface-variant mt-1 mb-4">You've reached 1.2k views. 300 more to the next level!</p>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[80%]"></div>
+</div>
+</div>
+<!-- Locked Badge -->
+<div class="bg-surface-container-high/40 p-6 rounded-3xl flex flex-col items-center text-center border border-dashed border-outline-variant/40 grayscale opacity-70">
+<div class="w-16 h-16 bg-outline-variant/20 text-on-surface-variant rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="workspace_premium">workspace_premium</span>
+</div>
+<h4 class="font-bold text-on-surface">Melbourne Legend</h4>
+<p class="text-xs text-on-surface-variant mt-1 mb-4">Answer 100 questions to unlock this elite status.</p>
+<div class="w-full bg-outline-variant/20 h-2 rounded-full overflow-hidden">
+<div class="bg-outline-variant h-full w-[45%]"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-[#fef8f1]/80 backdrop-blur-lg shadow-[0_-8px_30px_rgba(53,50,43,0.08)] rounded-t-[2rem]">
+<a class="flex flex-col items-center justify-center text-stone-500 p-2" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#a63c26] text-white rounded-full p-3 -translate-y-2 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 p-2" href="#">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Messages</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 p-2" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Profile</span>
+</a>
+</nav>
+</body></html>

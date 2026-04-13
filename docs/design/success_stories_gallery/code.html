@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,700&amp;family=Be+Vietnam+Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error": "#fff7f7",
+            "secondary": "#2d6a4f",
+            "outline": "#7f7a71",
+            "on-tertiary-fixed": "#483500",
+            "on-tertiary-container": "#5f4800",
+            "inverse-surface": "#0f0e0a",
+            "on-surface": "#35322b",
+            "on-surface-variant": "#635f56",
+            "on-primary": "#fff7f6",
+            "surface-container-highest": "#e8e2d7",
+            "background": "#fef8f1",
+            "primary": "#a63c26",
+            "secondary-dim": "#1f5e44",
+            "inverse-on-surface": "#a19c96",
+            "error-dim": "#770326",
+            "on-tertiary": "#fff8f0",
+            "on-secondary": "#e6ffee",
+            "on-primary-container": "#761a06",
+            "error": "#ac3149",
+            "on-primary-fixed": "#540a00",
+            "on-secondary-fixed": "#105239",
+            "secondary-container": "#beffdc",
+            "surface-bright": "#fef8f1",
+            "surface-variant": "#e8e2d7",
+            "surface": "#fef8f1",
+            "primary-dim": "#95301b",
+            "tertiary": "#775b06",
+            "primary-fixed-dim": "#ff9881",
+            "on-background": "#35322b",
+            "tertiary-fixed-dim": "#eac56b",
+            "secondary-fixed": "#beffdc",
+            "on-error-container": "#68001f",
+            "tertiary-container": "#f9d377",
+            "on-secondary-fixed-variant": "#336f54",
+            "primary-fixed": "#ffac9a",
+            "surface-tint": "#a63c26",
+            "on-tertiary-fixed-variant": "#6a5100",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#f9d377",
+            "outline-variant": "#b7b1a7",
+            "on-secondary-container": "#27654a",
+            "surface-container": "#f3ede4",
+            "primary-container": "#ffac9a",
+            "surface-container-high": "#eee7dd",
+            "secondary-fixed-dim": "#b1f0ce",
+            "on-primary-fixed-variant": "#82230f",
+            "tertiary-dim": "#694f00",
+            "surface-dim": "#e0d9cd",
+            "error-container": "#f76a80",
+            "inverse-primary": "#fe7d61",
+            "surface-container-low": "#f9f3eb"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Be Vietnam Pro"],
+            "label": ["Be Vietnam Pro"]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .editorial-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+    }
+    @media (max-width: 768px) {
+      .editorial-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-[#fef8f1]/70 dark:bg-stone-900/70 backdrop-blur-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)]">
+<div class="flex justify-between items-center px-8 py-4 max-w-[1440px] mx-auto font-['Plus_Jakarta_Sans'] tracking-tight">
+<div class="text-2xl font-bold italic text-[#a63c26] dark:text-[#cc583f]">Hoddle</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-stone-600 dark:text-stone-400 hover:text-[#a63c26] transition-all duration-300 hover:opacity-80" href="#">Explore</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-[#a63c26] transition-all duration-300 hover:opacity-80" href="#">Mentors</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-[#a63c26] transition-all duration-300 hover:opacity-80" href="#">Forum</a>
+<a class="text-[#a63c26] dark:text-[#cc583f] font-semibold border-b-2 border-[#a63c26] pb-1 transition-all duration-300 hover:opacity-80" href="#">Impact</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="hidden lg:block bg-primary text-on-primary px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 hover:translate-y-[-2px] active:scale-95 shadow-sm">
+          Find a Mentor
+        </button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a smiling professional man with glasses in a warm lit office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq9li8bx9_lsx5hFc9H-COa51fiF704SSNpc7W70Zwcvb98S5tGNJ3RL42MYy7TqmyUhtcpmJumMVXwFkrZ5tzzKog0KH3B6acBz_lqXeeL2ek6LYBeB_G_A3pfrbKJo_smavyQuGp6GBSHGNzgEmUA-NvgKj0BIl3iqleCzHKzz8eW6gb8ldPmLJtG4MJUAkpNC1OyZX3bhV0QBz4F7r8q-691_BoIDDSQvwKlzu0SDEITezRIywM4PaMlr7Bl5itepn32rN06Uk"/>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-32 max-w-[1440px] mx-auto px-6 md:px-12">
+<!-- Hero Header -->
+<header class="py-16 md:py-24 text-center">
+<span class="font-label text-primary uppercase tracking-[0.2em] text-xs font-bold mb-4 block">Our Impact</span>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold text-on-surface tracking-tighter mb-6">
+        Stories from our community
+      </h1>
+<p class="text-xl md:text-2xl text-on-surface-variant max-w-2xl mx-auto font-light leading-relaxed mb-10">
+        Real wins from students just like you. Discover how Hoddle mentors are helping international students thrive in Melbourne.
+      </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:shadow-lg transition-all active:scale-95">
+          Share your story
+          <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<button class="bg-surface-container-high text-on-surface px-8 py-4 rounded-xl font-bold hover:bg-surface-container-highest transition-all">
+          Browse Categories
+        </button>
+</div>
+</header>
+<!-- Outcome Filter Chips -->
+<section class="mb-16">
+<div class="flex flex-wrap justify-center gap-3 overflow-x-auto pb-4 no-scrollbar">
+<button class="px-6 py-2.5 rounded-full bg-primary text-on-primary font-medium text-sm transition-all whitespace-nowrap">All Stories</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all border border-outline-variant/15 whitespace-nowrap">Graduate Jobs</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all border border-outline-variant/15 whitespace-nowrap">GPA Improvements</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all border border-outline-variant/15 whitespace-nowrap">Internships</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all border border-outline-variant/15 whitespace-nowrap">Research Grants</button>
+<button class="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all border border-outline-variant/15 whitespace-nowrap">Creative Projects</button>
+</div>
+</section>
+<!-- Featured Story Card -->
+<section class="mb-24">
+<div class="relative w-full rounded-[2.5rem] overflow-hidden bg-surface-container-low flex flex-col lg:flex-row items-stretch shadow-[0_20px_60px_-15px_rgba(53,50,43,0.1)]">
+<div class="lg:w-3/5 h-[400px] lg:h-auto overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Two diverse students collaborating in a sun-drenched modern library with large windows overlooking Melbourne city skyline" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1ZXlX3vOTjK7N1R_uZ58iEIotDp1lKfmy342Q5IACS4hYy1sfrwTg9axZEYvs8MOHIaVceYH9BNaHjxDU1qMlKN88-1f0R0hAY3joFv1isde7ut0nL-CVae5pvsVY2eVl_ZLdBGUbya7ouRhR077zizSZREyF_F5ckcXVbd4tihR1xy2oiWZZ6Mwv3u0CIqr1ZLkgoS1qPc5lyht2xWzSGIyi5mC_8hfCoNAkoKr4RoZz3eURSSD4LxVQwqj-wa1ieYSrRlWxF7A"/>
+</div>
+<div class="lg:w-2/5 p-10 md:p-16 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-6">
+<span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Featured Win</span>
+<span class="text-on-surface-variant text-xs">• 5 min read</span>
+</div>
+<h2 class="font-headline text-3xl md:text-4xl font-extrabold text-on-surface leading-tight mb-6">
+            "How Hoddle helped me land my dream role at Atlassian"
+          </h2>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+            Mei Ling arrived from Singapore with talent but no local network. Through three months of mentoring with Alex, she transformed her CV and mastered the Australian interview style.
+          </p>
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary/10">
+<img class="w-full h-full object-cover" data-alt="Portrait of Mei Ling, a young professional woman smiling warmly in front of a green ivy wall" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7f2bpIQSvsyYdsgXldsx7YOS_PjxC40EhvM-v5QRhclo3rLQPVOqevS9gb4lzXjAkI7PdfBKojErii-hLPWBimZU_ljdnNsqzYA2yahG4N2H9MRrsOx0D-Qx11PgCrH4iFNQMmPz00MVL8txxTG2Jzjo4sr42VLHAZVJNw5CtPfW3qPJElBII3GlMpD51EwNeKtJC-771JmDg49i9mw2M9VnsEvVgVAdyW82x9NlCIjstCOYLBfwUk91-CJ7Vsx1Ab8gQBuZhjIg"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Mei Ling Chen</p>
+<p class="text-sm text-on-surface-variant">Master of IT, Unimelb</p>
+</div>
+</div>
+<a class="text-primary font-bold inline-flex items-center gap-2 group" href="#">
+            Read Mei's Full Story
+            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Stories Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20 mb-32">
+<!-- Story 1 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-3xl overflow-hidden mb-8 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A group of university students laughing together in a cozy Melbourne cafe with warm ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3H-_eOnZVqWj4JgwpvWh5KyYRjq8L6Plr2DZNPdpgJowHufWvgQgAd4Y4PlbgtQLsVHa0phfRVVDUdNKHBL3Js-gWHul8OkylQoOHJMi95__vPDAb8rqRmaKL4t7Io8sL4p19fTYvYjynIDSyNwmUR-YcHV4xDQNyyHwXrfwMaqRHMYcTl08B3T5cM8qx9FMrb7pYGZMJbTmj7vd-1cgxDfUkGmPnEFRU71TrxsPbXuR1rzwz6UmYdIoNkEzzhd-uP9lYbxQg8RQ"/>
+<div class="absolute top-6 left-6">
+<span class="bg-surface-container-lowest/90 backdrop-blur px-4 py-2 rounded-xl text-primary font-bold text-sm shadow-sm">From Pass to HD</span>
+</div>
+</div>
+<div class="px-2">
+<h3 class="font-headline text-2xl font-extrabold text-on-surface mb-3 group-hover:text-primary transition-colors">Finding the confidence to speak up in seminars</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6">"My mentor didn't just teach me academic writing; they taught me how to find my voice in a new cultural context."</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Portrait of Rohan, a young male student with a thoughtful expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMWoVMGCgkIPCIqdhyz-KDUJLLqELfaJ61IzVjBcbRNDwvW9jH4F6nffPQjoiQuzoGmynkhTDoR2GDzuFiKehz2xE-8scEtT-rQv9ZVtHhQMxKjqeUpL2JLMqS1miWmARk9bkBY0NOTZnJpmK6-3A1Gld24iQyUTeWrZL8kFN1DEKGwQGDfz9ibh3TgnD-cPs8eU9dIa0WgSh04zj0-yGKI40wDea8lG-pwRgcdmuqxiOLDb1H_Y4ceEChKddsEfw2ASpLMT1AFEI"/>
+</div>
+<span class="font-semibold text-on-surface">Rohan K.</span>
+</div>
+<div class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary">verified_user</span>
+              Mentor: Sarah Jenkins
+            </div>
+</div>
+</div>
+</article>
+<!-- Story 2 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-3xl overflow-hidden mb-8 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A brightly lit workshop space with blueprints and digital tablets on wood tables" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn4Yp0Bpbqh_bG3YUeYX05XV7gd8Uk6JJTTAwA72LH591CbLjOXs5EvgYkvh8Yu9x4j8F6jhmcVzvc2IY0HZ3-K6RoYN2N8g1l8e3IEKOQufFABdPIAbDhSg97QKxwqZOf_nK8QWba7_6CsoDOyjwIbhYK8voApuGQ0SomJVFfag32Yvg4VApMBWCvvRaNnGmGhSchS1H4Z6SgIM2b0AYlCdUaIoiM5a4P9QjLbA_REa_aRFTozP1aj4nCpikdNrxSlXuCUEUY8vE"/>
+<div class="absolute top-6 left-6">
+<span class="bg-surface-container-lowest/90 backdrop-blur px-4 py-2 rounded-xl text-primary font-bold text-sm shadow-sm">Internship Secured</span>
+</div>
+</div>
+<div class="px-2">
+<h3 class="font-headline text-2xl font-extrabold text-on-surface mb-3 group-hover:text-primary transition-colors">Navigating the Melbourne Tech Scene</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6">"Hoddle's mentor network opened doors I didn't even know existed. I'm starting my UX internship next week!"</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Portrait of Priaya, a smiling international student wearing a stylish denim jacket" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQxdupBof24YQvaF3Dz9ewI3lKFYw1QYd1QZnBotKmaUT-WcdwqVNvbD0LMUDgsleK1yYsB-yqdrZdOosb_rOsDrsB0QjQ4wg3VG8mp6OkBI4TQmLkjpTmaEH606bK_3OuOZWf0wntEJLlaEk4WsDHeHGI_VHC_qU_fEVnduKGiCn5yfNZM9XYFMLA_3hUhcV4FFHP9TMRTFFpzRGgp8hjzOsBhHP4O-4psbHGKQVYGyTCGJgKZhufj5cTzweVazSJvOGXg8NV2Tc"/>
+</div>
+<span class="font-semibold text-on-surface">Priya M.</span>
+</div>
+<div class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary">verified_user</span>
+              Mentor: David Wu
+            </div>
+</div>
+</div>
+</article>
+<!-- Story 3 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-3xl overflow-hidden mb-8 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Two students walking through the historic University of Melbourne campus grounds in autumn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSHJR4lOO7YjlhvQ9PNsLINEyqitRWMuv3jFkuDavv0fc3NyJeZ0eEOccIHR_IRNHYjiMT461Ib-GA5-nM-B73_fwY0Ruc1fGOnlS0wY4AOxYQfBui0tcyu1keT1VnL0Q1ekwlTegrcfeBlSInN7Lyg6JXc9Mg97NPJFlMkK4DQDYti2DNts5sYi2jL_ia_FMv92MINMljcwfpQvmNCY0mBfLEb3sS7leaJxcgAzTwLTGLs-XpRSnEbOxH6-j8Nf-To6LHQIhh2Zs"/>
+<div class="absolute top-6 left-6">
+<span class="bg-surface-container-lowest/90 backdrop-blur px-4 py-2 rounded-xl text-primary font-bold text-sm shadow-sm">Mental Well-being</span>
+</div>
+</div>
+<div class="px-2">
+<h3 class="font-headline text-2xl font-extrabold text-on-surface mb-3 group-hover:text-primary transition-colors">Overcoming Homesickness through Community</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6">"Beyond grades, Hoddle gave me a sense of belonging in Melbourne when I felt most alone."</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Portrait of Ahmed, a young man with a warm and friendly smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo3E8GCgVSnZY_cZmDoMz3OiRRSBVYHYdaStnt9s_3RZjMn39EY8-JkosuXCdryfSChrjbwdjMAr7OQ6QW9TglTk5p4nKPVHG1f07r97M8KolyePxqUKxetyQrI-wa4SmNESoowy8tUeYdRy6xmbBtWH29yw5HRJxQdTQev1c4-DrApVEkob7xBp5xyEnjJo7OkLrcg9XsCMHNn3jvWGP7kvrY3M9Dr2__N7wU1siNO0Di9bV0WrwaH4pt5u20WJw5L2_VBEZAxEs"/>
+</div>
+<span class="font-semibold text-on-surface">Ahmed S.</span>
+</div>
+<div class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary">verified_user</span>
+              Mentor: Chris Taylor
+            </div>
+</div>
+</div>
+</article>
+<!-- Story 4 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-3xl overflow-hidden mb-8 relative">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A professional networking event with people talking and holding coffee cups in a modern atrium" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBC-5w3UncPXvSKf2cF5cxkRGrhA3sCtTYIbBtqFQ7rYK_yXhKYbOMxSDiKaPETYV-29n04LdfHPGK_3-GCDvQTQEZMF_JCtqdHb2-JTRNPe2yK7t3g5aAbx17allUxdCFBPFeIInu4KSEOi1zyxs5exTlJRAmdTJdNbm6XBQpncJhZuJEtwm7E2eTp0vnVprtnqgk6RNbnVEaDOjjvv3m3fycJD6nPKnZB5FR07m3BKYgGaPPD1iNJyTwgxbeGI8T7-m9LBjBSi_U"/>
+<div class="absolute top-6 left-6">
+<span class="bg-surface-container-lowest/90 backdrop-blur px-4 py-2 rounded-xl text-primary font-bold text-sm shadow-sm">Grad Job Success</span>
+</div>
+</div>
+<div class="px-2">
+<h3 class="font-headline text-2xl font-extrabold text-on-surface mb-3 group-hover:text-primary transition-colors">From Student Visa to Working Rights</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6">"The professional mentorship gave me the courage to apply for roles that felt out of reach. Now I'm a Jr. Analyst!"</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Portrait of Elena, a confident young woman with curly hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoebv1sMRbbhTxXSZcvsW0OL-J1OpynhzN1mg6u_zyZgeF_pqd56nB4yl4ABK_ZqE3ixLBOL6rHUkqjgrNyVgulP5ahvfezJmyaIRrgbdqFJZSEru58bVgwa3jBvv7CDqdtWFpAxwYAQisfRMDWmH1H0gYsr4HlNaNbip9c2sD74n6yc8ebfHovipZ0qSR1SESJ8B3jQABVCinaDYc4g2Qni0qrQHb2XWL2TkUkmXNx08cdXcAmSv0mW9dFHa8xIXfoQPP3kED-Js"/>
+</div>
+<span class="font-semibold text-on-surface">Elena V.</span>
+</div>
+<div class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary">verified_user</span>
+              Mentor: Jessica Lee
+            </div>
+</div>
+</div>
+</article>
+</section>
+<!-- Submit Story Section -->
+<section class="bg-surface-container p-8 md:p-16 rounded-[3rem]">
+<div class="editorial-grid">
+<div class="flex flex-col justify-center">
+<span class="font-label text-secondary uppercase tracking-[0.2em] text-xs font-bold mb-4 block">Your Journey Matters</span>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface leading-tight mb-6">
+            Ready to share your own success story?
+          </h2>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+            Your experience could be the inspiration another student needs to take their first step. Tell us about your journey, your challenges, and how your Hoddle mentor made a difference.
+          </p>
+<div class="flex items-center gap-6 mb-8">
+<div class="flex -space-x-3">
+<div class="w-12 h-12 rounded-full border-4 border-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWDIjAtYsucMd1WQAVrW6an8bTgh84BYWomYVZ8WmPkqiL-yAYQgS1D5PMbw9YSWevD78WG8tN1paGdpZ8R7Xpt8V68h2bkrjRW5DEx5IFvt99dnmFNIVbldq7lSCKAbJZO_ZuKmjimACugGouGxyMVMRsqRLnv4MJHVJxRAJavsJEE5iHSHpS_tVPVzNitGNzzpNHNb-8eRlC2neB5fnWL9GmJmg9bZuk6RKg8jdFFBCVoj6ZQgAw26rywRPyPiuuf6PVOOp7VRM"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA41cnlVuhjvUviafwcdYqC9mYDEDw2o0Jm0XgFrjnPp_KrE7ncu1hEOOu61bIhFM8yKb3oKtdrDBHyxaYb8DdjyjEywDJrMIovfcmyXGY4awd-br2DlyXLUiQfT0wIClApom4DfCl6-tnbl2xMceT3rI3P8phTnv6OICjbtP3FaIDm-eU4L_tuYjluH6QtZAzZ9jjaTYG77TE6s5g-6Z9GYD56-YRLAiCL0ZNP7crA1OKtaXVaCnx8tkUxA4w7qY4AHCGbrcReX8A"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a woman smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWPa-igGVRmvoywTlHt3U_hjp1SYpjwY9FSigh-hskVhcP2CLhEJlNFsZImEkZBG0zP-ihmOfd7nRhMKLJBwWNd_JoGpmSChB38f-UwUpTJzQD_XXFqKv9cJIlougbsHr0zkfqG47Cx5uor9CRujx0rePky3wusNyiXp0zrUE5F4wCUXEnuJw1o5nOmEEn9pEnFF511UMggRCoImiUdDoepQCDK6jAbQKGudwQQe-tlFy2K_kmajrNPzU6fhlDJzMaF1fSMuyZcSw"/>
+</div>
+</div>
+<p class="text-sm font-medium text-on-surface-variant italic">Join 200+ students who shared their wins</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-[2rem] shadow-sm">
+<form class="space-y-6">
+<div>
+<label class="block text-sm font-bold mb-2 text-on-surface-variant uppercase tracking-wider">Full Name</label>
+<input class="w-full h-14 bg-surface-container-low border-none rounded-xl px-4 focus:ring-2 focus:ring-tertiary/20 transition-all" placeholder="Alex Carter" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-bold mb-2 text-on-surface-variant uppercase tracking-wider">Major / Focus</label>
+<input class="w-full h-14 bg-surface-container-low border-none rounded-xl px-4 focus:ring-2 focus:ring-tertiary/20 transition-all" placeholder="e.g. Master of Architecture" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-bold mb-2 text-on-surface-variant uppercase tracking-wider">Your Story</label>
+<textarea class="w-full bg-surface-container-low border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-tertiary/20 transition-all" placeholder="Briefly describe your win..." rows="4"></textarea>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold shadow-md hover:shadow-xl transition-all active:scale-95" type="submit">
+              Submit My Story
+            </button>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Shared Component for Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-[#fef8f1]/80 dark:bg-stone-950/80 backdrop-blur-lg shadow-[0_-8px_30px_rgba(53,50,43,0.08)] rounded-t-[2rem]">
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 p-2 hover:text-[#a63c26] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 p-2 hover:text-[#a63c26] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 dark:text-stone-400 p-2 hover:text-[#a63c26] transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">chat</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold">Messages</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#a63c26] text-white rounded-full p-3 -translate-y-2 transition-transform shadow-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="sr-only">Profile</span>
+</a>
+</nav>
+<!-- Footer Decor -->
+<footer class="bg-surface-container-highest/30 pt-12 pb-24 md:pb-12 text-center">
+<div class="max-w-4xl mx-auto px-6">
+<p class="font-headline text-primary font-black italic text-xl mb-4 tracking-tighter">Hoddle Melbourne</p>
+<p class="text-on-surface-variant text-sm max-w-lg mx-auto">Connecting global perspectives with local expertise. Helping students build a home away from home in the world's most liveable city.</p>
+<div class="mt-8 flex justify-center gap-8 text-on-surface-variant/60">
+<span class="material-symbols-outlined">diversity_3</span>
+<span class="material-symbols-outlined">workspace_premium</span>
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+</div>
+</footer>
+</body></html>

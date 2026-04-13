@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&amp;family=Be+Vietnam+Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#fff7f7",
+                    "secondary": "#2d6a4f",
+                    "outline": "#7f7a71",
+                    "on-tertiary-fixed": "#483500",
+                    "on-tertiary-container": "#5f4800",
+                    "inverse-surface": "#0f0e0a",
+                    "on-surface": "#35322b",
+                    "on-surface-variant": "#635f56",
+                    "on-primary": "#fff7f6",
+                    "surface-container-highest": "#e8e2d7",
+                    "background": "#fef8f1",
+                    "primary": "#a63c26",
+                    "secondary-dim": "#1f5e44",
+                    "inverse-on-surface": "#a19c96",
+                    "error-dim": "#770326",
+                    "on-tertiary": "#fff8f0",
+                    "on-secondary": "#e6ffee",
+                    "on-primary-container": "#761a06",
+                    "error": "#ac3149",
+                    "on-primary-fixed": "#540a00",
+                    "on-secondary-fixed": "#105239",
+                    "secondary-container": "#beffdc",
+                    "surface-bright": "#fef8f1",
+                    "surface-variant": "#e8e2d7",
+                    "surface": "#fef8f1",
+                    "primary-dim": "#95301b",
+                    "tertiary": "#775b06",
+                    "primary-fixed-dim": "#ff9881",
+                    "on-background": "#35322b",
+                    "tertiary-fixed-dim": "#eac56b",
+                    "secondary-fixed": "#beffdc",
+                    "on-error-container": "#68001f",
+                    "tertiary-container": "#f9d377",
+                    "on-secondary-fixed-variant": "#336f54",
+                    "primary-fixed": "#ffac9a",
+                    "surface-tint": "#a63c26",
+                    "on-tertiary-fixed-variant": "#6a5100",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#f9d377",
+                    "outline-variant": "#b7b1a7",
+                    "on-secondary-container": "#27654a",
+                    "surface-container": "#f3ede4",
+                    "primary-container": "#ffac9a",
+                    "surface-container-high": "#eee7dd",
+                    "secondary-fixed-dim": "#b1f0ce",
+                    "on-primary-fixed-variant": "#82230f",
+                    "tertiary-dim": "#694f00",
+                    "surface-dim": "#e0d9cd",
+                    "error-container": "#f76a80",
+                    "inverse-primary": "#fe7d61",
+                    "surface-container-low": "#f9f3eb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        h1, h2, h3, .brand-font { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fef8f1]/70 backdrop-blur-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)]">
+<div class="flex justify-between items-center px-8 py-4 max-w-[1440px] mx-auto">
+<div class="text-2xl font-bold italic text-primary brand-font">Hoddle</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-stone-600 hover:text-primary transition-all duration-300 font-body" href="#">Explore</a>
+<a class="text-stone-600 hover:text-primary transition-all duration-300 font-body" href="#">Mentors</a>
+<a class="text-stone-600 hover:text-primary transition-all duration-300 font-body" href="#">Forum</a>
+<a class="text-stone-600 hover:text-primary transition-all duration-300 font-body" href="#">Impact</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 hover:opacity-80 active:scale-95">Find a Mentor</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border-2 border-primary/20">
+<img alt="Priya's Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a young Indian woman with a warm smile, natural lighting, soft focus background of a library" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDenKmnC_BZkVw0z-EzYEIpvpxtKT1pgqXxwozspVS9pcMPP1n6BbtkyTd8hMlEmeeJMX2eFHZARQkfFkcs393x9Trmi5-3C0TrpukHUB4FraC4xZDVXPmsAGourfBPJVo5Vhuzk3keQb_6YIhMC2gjgVPn7VEv4hODx9gN-7PHke3EenHEJxUBYZPKRB66MFafv3qq5wH1zg41v1exfGM5skhCaE7BLowIzM8rtUypEh6tgQcdHbI4jbrN7YfC5BSfpoIVDoRv6zs"/>
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-28 pb-32 px-6 max-w-[1440px] mx-auto min-h-screen">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- LEFT COLUMN: Profile & Activity -->
+<div class="lg:col-span-4 space-y-8">
+<!-- Profile Header Card -->
+<section class="bg-surface-container-lowest rounded-[2rem] p-8 shadow-[0_12px_40px_rgba(53,50,43,0.04)] text-center relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-24 bg-primary-container/20"></div>
+<div class="relative pt-4">
+<div class="relative inline-block group">
+<div class="w-32 h-32 rounded-full overflow-hidden border-4 border-surface shadow-xl mx-auto">
+<img alt="Priya Profile" class="w-full h-full object-cover" data-alt="Young Indian woman smiling in a bright cafe setting, professional headshot style with soft warm light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN1fI3A5NKqyvyd9kxELLRuVifxY3zkg1rqqqoFRgE7F3SRhloJ_NQIHzUKkJXMVFQyvxQSXQ5biUyV6bPywmxKnNGkvgbKACfOVUCz-hxA4C2h-rnqJ4r-UkAHu26ywQoShaBwDskqqerbLsMkn44C2IEVYw43SNmok57Xa-GJpBn2tPXQPm6Lx-SRWYyIEvtrTTIVaJ71XrCZUsWCkL3guQdh2xDHVjUr1tOT9x8EFAp5FMOWDeEClFj_qz3m5_zhLBF9xnNyZ4"/>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary text-on-primary p-2 rounded-full shadow-lg hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<h1 class="text-3xl font-extrabold mt-6 text-on-surface tracking-tight">Priya Sharma</h1>
+<p class="text-on-surface-variant font-medium mt-1">International Student • Melbourne Uni</p>
+<div class="mt-8 flex justify-center gap-3 flex-wrap">
+<span class="bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase">Get a part-time job</span>
+<span class="bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase">Improve GPA</span>
+</div>
+</div>
+</section>
+<!-- Activity Stats Bento -->
+<section class="bg-surface-container-low rounded-[2rem] p-8 space-y-6">
+<h3 class="text-xl font-bold tracking-tight">My Activity</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col justify-center items-center text-center">
+<span class="text-3xl font-extrabold text-primary">24</span>
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mt-2">Posts</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col justify-center items-center text-center">
+<span class="text-3xl font-extrabold text-primary">12</span>
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mt-2">Questions</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col justify-center items-center text-center col-span-2">
+<span class="text-3xl font-extrabold text-secondary">8</span>
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mt-2">Active Weeks Streak</span>
+</div>
+</div>
+</section>
+<!-- My Mentors Compact -->
+<section class="bg-surface-container-low rounded-[2rem] p-8 space-y-6">
+<div class="flex justify-between items-center">
+<h3 class="text-xl font-bold tracking-tight">My Mentors</h3>
+<button class="text-primary text-sm font-bold">View All</button>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 bg-surface-container-lowest p-3 rounded-2xl">
+<img alt="Mentor 1" class="w-12 h-12 rounded-xl object-cover" data-alt="Portrait of a professional man in a casual blazer, smiling warmly in an office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvy3lk_L7hmEGGNj2zkKbYKc7xQFwdiC_jv1GMlPCbqrysstLCfONPJImxn47p5zAbkX_8UIaokesQT-03Mw_YVOuS6XTeRwZF6gmByV5Vml9rHJP6gjorHsnSCEkyfkaWg1hoTQ0OBi7JxnBLTYLY99yd1aHpt789eOuf1VxbzK5BUpbRbsKVnd4iNIC_AQmLgJJs21A5XMKGrIdBRjqwKwdzkEh5di1TaqFYPS1VQ1ZZDpn1t0Kvgdo0nXlbkT22snkA4HOxPJI"/>
+<div>
+<p class="font-bold text-on-surface">Alex Thompson</p>
+<p class="text-xs text-on-surface-variant">Design Lead @ Canva</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-lowest p-3 rounded-2xl">
+<img alt="Mentor 2" class="w-12 h-12 rounded-xl object-cover" data-alt="A smiling woman with glasses in a creative studio, professional and approachable look" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgKRiDua2lvlJfoiEJoXHPjxRYY4h2Dd0SNG-o_EL0GOnQuT8uYRVIczGGiJaITX0bF9R8cIh8fIb0-FKvWJZupzBC333vYYl27BTW40JhjxF7fegeWg2eS__ctRdS51JOgW87pwBZEMVOTo54cmpWBjO9EW2or2IJsy1-JKW7mIc7u_5ommigmkk6y1drsi610be5UtWOkysDjq8CFiKEoKOZma6SRmhYG0PSHyKmo6GLOia_4SDfkxV8oHw4shbAJ0PKwhzsWXc"/>
+<div>
+<p class="font-bold text-on-surface">Sarah Jenkins</p>
+<p class="text-xs text-on-surface-variant">Academic Advisor</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN: Progress & Wins -->
+<div class="lg:col-span-8 space-y-8">
+<!-- My Milestones Timeline -->
+<section class="bg-surface-container-lowest rounded-[2rem] p-8 md:p-12 shadow-[0_12px_40px_rgba(53,50,43,0.04)]">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12">
+<div>
+<h2 class="text-3xl font-extrabold tracking-tight">My Milestones</h2>
+<p class="text-on-surface-variant mt-2 font-medium italic">Celebrating every small step forward.</p>
+</div>
+<button class="bg-secondary text-on-secondary px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add_circle</span>
+                            Log a new win
+                        </button>
+</div>
+<div class="relative space-y-12 before:absolute before:left-[1.25rem] before:top-4 before:bottom-4 before:w-0.5 before:bg-surface-container-highest">
+<!-- Milestone Item -->
+<div class="relative pl-12">
+<div class="absolute left-0 top-1 w-10 h-10 bg-secondary-container rounded-full flex items-center justify-center border-4 border-surface shadow-md">
+<span class="material-symbols-outlined text-secondary text-xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div class="space-y-1">
+<span class="text-xs font-bold uppercase tracking-widest text-secondary">October 24, 2023</span>
+<h4 class="text-xl font-bold text-on-surface">Got my first High Distinction</h4>
+<p class="text-on-surface-variant leading-relaxed max-w-2xl">Achieved a 92% in Financial Accounting. Huge thanks to Alex for the study tips!</p>
+</div>
+</div>
+<!-- Milestone Item -->
+<div class="relative pl-12 opacity-60">
+<div class="absolute left-0 top-1 w-10 h-10 bg-surface-container-highest rounded-full flex items-center justify-center border-4 border-surface">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">work</span>
+</div>
+<div class="space-y-1">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Next Step</span>
+<h4 class="text-xl font-bold text-on-surface">Secure Summer Internship</h4>
+<p class="text-on-surface-variant leading-relaxed max-w-2xl">Currently applying for roles in Melbourne's CBD. Goal: 3 interviews by Nov.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Content Saved Grid -->
+<section class="space-y-6">
+<div class="flex justify-between items-center px-4">
+<h3 class="text-2xl font-extrabold tracking-tight">Content Saved</h3>
+<button class="text-primary font-bold">See All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface rounded-3xl overflow-hidden shadow-[0_12px_40px_rgba(53,50,43,0.06)] group">
+<div class="h-48 relative">
+<img alt="Saved Article 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Vibrant Melbourne laneway cafe with people studying and drinking coffee, warm sunny morning atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB87oXxMB4Hv_O6TU7ET--_Plw4A13W_JyQ24Vptpo186Qol145zS-2dtgTk-2U96h9xdo6TyVXAQPryhot95FKFn3X3__Y-LohGJRQ1AUJz3u0fy48ptLbWkNyivgiNcq5TjYxH69-KAD4I5aD735Rr6aqkDNjnqlEs1xjl4fa0QfNLX1Qx0c1QejM7gwkI4aeDYj3a3A5c0drLzICDcfkxEesGAy89T8OfTM66E9J6f_wlVmpSqBKJ71J3osEX7Hrf9h7s98uQ2Q"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur p-2 rounded-full">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</div>
+</div>
+<div class="p-6 space-y-2">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Melbourne Guide</span>
+<h4 class="text-lg font-bold text-on-surface leading-snug">Best Study Cafes in the CBD with Free WiFi</h4>
+</div>
+</div>
+<div class="bg-surface rounded-3xl overflow-hidden shadow-[0_12px_40px_rgba(53,50,43,0.06)] group">
+<div class="h-48 relative">
+<img alt="Saved Article 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close-up of a professional resume and a laptop on a wooden table, soft office lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkTrlBlkd0swJaoYTPhzci0Bc1ZHRshlhM7IeFk9gl3oPec3a4WmeHOKgc7NbgwUzz3eCczgXwb8LdFDE3c13ZstZOQhGhY68bdmb6uMHK5wcVs8xR2zkcJIQZxfZvZ3hUh52Wve-yqaBH4xa6yioKxgAdKwueBfcePlUZe_XaKIBrkiE2mFXIuSiJqeVqivxca2RK9F6nrJ9AZyiRZo0KXHb_n6oNfooOc8G8K7KzOJ9iVI3zJUcj3d4UGnZZb-SD9W_4TITTxOM"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur p-2 rounded-full">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bookmark</span>
+</div>
+</div>
+<div class="p-6 space-y-2">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Careers</span>
+<h4 class="text-lg font-bold text-on-surface leading-snug">Interview Hacks for Part-time Hospitality Jobs</h4>
+</div>
+</div>
+</div>
+</section>
+<!-- Success Story CTA -->
+<section class="relative rounded-[2rem] overflow-hidden bg-primary p-12 text-on-primary">
+<div class="absolute top-0 right-0 w-1/3 h-full opacity-20 pointer-events-none">
+<img alt="Success" class="w-full h-full object-cover" data-alt="Diverse group of university students laughing together on a campus lawn, golden hour lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDqimoxUIJ_Q6YEGfmm16fmKVf7bxNW-6yfUJG5qGu3e0uyoww_e5YiuAHX0lD7IaQnEe74_zfk6EsyslrP6Jp780-R0FR1xm6OO5-fJ3XouVWAWv_PPjsGsciSvDT76HPS5PH9_wYf-QwKdG4yLiM9LfEXVbUr1rfIZfhtlSsmSxkct_xqtEtYgLEw4GEhsYg5hyWgNcByaAaG8jXa11CMOUGjQPGaslsFOVUpayWrWWJe9jFCL951YbHRONVWGv049o7kDT_uQU"/>
+</div>
+<div class="max-w-xl relative z-10 space-y-6">
+<h2 class="text-4xl font-extrabold tracking-tight leading-tight">Your journey could be someone else's roadmap.</h2>
+<p class="text-xl text-primary-container font-medium opacity-90">Have you landed a job or hit a GPA target? Share your success story with the Hoddle community and inspire new arrivals.</p>
+<button class="bg-surface-container-lowest text-primary px-10 py-4 rounded-xl font-extrabold shadow-xl hover:scale-105 transition-transform active:opacity-70">Submit Your Story</button>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-[#fef8f1]/80 backdrop-blur-lg shadow-[0_-8px_30px_rgba(53,50,43,0.08)] rounded-t-[2rem]">
+<div class="flex flex-col items-center justify-center text-stone-500 p-2">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold mt-1">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-500 p-2">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold mt-1">Discover</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-500 p-2">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] uppercase tracking-widest font-bold mt-1">Messages</span>
+</div>
+<!-- Active Tab: Profile -->
+<div class="flex flex-col items-center justify-center bg-primary text-white rounded-full p-3 -translate-y-2 transition-transform shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</nav>
+</body></html>

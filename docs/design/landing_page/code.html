@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;0,800;1,700&amp;family=Be+Vietnam+Pro:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#f76a80",
+                        "on-secondary-fixed-variant": "#336f54",
+                        "tertiary-dim": "#694f00",
+                        "on-primary-fixed": "#540a00",
+                        "primary": "#a63c26",
+                        "surface-container-low": "#f9f3eb",
+                        "primary-container": "#ffac9a",
+                        "surface-bright": "#fef8f1",
+                        "primary-dim": "#95301b",
+                        "on-primary-fixed-variant": "#82230f",
+                        "on-secondary": "#e6ffee",
+                        "on-background": "#35322b",
+                        "secondary-fixed": "#beffdc",
+                        "on-surface": "#35322b",
+                        "surface-container-highest": "#e8e2d7",
+                        "surface-tint": "#a63c26",
+                        "tertiary-container": "#f9d377",
+                        "on-primary-container": "#761a06",
+                        "tertiary-fixed": "#f9d377",
+                        "surface-dim": "#e0d9cd",
+                        "secondary-fixed-dim": "#b1f0ce",
+                        "error-dim": "#770326",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#2d6a4f",
+                        "primary-fixed-dim": "#ff9881",
+                        "on-surface-variant": "#635f56",
+                        "on-secondary-fixed": "#105239",
+                        "surface-variant": "#e8e2d7",
+                        "on-tertiary": "#fff8f0",
+                        "tertiary-fixed-dim": "#eac56b",
+                        "primary-fixed": "#ffac9a",
+                        "inverse-on-surface": "#a19c96",
+                        "inverse-primary": "#fe7d61",
+                        "tertiary": "#775b06",
+                        "surface-container-high": "#eee7dd",
+                        "background": "#fef8f1",
+                        "secondary-dim": "#1f5e44",
+                        "on-secondary-container": "#27654a",
+                        "outline": "#7f7a71",
+                        "on-error": "#fff7f7",
+                        "surface": "#fef8f1",
+                        "surface-container": "#f3ede4",
+                        "on-tertiary-fixed-variant": "#6a5100",
+                        "inverse-surface": "#0f0e0a",
+                        "secondary-container": "#beffdc",
+                        "error": "#ac3149",
+                        "on-tertiary-container": "#5f4800",
+                        "on-primary": "#fff7f6",
+                        "on-tertiary-fixed": "#483500",
+                        "outline-variant": "#b7b1a7",
+                        "on-error-container": "#68001f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Be Vietnam Pro"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        h1, h2, h3, .headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-surface overflow-x-hidden">
+<!-- Top Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 bg-[#fef8f1]/70 dark:bg-stone-900/70 backdrop-blur-xl shadow-[0_12px_40px_rgba(53,50,43,0.06)] flex justify-between items-center px-8 py-4 max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold italic text-[#a63c26] dark:text-orange-500">Terracotta</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-[#a63c26] dark:text-orange-400 font-bold border-b-2 border-[#a63c26] pb-1 font-label uppercase tracking-widest text-xs" href="#">About</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-stone-900 font-label uppercase tracking-widest text-xs transition-all" href="#">Mentors</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-stone-900 font-label uppercase tracking-widest text-xs transition-all" href="#">Stories</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-2 mr-4">
+<button class="p-2 hover:bg-stone-200/50 rounded-full transition-all text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="p-2 hover:bg-stone-200/50 rounded-full transition-all text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+<button class="text-stone-600 font-medium px-4 py-2 hover:bg-stone-200/50 rounded-xl transition-all scale-95 active:opacity-80">Login</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-xl font-bold transition-all scale-95 active:opacity-80 shadow-md">Sign Up</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative px-8 lg:px-16 py-20 lg:py-32 overflow-hidden">
+<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+<div class="relative z-10">
+<span class="font-label uppercase tracking-widest text-primary font-bold mb-6 block">Hoddle Melbourne</span>
+<h1 class="text-5xl lg:text-7xl font-extrabold text-on-surface leading-[1.1] mb-8 tracking-tight">
+                        Navigate Melbourne with a mentor who's <span class="text-primary italic">been in your shoes.</span>
+</h1>
+<p class="text-lg lg:text-xl text-on-surface-variant max-w-xl mb-10 leading-relaxed">
+                        Free, peer-to-peer mentorship for first-year international students. Connect with high-achievers who understand your journey.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-2 group">
+                            Find a Mentor
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="bg-surface-container-highest text-on-surface px-8 py-4 rounded-xl font-bold text-lg hover:bg-surface-container-low transition-all">
+                            Become a Mentor
+                        </button>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-primary-container/30 rounded-full blur-3xl"></div>
+<div class="relative rounded-2xl overflow-hidden aspect-[4/5] shadow-2xl transform rotate-2">
+<img alt="Students in Melbourne" class="w-full h-full object-cover" data-alt="A diverse group of international students laughing together in a sunlit modern Melbourne cafe, warm lighting, aspirational lifestyle vibe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmILMBfLEK-E0mLcY47LLAtLleUyO9OyfG_i3AcMN3Rb9R_ahonKYpk6m0XTl6CAwt1eLPT6TeRwRilKXyHloKjI0iOf0pn_Twc4R34nI0TSnZfCt79JUv2VDcm_3uLOX5Pcn0L70gYU774vvBcyyEToOBBAHdfXXQGBkDdVzMy7b6hOqopoXf6GVpxNAKPZ8japr9LbikYtSRGiqgdzHiyFlG6a8BhwACWuViegxj_WM6UCIvH80LoRifgBtrD89fdIbj6l2oOkg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+<div class="absolute bottom-6 left-6 text-white">
+<p class="font-bold text-xl">Melbourne Central Campus</p>
+<p class="text-white/80">Connect where you study.</p>
+</div>
+</div>
+<div class="absolute -bottom-8 -left-8 bg-surface-container-lowest p-6 rounded-2xl shadow-xl max-w-[240px] transform -rotate-3 hidden md:block">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-bold text-sm">Top 5% Mentors Only</p>
+</div>
+<p class="text-xs text-on-surface-variant">Vetted students from Melbourne's leading universities.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Mentor Spotlight -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-8">
+<div class="flex justify-between items-end mb-16">
+<div>
+<h2 class="text-4xl font-extrabold tracking-tight text-on-surface mb-4">Meet your future mentors</h2>
+<div class="h-1.5 w-24 bg-primary rounded-full"></div>
+</div>
+<a class="text-primary font-bold flex items-center gap-2 hover:underline" href="#">
+                        View all 200+ mentors
+                        <span class="material-symbols-outlined" data-icon="trending_flat">trending_flat</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Mentor 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-2 shadow-sm hover:shadow-xl transition-all duration-300 group">
+<div class="relative h-64 rounded-lg overflow-hidden mb-4">
+<img alt="Raj" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of a young Indian man smiling confidently in a business casual outfit, outdoor setting with soft city background bokeh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf-0bprrwCOdmeuRT0uPBnfBzGHKsNgfIQHnIn1C8wr5PlL-c20ttRk8dozdAr5DyNdeVr_DlSrd_5DH6oTXZTtSu3MFh8hWaQPiO69Wfav8mDRlOGnAUkitFCVO7GKVQDElysWkf0jFxqzmWhMomoFRTNd_6ypWITjSD8BRBg6xEKuTbrub-s5sgvfHIyVKTEbNFW3h7RmPux_bivgXB5aou5gJPIw_APR9IhDvFCwckxpVkC-XgnwjGAhsMTTo5hwcs9z1H_o_0"/>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">India</div>
+</div>
+<div class="px-4 pb-4">
+<h3 class="text-xl font-bold mb-1">Raj</h3>
+<p class="text-primary font-medium text-sm mb-2">Monash University</p>
+<p class="text-xs text-on-surface-variant mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="work">work</span>
+                                Landed grad role at Deloitte
+                            </p>
+<p class="text-sm italic leading-relaxed text-on-surface">"I bombed my first essay. Here's how I turned it around."</p>
+</div>
+</div>
+<!-- Mentor 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-2 shadow-sm hover:shadow-xl transition-all duration-300 group">
+<div class="relative h-64 rounded-lg overflow-hidden mb-4">
+<img alt="Sarah" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Young Chinese female student smiling warmly, holding a laptop in a vibrant library setting with warm natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAOgdOZfHZ5-3IQR8gNgogb6PzH4yG1vKkjFgrAOu6bveDG6iH37ieA8fOfRsZigpSlxKcR79HwKe6hEDPAxQZcADZEQIcvOM61GP2oHFZohvQ73iy4yxbLAx4YnojphEaLk4NRPLERn2XFRMw1guqKtiMKyJUpLnaoESwhV-N095DlgNJRS7UIgPfaKYyv0qtDHOY7jkr9DRd6iH-X0Tl3Ng66wLigXp1vEAvkOUoJ9vwr5wLqFSoXu2S6jNKqXMqEOk-4iOrn5s"/>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">China</div>
+</div>
+<div class="px-4 pb-4">
+<h3 class="text-xl font-bold mb-1">Sarah</h3>
+<p class="text-primary font-medium text-sm mb-2">UniMelb</p>
+<p class="text-xs text-on-surface-variant mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="grade">grade</span>
+                                6.5 GPA while working 20hrs/week
+                            </p>
+<p class="text-sm italic leading-relaxed text-on-surface">"Time management is the secret to surviving your first year."</p>
+</div>
+</div>
+<!-- Mentor 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-2 shadow-sm hover:shadow-xl transition-all duration-300 group">
+<div class="relative h-64 rounded-lg overflow-hidden mb-4">
+<img alt="Minh" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Young Vietnamese male student dressed in stylish casual clothes standing in front of modern architecture, confident pose" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL0bd_SlVMRFRsxe6pfUTL2m8Ui7O9subetGO-FlPVf6-lEaN9pMp4mbZab0l95lWaAolUfDyt7iRGnoL4i_RrLH6Bv6lRVnfzjkzGSGnlwUOfzwKRTv2I9VmzE1WIyMzQXxt3jma6_ty7X0-cXU7ILD3n-50SaLDca3hxx62XRFhdYb5HTJPdDezQ2ycO2CRK2tphTpDN322js98nWCU_d16gW50dZgGN6WdckuS5AQlDiKJkRRsPk3UdBUsdGJiXL4aNOwtgZ_E"/>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Vietnam</div>
+</div>
+<div class="px-4 pb-4">
+<h3 class="text-xl font-bold mb-1">Minh</h3>
+<p class="text-primary font-medium text-sm mb-2">RMIT</p>
+<p class="text-xs text-on-surface-variant mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="rocket_launch">rocket_launch</span>
+                                Secured 3 internships in my second year
+                            </p>
+<p class="text-sm italic leading-relaxed text-on-surface">"Don't wait until graduation to start your career."</p>
+</div>
+</div>
+<!-- Mentor 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-2 shadow-sm hover:shadow-xl transition-all duration-300 group">
+<div class="relative h-64 rounded-lg overflow-hidden mb-4">
+<img alt="Elena" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Portrait of a Brazilian female student with curly hair, vibrant smile, wearing a green sweatshirt, outdoor leafy background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKD1MigMCcWTqikY-iMz01eEGQ0xUrX8Bube13AZMgM0_2gwedugj6HWFkGEpq7PZhr28rjDxHy5ceQ6H3Ry3-WVv1taFBIdZ9lzmfpIfuR23Mdg_B_Cjb3BHuIEFYz5lopl1llp-UKVU2YojWeLk84mb9ks7OCHqZ3Y_tclwgdJySbq37CnvJZW2BBObLMCfgG3ZewrAGakitwSx4TOTjbQCZBg-YvBMYBghHsFL2OTxf7tNHgAHcBPKwjb2wksegBszkgs-88iQ"/>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">Brazil</div>
+</div>
+<div class="px-4 pb-4">
+<h3 class="text-xl font-bold mb-1">Elena</h3>
+<p class="text-primary font-medium text-sm mb-2">Deakin</p>
+<p class="text-xs text-on-surface-variant mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="groups">groups</span>
+                                Scholarship recipient &amp; Club President
+                            </p>
+<p class="text-sm italic leading-relaxed text-on-surface">"Building a community is as important as your grades."</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works (Bento Style) -->
+<section class="py-24 px-8 lg:px-16">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-20">
+<h2 class="text-4xl font-extrabold mb-4">Your journey to excellence</h2>
+<p class="text-on-surface-variant">Simple steps to unlocking your potential in Melbourne.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Step 1 -->
+<div class="md:col-span-4 bg-surface-container rounded-2xl p-8 flex flex-col justify-between hover:bg-surface-container-high transition-colors">
+<div>
+<div class="w-12 h-12 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-xl mb-6 shadow-lg">1</div>
+<h3 class="text-2xl font-bold mb-4 leading-tight">Tell us your goals</h3>
+<p class="text-on-surface-variant leading-relaxed">Complete a quick onboarding to share your challenges—from academic stress to career navigation.</p>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant/20 flex items-center gap-4 text-primary font-bold">
+                            Get started 
+                            <span class="material-symbols-outlined" data-icon="keyboard_arrow_right">keyboard_arrow_right</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="md:col-span-8 bg-secondary-container rounded-2xl p-8 lg:p-12 relative overflow-hidden group">
+<div class="relative z-10 max-w-md">
+<div class="w-12 h-12 bg-secondary text-on-secondary rounded-full flex items-center justify-center font-bold text-xl mb-6 shadow-lg">2</div>
+<h3 class="text-3xl font-bold text-on-secondary-fixed mb-4">Get matched</h3>
+<p class="text-on-secondary-container text-lg leading-relaxed mb-8">Our algorithm pairs you with mentors who share your field of study, cultural background, and career aspirations.</p>
+</div>
+<div class="absolute bottom-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+<span class="material-symbols-outlined text-[160px] text-secondary/10" data-icon="handshake" style="font-variation-settings: 'FILL' 1;">handshake</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="md:col-span-12 lg:col-span-12 bg-surface-container-highest rounded-2xl p-8 lg:p-12 flex flex-col lg:flex-row items-center gap-12">
+<div class="lg:w-1/2">
+<div class="w-12 h-12 bg-tertiary text-on-tertiary rounded-full flex items-center justify-center font-bold text-xl mb-6 shadow-lg">3</div>
+<h3 class="text-3xl font-bold mb-4">Learn &amp; Grow</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed">Access exclusive content, live Q&amp;As, and a supportive community of like-minded high-achievers. Your growth doesn't have to be lonely.</p>
+</div>
+<div class="lg:w-1/2 flex gap-4 w-full overflow-x-auto pb-4">
+<div class="flex-shrink-0 bg-surface-container-lowest p-6 rounded-xl w-64 shadow-sm">
+<span class="material-symbols-outlined text-primary mb-4" data-icon="live_tv">live_tv</span>
+<h4 class="font-bold mb-2">Weekly Live Q&amp;As</h4>
+<p class="text-sm text-on-surface-variant">Real-time advice from industry grads.</p>
+</div>
+<div class="flex-shrink-0 bg-surface-container-lowest p-6 rounded-xl w-64 shadow-sm">
+<span class="material-symbols-outlined text-secondary mb-4" data-icon="book_online">book_online</span>
+<h4 class="font-bold mb-2">Resource Library</h4>
+<p class="text-sm text-on-surface-variant">Essay guides &amp; internship templates.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Success Stories (Asymmetric Layering) -->
+<section class="py-24 bg-surface">
+<div class="max-w-7xl mx-auto px-8">
+<div class="grid lg:grid-cols-2 gap-16 items-center">
+<div class="order-2 lg:order-1 relative">
+<div class="bg-primary-container h-[500px] w-full rounded-2xl overflow-hidden relative shadow-2xl">
+<img alt="Success" class="w-full h-full object-cover" data-alt="Group of diverse university students celebrating together at a graduation event, laughter, confetti in the background, high-end editorial feel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp5RNPaZpnnf4uIo_zYrlXoBHYBHu988bmWZh3Pu9Xik1rNbL73VvE_7Qz9JVqTjQCuG2hboyvHMzBDZz8RyL_Dv7wn-v1l1AxpIIFrRCI4ZorHbJRdj3RARBNDCnWcwZNu2YFe2md8DhV8nnc_VcpzBdZL5mJOezFkcQaU_IvQbrF9I1h4UZE-21RLybfKiLPOYWKYR-u-PWiEK7LLrWFVoeLtWJY2pigHOitCEy9QZTL7sM18pt801zQ-oMi8buxcHOzf3gLGQc"/>
+</div>
+<div class="absolute -top-10 -right-10 bg-white p-8 rounded-2xl shadow-xl max-w-sm hidden md:block">
+<span class="material-symbols-outlined text-primary mb-4" data-icon="format_quote" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+<p class="text-xl font-bold italic mb-4">"Hoddle changed my perspective on what's possible in a new country."</p>
+<p class="text-sm font-bold">— Ahmed, Deakin Graduate</p>
+</div>
+</div>
+<div class="order-1 lg:order-2">
+<h2 class="text-4xl lg:text-5xl font-extrabold mb-10 leading-tight">Stories that inspire confidence.</h2>
+<div class="space-y-8">
+<div class="bg-surface-container-low p-8 rounded-2xl border-l-8 border-primary hover:translate-x-2 transition-transform cursor-default">
+<h4 class="text-2xl font-bold text-primary mb-2">Priya</h4>
+<p class="text-lg text-on-surface">"From failing her first essay to High Distinction in 3 months."</p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-2xl border-l-8 border-secondary hover:translate-x-2 transition-transform cursor-default">
+<h4 class="text-2xl font-bold text-secondary mb-2">Ahmed</h4>
+<p class="text-lg text-on-surface">"Found his first part-time job within 2 weeks of joining Hoddle."</p>
+</div>
+</div>
+<div class="mt-12 p-8 bg-surface-container-high rounded-2xl flex items-center justify-between">
+<div>
+<p class="font-bold text-lg mb-1">Ready to write yours?</p>
+<p class="text-on-surface-variant text-sm">Join 500+ successful students today.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold">Join Now</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="bg-[#fef8f1] dark:bg-stone-950 border-t-0">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-12 py-16 w-full max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<span class="text-lg font-bold text-stone-800 dark:text-stone-200 mb-4 block">Terracotta Mentorship</span>
+<p class="text-stone-500 text-sm leading-relaxed mb-6">Empowering Melbourne's international student community.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-stone-400 hover:text-primary cursor-pointer" data-icon="share">share</span>
+<span class="material-symbols-outlined text-stone-400 hover:text-primary cursor-pointer" data-icon="language">language</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 font-label uppercase tracking-widest text-xs">Community</h4>
+<ul class="space-y-4">
+<li><a class="text-stone-500 dark:text-stone-400 hover:text-[#a63c26] transition-opacity text-sm" href="#">About</a></li>
+<li><a class="text-stone-500 dark:text-stone-400 hover:text-[#a63c26] transition-opacity text-sm" href="#">Success Stories</a></li>
+<li><a class="text-stone-500 dark:text-stone-400 hover:text-[#a63c26] transition-opacity text-sm" href="#">Forums</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 font-label uppercase tracking-widest text-xs">Opportunities</h4>
+<ul class="space-y-4">
+<li><a class="text-stone-500 dark:text-stone-400 hover:text-[#a63c26] transition-opacity text-sm" href="#">For Mentors</a></li>
+<li><a class="text-stone-500 dark:text-stone-400 hover:text-[#a63c26] transition-opacity text-sm" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 font-label uppercase tracking-widest text-xs">Contact</h4>
+<ul class="space-y-4">
+<li><a class="text-stone-500 dark:text-stone-400 hover:text-[#a63c26] transition-opacity text-sm" href="#">Contact Us</a></li>
+<li><a class="text-stone-500 dark:text-stone-400 hover:text-[#a63c26] transition-opacity text-sm" href="#">Privacy Policy</a></li>
+<li><a class="text-stone-500 dark:text-stone-400 hover:text-[#a63c26] transition-opacity text-sm" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-12 py-8 border-t border-stone-200/20">
+<p class="text-stone-500 dark:text-stone-400 text-sm">© 2024 Terracotta Mentorship. Designed for Melbourne.</p>
+</div>
+</footer>
+</body></html>
