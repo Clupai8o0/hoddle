@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { AppNav } from "@/components/layout/app-nav";
 
 export default async function AppLayout({
   children,
@@ -15,10 +16,9 @@ export default async function AppLayout({
     redirect("/login");
   }
 
-  // If the user hasn't completed onboarding, send them back to finish it.
   const { data: profile } = await supabase
     .from("profiles")
-    .select("onboarded_at")
+    .select("onboarded_at, full_name, avatar_url")
     .eq("id", user.id)
     .single();
 
@@ -26,5 +26,13 @@ export default async function AppLayout({
     redirect("/onboarding");
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <AppNav
+        userName={profile?.full_name ?? "You"}
+        avatarUrl={profile?.avatar_url}
+      />
+      {children}
+    </>
+  );
 }

@@ -36,17 +36,16 @@ export async function submitOnboarding(
     fields_of_interest,
   } = parsed.data;
 
-  // Update the profile row
-  const { error: profileError } = await supabase
-    .from("profiles")
-    .update({
-      full_name,
-      country_of_origin,
-      university,
-      year_of_study: 1,
-      onboarded_at: new Date().toISOString(),
-    })
-    .eq("id", user.id);
+  // Upsert the profile row — inserts if the handle_new_user trigger missed it,
+  // updates if the row already exists.
+  const { error: profileError } = await supabase.from("profiles").upsert({
+    id: user.id,
+    full_name,
+    country_of_origin,
+    university,
+    year_of_study: 1,
+    onboarded_at: new Date().toISOString(),
+  });
 
   if (profileError) {
     return {

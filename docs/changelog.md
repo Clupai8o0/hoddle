@@ -23,7 +23,10 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 - `app/(auth)/signup/page.tsx` — email magic-link signup with editorial copy.
 - `app/(auth)/onboarding/page.tsx` — 5-step onboarding wizard: name, background, goals, challenges, fields of interest; chip multi-select for steps 3–5.
 - `app/(app)/layout.tsx` — server-side auth guard; redirects to `/login` if no session, `/onboarding` if not yet onboarded.
-- `app/(app)/dashboard/page.tsx` — placeholder dashboard (full implementation in §5).
+- `app/(app)/dashboard/page.tsx` — full student dashboard: time-aware greeting (pulls `profiles.full_name`, `university`, `country_of_origin`, `year_of_study`), onboarding summary cards (goals/challenges/fields as tonal Tag chips), 5-milestone journey progress sidebar (`ProgressPill`), 3 Phase-2 mentor placeholder cards, 3 Phase-2 empty states (content library, forums, success stories) with `IMAGE NEEDED` comments and `todo.md §5b` entries.
+- `app/(app)/layout.tsx` — updated to fetch `full_name` and `avatar_url` from `profiles`, render `AppNav` above all authenticated pages.
+- `components/layout/app-nav.tsx` — authenticated glass nav: Hoddle wordmark, Dashboard active link, muted Phase-2 Mentors/Forums links, user avatar + first name, sign-out button wired to `signOut` server action.
+- `lib/actions/auth.ts` — added `signOut` server action (calls `supabase.auth.signOut()` then redirects to `/login`).
 - Design system primitives: `Button` (primary/secondary/hero/ghost), `Input`, `Textarea`, `Card` (with sub-components), `Tag`, `ProgressPill`, `Avatar`, `Container`, `SectionDivider`, `GlassNav` + `NavLink`.
 - `lib/utils/cn.ts` — clsx + tailwind-merge composition utility.
 - Smoke test page at `/dev/components` rendering every primitive against the Hoddle token set.

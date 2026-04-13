@@ -71,12 +71,12 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 
 ## 5. Student dashboard (`app/(app)/dashboard/page.tsx`)
 
-- [ ] Shell layout with glass nav + authenticated user menu
-- [ ] Welcome block — greets user by name, pulls from `profiles`
-- [ ] Goals summary card — echoes back the onboarding answers so the student feels "seen"
-- [ ] Recommended mentors section — placeholder cards for Phase 2
-- [ ] Progress pill showing onboarding completion / "your journey" framing
-- [ ] Empty states for every section that will be filled in Phase 2 (content, forums, success stories)
+- [x] Shell layout with glass nav + authenticated user menu
+- [x] Welcome block — greets user by name, pulls from `profiles`
+- [x] Goals summary card — echoes back the onboarding answers so the student feels "seen"
+- [x] Recommended mentors section — placeholder cards for Phase 2
+- [x] Progress pill showing onboarding completion / "your journey" framing
+- [x] Empty states for every section that will be filled in Phase 2 (content, forums, success stories)
 - [ ] Reference screen: `docs/design/student_dashboard/screen.png`
 
 ## 5b. Photography — swap gradient placeholders with generated images
@@ -95,6 +95,12 @@ All prompts are inline in code as `IMAGE NEEDED` comments. Generate with Midjour
       Prompt in code. Student on Melbourne tram, rain on window.
 - [ ] `public/images/onboarding-step-illustration.webp` — onboarding sidebar, `app/(auth)/onboarding/page.tsx`
       Prompt in code. Hands holding coffee mug, city map on table.
+- [ ] `public/images/empty-state-journal.webp` — content library empty state, `app/(app)/dashboard/page.tsx`
+      Prompt in code. Open journal on desk, flat white, potted succulent. Overhead shot.
+- [ ] `public/images/empty-state-botanic.webp` — forums empty state, `app/(app)/dashboard/page.tsx`
+      Prompt in code. Empty bench, Royal Botanic Gardens Melbourne, dappled sunlight.
+- [ ] `public/images/empty-state-library.webp` — success stories empty state, `app/(app)/dashboard/page.tsx`
+      Prompt in code. Students at State Library of Victoria reading room timber table.
 
 Post-generation checklist (per `docs/design.md §7`):
 - [ ] Colour grade: highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`
