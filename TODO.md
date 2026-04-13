@@ -34,12 +34,12 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 
 ## 2. Database schema (Supabase)
 
-- [ ] Migration: `profiles` table (id FK to auth.users, full_name, country_of_origin, university, year_of_study, role)
-- [ ] Migration: `onboarding_responses` table (profile_id, goals[], challenges[], fields_of_interest[], created_at)
-- [ ] Enable RLS on both tables; policies so users can only read/write their own row
-- [ ] Trigger: auto-create `profiles` row on `auth.users` insert
-- [ ] Generate TypeScript types → `lib/supabase/database.types.ts`
-- [ ] Document the schema in `docs/database-schema.md`
+- [x] Migration: `profiles` table (id FK to auth.users, full_name, country_of_origin, university, year_of_study, role)
+- [x] Migration: `onboarding_responses` table (profile_id, goals[], challenges[], fields_of_interest[], created_at)
+- [x] Enable RLS on both tables; policies so users can only read/write their own row
+- [x] Trigger: auto-create `profiles` row on `auth.users` insert
+- [x] Generate TypeScript types → `lib/supabase/database.types.ts` (hand-written; re-run `npx supabase gen types typescript --local` once local Supabase is running)
+- [x] Document the schema in `docs/database-schema.md`
 
 ## 3. Auth + onboarding flow
 

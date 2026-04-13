@@ -9,11 +9,96 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+export type UserRole = "student" | "mentor" | "admin";
+
 export interface Database {
   public: {
-    Tables: Record<string, never>;
+    Tables: {
+      profiles: {
+        Row: {
+          id: string;
+          full_name: string | null;
+          country_of_origin: string | null;
+          university: string | null;
+          year_of_study: number | null;
+          role: UserRole;
+          onboarded_at: string | null;
+          avatar_url: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          full_name?: string | null;
+          country_of_origin?: string | null;
+          university?: string | null;
+          year_of_study?: number | null;
+          role?: UserRole;
+          onboarded_at?: string | null;
+          avatar_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          full_name?: string | null;
+          country_of_origin?: string | null;
+          university?: string | null;
+          year_of_study?: number | null;
+          role?: UserRole;
+          onboarded_at?: string | null;
+          avatar_url?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      onboarding_responses: {
+        Row: {
+          profile_id: string;
+          goals: string[];
+          challenges: string[];
+          fields_of_interest: string[];
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          profile_id: string;
+          goals?: string[];
+          challenges?: string[];
+          fields_of_interest?: string[];
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          profile_id?: string;
+          goals?: string[];
+          challenges?: string[];
+          fields_of_interest?: string[];
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_responses_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+    };
     Views: Record<string, never>;
     Functions: Record<string, never>;
-    Enums: Record<string, never>;
+    Enums: {
+      user_role: UserRole;
+    };
   };
 }

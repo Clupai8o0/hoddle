@@ -21,6 +21,8 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 - `lib/supabase/database.types.ts` placeholder (regenerate after first migration).
 - `.env.local.example` with required environment variable keys.
 - Scaffolded route groups `app/(marketing)`, `app/(auth)`, `app/(app)`.
+- `supabase/migrations/20260413000001_phase1_schema.sql` — Phase 1 schema: `user_role` enum, `profiles` table, `onboarding_responses` table, `updated_at` triggers, auth-user trigger, and full RLS policies.
+- `lib/supabase/database.types.ts` updated with typed `profiles` and `onboarding_responses` rows (Insert/Update/Row + Enums). Re-run `npx supabase gen types typescript --local` once local Supabase is running.
 - `supabase/migrations/` directory for upcoming schema migrations.
 - `.prettierrc` with project formatting conventions.
 - `CLAUDE.md` master briefing covering stack, design non-negotiables, conventions, and the documentation map.
