@@ -122,16 +122,17 @@ Post-generation checklist (per `docs/design.md §7`):
 
 ## 6. Community forums
 
-- [ ] `app/(app)/forums/page.tsx` — category index with last-activity preview
-- [ ] `app/(app)/forums/[category]/page.tsx` — thread list within a category, sorted by `last_activity_at`
-- [ ] `app/(app)/forums/[category]/[thread]/page.tsx` — thread view with nested replies
-- [ ] `app/(app)/forums/[category]/new` — new thread form (title, body, optional tags)
-- [ ] Reply form on thread page (no nested replies deeper than 2 levels in Phase 2)
-- [ ] Reactions: heart, thanks, helpful — toggleable per user
-- [ ] Edit own post (within 30 minutes of posting); soft-delete after
-- [ ] Empty states for each category
+- [x] `app/(app)/forums/page.tsx` — category index with last-activity preview
+- [x] `app/(app)/forums/[category]/page.tsx` — thread list within a category, sorted by `last_activity_at`
+- [x] `app/(app)/forums/[category]/[thread]/page.tsx` — thread view with nested replies
+- [x] `app/(app)/forums/[category]/new` — new thread form (title, body, optional tags)
+- [x] `app/(app)/forums/new` — standalone new thread form with category selector
+- [x] Reply form on thread page (no nested replies deeper than 2 levels in Phase 2)
+- [x] Reactions: heart, thanks, helpful — toggleable per user
+- [x] Edit own post (within 30 minutes of posting); soft-delete after
+- [x] Empty states for each category
 - [ ] Seed initial categories: "First Semester Struggles", "Career & Internships", "Living in Melbourne", "Academic Writing", "Visa & Admin"
-- [ ] Reference screens: `docs/design/community_forums/screen.png`, `docs/design/forum_thread_myki_fine_help/screen.png`
+- [x] Reference screens: `docs/design/community_forums/screen.png`, `docs/design/forum_thread_myki_fine_help/screen.png`
 
 ## 7. Success stories gallery
 

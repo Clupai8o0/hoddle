@@ -34,6 +34,17 @@ _Phase 2 work in progress. See `todo.md`._
 - Phase 2 dependencies installed: `@tanstack/react-query`, `date-fns`, `@tiptap/react`, `@tiptap/starter-kit`, `react-day-picker`, `resend`
 - `lib/email/index.ts` — typed `sendEmail` wrapper around Resend SDK
 - `.env.local.example` with `RESEND_API_KEY` and `RESEND_FROM_EMAIL` vars
+- `app/(app)/forums/page.tsx` — forums index: all threads with category filter chips, upcoming Q&A sidebar
+- `app/(app)/forums/new/page.tsx` + `new-thread-form.tsx` — standalone new thread form with category selector
+- `app/(app)/forums/[category]/page.tsx` — thread list filtered to category, pinned-first ordering
+- `app/(app)/forums/[category]/new/page.tsx` — category-prefilled new thread form
+- `app/(app)/forums/[category]/[thread]/page.tsx` — editorial thread detail: original post, mentor-highlighted replies, nested replies (max 2 levels), sticky reply input
+- `app/(app)/forums/[category]/[thread]/reply-form.tsx` — sticky reply textarea with send button (client, locked-thread guard)
+- `app/(app)/forums/[category]/[thread]/reaction-buttons.tsx` — optimistic heart/thanks/helpful toggle buttons (client)
+- `app/(app)/forums/[category]/[thread]/edit-post-form.tsx` — inline edit + soft-delete for own posts within 30-min window (client)
+- `lib/actions/forums.ts` — `createThread`, `createPost`, `toggleReaction`, `editPost`, `deletePost` server actions
+- `lib/validation/forum.ts` — Zod schemas for thread/post creation, editing, and reactions
+- `lib/utils/format-time.ts` — `formatRelativeTime` utility (relative timestamps with en-AU fallback)
 - `components/providers/query-provider.tsx` — `QueryClientProvider` client wrapper; mounted in `app/(app)/layout.tsx`
 - Route stubs for all Phase 2 surfaces: `/mentors`, `/content`, `/forums`, `/stories`, `/sessions`, `/inbox`
 - `app/(admin)/layout.tsx` — admin-only layout; redirects non-admin users to `/dashboard`
