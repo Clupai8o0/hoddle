@@ -178,7 +178,7 @@ export default function HomePage() {
                 className="relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/5] rotate-1 shadow-[0_24px_64px_rgba(0,24,66,0.18)]"
                 aria-hidden="true"
               >
-                <div className="absolute inset-0 bg-[linear-gradient(160deg,#001842_0%,#0d2b52_50%,#dbe5f1_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(160deg,var(--color-primary)_0%,var(--color-primary-mid)_50%,var(--color-primary-container)_100%)]" />
                 <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,24,66,0.15)_0%,transparent_60%)]" />
                 {/* Placeholder caption overlay */}
                 <div className="absolute bottom-0 inset-x-0 p-8 bg-[linear-gradient(to_top,rgba(0,24,66,0.6),transparent)]">
@@ -529,7 +529,7 @@ export default function HomePage() {
           className="py-28"
           style={{
             background:
-              "linear-gradient(135deg, var(--color-primary) 0%, #1e3a5f 100%)",
+              "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-elevated) 100%)",
           }}
         >
           <div className={`${C} text-center max-w-3xl mx-auto`}>

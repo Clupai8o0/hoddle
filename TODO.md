@@ -83,17 +83,17 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 
 All prompts are inline in code as `IMAGE NEEDED` comments. Generate with Midjourney / DALL-E / Flux, apply post-processing from `docs/design.md §7`, then drop into `public/images/` and replace the gradient `<div>` with `<Image>`.
 
-- [ ] `public/images/hero-laneway-cafe.webp` — hero panel, `app/page.tsx`
+- [x] `public/images/hero-laneway-cafe.webp` — hero panel, `app/page.tsx`
       Prompt in code. Alt: "A student working at a Melbourne laneway café"
-- [ ] `public/images/mentor-portrait-raj.webp` — Raj card, `app/page.tsx`
+- [x] `public/images/mentor-portrait-raj.webp` — Raj card, `app/page.tsx`
       Prompt in code. Male, Indian background, smart-casual, café bokeh.
-- [ ] `public/images/mentor-portrait-sarah.webp` — Sarah card, `app/page.tsx`
+- [x] `public/images/mentor-portrait-sarah.webp` — Sarah card, `app/page.tsx`
       Prompt in code. Female, Chinese background, smart-casual, café bokeh.
-- [ ] `public/images/mentor-portrait-minh.webp` — Minh card, `app/page.tsx`
+- [x] `public/images/mentor-portrait-minh.webp` — Minh card, `app/page.tsx`
       Prompt in code. Male, Vietnamese background, smart-casual, café bokeh.
-- [ ] `public/images/auth-tram-portrait.webp` — auth shell left panel, `components/layout/auth-shell.tsx`
+- [x] `public/images/auth-tram-portrait.webp` — auth shell left panel, `components/layout/auth-shell.tsx`
       Prompt in code. Student on Melbourne tram, rain on window.
-- [ ] `public/images/onboarding-step-illustration.webp` — onboarding sidebar, `app/(auth)/onboarding/page.tsx`
+- [x] `public/images/onboarding-step-illustration.webp` — onboarding sidebar, `app/(auth)/onboarding/page.tsx`
       Prompt in code. Hands holding coffee mug, city map on table.
 - [ ] `public/images/empty-state-journal.webp` — content library empty state, `app/(app)/dashboard/page.tsx`
       Prompt in code. Open journal on desk, flat white, potted succulent. Overhead shot.
@@ -110,21 +110,21 @@ Post-generation checklist (per `docs/design.md §7`):
 
 ## 6. Cross-cutting
 
-- [ ] Error boundary + `not-found.tsx` + `error.tsx` in each route group, styled on-brand
-- [ ] Loading skeletons using tonal layering (not shimmer)
-- [ ] Metadata / OG images for landing page
-- [ ] Basic analytics stub (to be wired in Phase 2)
+- [x] Error boundary + `not-found.tsx` + `error.tsx` in each route group, styled on-brand
+- [x] Loading skeletons using tonal layering (not shimmer)
+- [x] Metadata / OG images for landing page
+- [x] Basic analytics stub (to be wired in Phase 2)
 - [ ] Accessibility audit: keyboard nav through every Phase 1 flow, contrast check against cream
 
 ## 7. Pre-ship checks
 
-- [ ] `pnpm build` passes with no TS errors
+- [x] `pnpm build` passes with no TS errors
 - [ ] All Phase 1 routes work end-to-end: land → sign up → onboard → dashboard
 - [ ] RLS verified: a second test user cannot read the first user's `onboarding_responses`
 - [ ] Mobile responsive at 375px, 768px, 1280px
-- [ ] No hardcoded hex values in any component (grep check)
-- [ ] No `#ffffff` or `#000000` anywhere in source
-- [ ] Update `docs/changelog.md` for Phase 1 release
+- [x] No hardcoded hex values in any component (grep check)
+- [x] No `#ffffff` or `#000000` anywhere in source
+- [x] Update `docs/changelog.md` for Phase 1 release
 
 ---
 

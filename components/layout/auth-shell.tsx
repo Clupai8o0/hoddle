@@ -39,10 +39,10 @@ export function AuthShell({
               Alt: "" (decorative — panel is aria-hidden)
               Export: WebP quality 80, max 200 KB, subject offset to right third
             */}
-            <div className="absolute inset-0 bg-[linear-gradient(160deg,#001842_0%,#0d2b52_55%,#1e3a5f_80%,#dbe5f1_100%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(160deg,var(--color-primary)_0%,var(--color-primary-mid)_55%,var(--color-primary-elevated)_80%,var(--color-primary-container)_100%)]" />
 
             {/* Blue-tint overlay for when real photography is added */}
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,24,66,0.45)_0%,rgba(0,24,66,0.10)_100%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--color-primary)_45%,transparent)_0%,color-mix(in_srgb,var(--color-primary)_10%,transparent)_100%)]" />
 
             {/* Wordmark */}
             <div className="relative z-10 p-10">

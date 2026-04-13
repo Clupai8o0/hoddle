@@ -32,6 +32,11 @@
   --color-on-surface-variant: #635f56;
   --color-outline-variant: rgba(42, 38, 32, 0.15);
 
+  /* ── Primary tonal ramp — editorial gradients only ── */
+  --color-primary-dark: #001228;
+  --color-primary-mid: #0d2b52;
+  --color-primary-elevated: #1e3a5f;
+
   /* ── Semantic ── */
   --color-error: #8b2e2e;
   --color-error-container: #f5d6d6;

@@ -17,14 +17,14 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const variants: Record<Variant, string> = {
   primary: [
     "bg-primary text-on-primary",
-    "hover:bg-[#001228] hover:shadow-ambient hover:-translate-y-px",
+    "hover:bg-primary-dark hover:shadow-ambient hover:-translate-y-px",
   ].join(" "),
   secondary: [
     "bg-surface-container-highest text-on-surface",
     "hover:bg-surface-container-high hover:shadow-ambient hover:-translate-y-px",
   ].join(" "),
   hero: [
-    "bg-[linear-gradient(135deg,#001842_0%,#1e3a5f_100%)] text-on-primary",
+    "bg-[linear-gradient(135deg,var(--color-primary)_0%,var(--color-primary-elevated)_100%)] text-on-primary",
     "hover:shadow-ambient hover:-translate-y-px",
   ].join(" "),
   ghost: [

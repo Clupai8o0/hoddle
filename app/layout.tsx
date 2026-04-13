@@ -17,9 +17,32 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Hoddle Melbourne — Mentorship for International Students",
+  metadataBase: new URL("https://hoddle.com.au"),
+  title: {
+    default: "Hoddle Melbourne — Mentorship for International Students",
+    template: "%s | Hoddle Melbourne",
+  },
   description:
     "Connect with high-achieving mentors who've walked the same path. Guidance, community, and real stories for first-year international students in Melbourne.",
+  openGraph: {
+    title: "Hoddle Melbourne — Mentorship for International Students",
+    description:
+      "Connect with high-achieving mentors who've walked the same path. Guidance, community, and real stories for first-year international students in Melbourne.",
+    url: "https://hoddle.com.au",
+    siteName: "Hoddle Melbourne",
+    locale: "en_AU",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hoddle Melbourne — Mentorship for International Students",
+    description:
+      "Guidance, community, and real stories for first-year international students in Melbourne.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

@@ -8,6 +8,26 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 
 ---
 
+## [0.1.0] — 2026-04-13
+
+### Added
+- `app/not-found.tsx` — global 404 page styled on-brand with back-to-home and dashboard CTAs.
+- `app/error.tsx`, `app/(app)/error.tsx`, `app/(auth)/error.tsx`, `app/(marketing)/error.tsx` — per-route-group error boundaries with try-again and navigation fallbacks.
+- `app/(app)/dashboard/loading.tsx` — dashboard loading skeleton using tonal surface layering (`surface-container`, `surface-container-high`, `surface-container-highest`) with `animate-pulse`; no shimmer.
+- `app/opengraph-image.tsx` — edge-rendered 1200×630 OG image using Hoddle Blue and cream palette.
+- `lib/analytics.ts` — analytics stub (`trackEvent`, `identifyUser`, `trackPageView`) ready for Phase 2 provider wiring.
+- Root layout metadata extended with `openGraph`, `twitter`, `robots`, `metadataBase`, and `title.template` for per-page title overrides.
+- Design tokens `--color-primary-dark`, `--color-primary-mid`, `--color-primary-elevated` added to `@theme` in `globals.css` for editorial gradient ramp.
+
+### Changed
+- `middleware.ts` renamed to `proxy.ts` and export renamed to `proxy` (Next.js 16 convention).
+- All hardcoded hex values in components replaced with CSS custom properties; `opengraph-image.tsx` exempted (Satori limitation).
+
+### Security
+- RLS verified in migration: `onboarding_responses` select/insert/update policies all use `auth.uid() = profile_id`; no policy for delete (default deny); cross-user isolation confirmed at schema level.
+
+---
+
 ## [Unreleased]
 
 ### Added

@@ -634,7 +634,7 @@ export default function OnboardingPage() {
               Alt: "" (decorative — panel is aria-hidden)
               Export: WebP quality 80, max 200 KB, overhead crop
             */}
-            <div className="relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/3] bg-[linear-gradient(150deg,#001842_0%,#0d2b52_50%,#dbe5f1_100%)] hidden lg:block">
+            <div className="relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/3] bg-[linear-gradient(150deg,var(--color-primary)_0%,var(--color-primary-mid)_50%,var(--color-primary-container)_100%)] hidden lg:block">
               <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,24,66,0.20)_0%,transparent_100%)]" />
               <div className="absolute inset-0 flex items-end p-8">
                 <p className="font-display text-on-primary/90 italic text-xl font-light leading-relaxed">
