@@ -66,10 +66,10 @@ See `docs/database-schema.md` for full table definitions, RLS policies, and trig
 
 ## 4. Mentor profiles (public-to-students)
 
-- [ ] `app/(app)/mentors/page.tsx` — browse all verified mentors with expertise filters
-- [ ] `app/(app)/mentors/[slug]/page.tsx` — single mentor profile (hero photo, story, expertise chips, published content list, upcoming sessions)
-- [ ] Mentor card pattern updated with real data (no more placeholders)
-- [ ] "Ask a question" CTA on profile → routes to next live session question form
+- [x] `app/(app)/mentors/page.tsx` — browse all verified mentors with expertise filters
+- [x] `app/(app)/mentors/[slug]/page.tsx` — single mentor profile (hero photo, story, expertise chips, published content list, upcoming sessions)
+- [x] Mentor card pattern updated with real data (no more placeholders)
+- [x] "Ask a question" CTA on profile → routes to next live session question form
 - [ ] Reference screen: `docs/design/mentor_profile_raj_sharma/screen.png`
 
 ## 5. Content library + article reader
