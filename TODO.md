@@ -54,14 +54,15 @@ See `docs/database-schema.md` for full table definitions, RLS policies, and trig
 
 ## 3. Mentor onboarding & dashboard
 
-- [ ] Mentor onboarding wizard (separate from student wizard): headline, expertise tags, bio, photo upload, hometown, current role
-- [ ] `app/(app)/mentor` — mentor dashboard home with content stats (views, recent comments) and upcoming sessions
-- [ ] `app/(app)/mentor/profile/edit` — edit mentor profile
-- [ ] `app/(app)/mentor/content` — list of mentor's authored content (drafts + published)
-- [ ] `app/(app)/mentor/sessions` — list of upcoming and past Q&A sessions
-- [ ] `app/(app)/mentor/inbox` — questions submitted to upcoming sessions
-- [ ] Role-based redirect from `/dashboard` — students see student dashboard, mentors see mentor dashboard
-- [ ] Reference screen: `docs/design/mentor_dashboard_raj_sharma/screen.png`
+- [x] Mentor onboarding wizard (separate from student wizard): headline, expertise tags, bio, hometown, current role
+- [x] `app/(app)/mentor` — mentor dashboard home with content stats (views, published count, upcoming sessions) and inbox preview
+- [x] `app/(app)/mentor/profile/edit` — edit mentor profile (inline form, saves via server action + router.refresh)
+- [x] `app/(app)/mentor/content` — list of mentor's authored content (drafts + published); authoring stub for next sprint
+- [x] `app/(app)/mentor/sessions` — list of upcoming and past Q&A sessions; scheduling stub for next sprint
+- [x] `app/(app)/mentor/inbox` — questions submitted to upcoming sessions, grouped unanswered/answered
+- [x] Role-based redirect from `/dashboard` — students stay, mentors redirect to `/mentor`
+- [x] Reference screen consulted: `docs/design/mentor_dashboard_raj_sharma/screen.png`
+- [ ] Photo upload in mentor onboarding (deferred — requires Supabase Storage client + resize pipeline)
 
 ## 4. Mentor profiles (public-to-students)
 
