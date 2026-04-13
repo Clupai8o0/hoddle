@@ -58,16 +58,16 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 - [x] Server action: `submitOnboarding` with `{ ok, data | error }` return shape
 - [x] Redirect post-onboarding to `/dashboard`
 
-## 4. Landing page (`app/(marketing)/page.tsx`)
+## 4. Landing page (`app/page.tsx`)
 
-- [ ] Hero section — editorial headline in Plus Jakarta Sans display-lg, blue primary, cream-to-sky gradient backdrop
-- [ ] Narrative section — the "Priya at 2am" story from the one-pager, asymmetric magazine layout
-- [ ] Mentor preview strip — 3 placeholder mentor cards (real data in Phase 2)
-- [ ] Value propositions — 3 tonal cards, no borders, photography-led
-- [ ] CTA section — hero gradient button → `/signup`
-- [ ] Glass nav at top
-- [ ] Footer — minimal, on `surface-container-high`
-- [ ] Reference screen: `docs/design/landing_page/screen.png`
+- [x] Hero section — editorial headline, cream-to-sky gradient backdrop, asymmetric 7/12 + 5/12 grid
+- [x] Narrative section — "Priya at 2am" story, asymmetric magazine layout with sticky pull-quote
+- [x] Mentor preview strip — 3 placeholder mentor cards (Raj, Sarah, Minh) with tonal photo placeholders
+- [x] Value propositions — 3-step bento grid (Tell / Match / Grow), tonal surface cards
+- [x] CTA section — hero gradient button → `/signup`
+- [x] Glass nav at top with Log in + Get started actions
+- [x] Footer — minimal, on `surface-container-high`, 4-column grid
+- [x] `Button` updated with `asChild` support via `@radix-ui/react-slot`
 
 ## 5. Student dashboard (`app/(app)/dashboard/page.tsx`)
 
@@ -78,6 +78,29 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 - [ ] Progress pill showing onboarding completion / "your journey" framing
 - [ ] Empty states for every section that will be filled in Phase 2 (content, forums, success stories)
 - [ ] Reference screen: `docs/design/student_dashboard/screen.png`
+
+## 5b. Photography — swap gradient placeholders with generated images
+
+All prompts are inline in code as `IMAGE NEEDED` comments. Generate with Midjourney / DALL-E / Flux, apply post-processing from `docs/design.md §7`, then drop into `public/images/` and replace the gradient `<div>` with `<Image>`.
+
+- [ ] `public/images/hero-laneway-cafe.webp` — hero panel, `app/page.tsx`
+      Prompt in code. Alt: "A student working at a Melbourne laneway café"
+- [ ] `public/images/mentor-portrait-raj.webp` — Raj card, `app/page.tsx`
+      Prompt in code. Male, Indian background, smart-casual, café bokeh.
+- [ ] `public/images/mentor-portrait-sarah.webp` — Sarah card, `app/page.tsx`
+      Prompt in code. Female, Chinese background, smart-casual, café bokeh.
+- [ ] `public/images/mentor-portrait-minh.webp` — Minh card, `app/page.tsx`
+      Prompt in code. Male, Vietnamese background, smart-casual, café bokeh.
+- [ ] `public/images/auth-tram-portrait.webp` — auth shell left panel, `components/layout/auth-shell.tsx`
+      Prompt in code. Student on Melbourne tram, rain on window.
+- [ ] `public/images/onboarding-step-illustration.webp` — onboarding sidebar, `app/(auth)/onboarding/page.tsx`
+      Prompt in code. Hands holding coffee mug, city map on table.
+
+Post-generation checklist (per `docs/design.md §7`):
+- [ ] Colour grade: highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`
+- [ ] Crop asymmetrically (subjects on editorial thirds)
+- [ ] Export WebP at quality 80 — hero max 200 KB, mentor cards max 80 KB
+- [ ] Replace gradient `<div>` placeholders with `<Image>` (next/image) + correct alt text
 
 ## 6. Cross-cutting
 

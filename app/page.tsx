@@ -1,65 +1,661 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { GlassNav, NavLink } from "@/components/layout/glass-nav";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
+// ─────────────────────────────────────────
+// Shared layout constant
+// ─────────────────────────────────────────
+const C = "max-w-7xl mx-auto px-5 sm:px-10 lg:px-16";
+
+// ─────────────────────────────────────────
+// Placeholder mentor data — replace with live Supabase query in Phase 2
+// ─────────────────────────────────────────
+const MENTORS = [
+  {
+    id: "raj",
+    name: "Raj",
+    origin: "India",
+    university: "Monash University",
+    field: "Engineering",
+    tagline: "I bombed my first essay. Here's exactly how I turned it around.",
+    // Gradient placeholder — replace with real photo: mentor-portrait-raj.webp
+    gradient: "from-primary-container via-surface-container to-surface-container-low",
+  },
+  {
+    id: "sarah",
+    name: "Sarah",
+    origin: "China",
+    university: "University of Melbourne",
+    field: "Business",
+    tagline:
+      "Time management is the secret weapon nobody tells you about.",
+    gradient: "from-secondary-container via-surface-container to-surface-container-low",
+  },
+  {
+    id: "minh",
+    name: "Minh",
+    origin: "Vietnam",
+    university: "RMIT University",
+    field: "Information Technology",
+    tagline: "Don't wait until graduation to start building your career.",
+    gradient: "from-tertiary-container via-surface-container to-surface-container-low",
+  },
+];
+
+// ─────────────────────────────────────────
+// Page
+// ─────────────────────────────────────────
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="bg-surface text-on-surface">
+      {/* ── Navigation ───────────────────────────────────── */}
+      <GlassNav
+        brand={
+          <Link
+            href="/"
+            className="font-display font-bold text-xl text-primary tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+          >
+            Hoddle
+          </Link>
+        }
+        links={
+          <>
+            <NavLink href="/about">About</NavLink>
+            <NavLink href="/mentors">Mentors</NavLink>
+            <NavLink href="/stories">Stories</NavLink>
+          </>
+        }
+        actions={
+          <>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/login">Log in</Link>
+            </Button>
+            <Button variant="primary" size="sm" asChild>
+              <Link href="/signup">Get started</Link>
+            </Button>
+          </>
+        }
+      />
+
+      <main>
+        {/* ── Hero ──────────────────────────────────────────
+            Backdrop: cream-to-sky signature gradient
+            Asymmetric grid: 7/12 editorial text, 5/12 photo panel
+        ─────────────────────────────────────────────────── */}
+        <section
+          className="relative overflow-hidden py-24 lg:py-36"
+          style={{
+            background:
+              "linear-gradient(160deg, var(--color-surface) 0%, var(--color-primary-container) 100%)",
+          }}
+        >
+          <div className={`${C} grid lg:grid-cols-12 gap-12 items-center`}>
+            {/* Text column */}
+            <div className="lg:col-span-7 relative z-10">
+              <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-primary mb-6 block">
+                Mentorship for first-year international students in Melbourne
+              </span>
+
+              <h1 className="font-display font-extrabold text-5xl lg:text-[4.25rem] text-on-surface leading-[1.05] tracking-tight mb-6">
+                Navigate Melbourne
+                <br />
+                with a mentor who&apos;s{" "}
+                <em className="text-primary not-italic">
+                  been in your shoes.
+                </em>
+              </h1>
+
+              <p className="font-body text-lg lg:text-xl text-on-surface-variant leading-relaxed max-w-xl mb-10">
+                Free, peer-to-peer mentorship. Connect with high-achievers who
+                understand the grading system, the job market, and the feeling
+                of being 6,000 miles from home.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button variant="hero" size="lg" asChild>
+                  <Link href="/signup" className="gap-3">
+                    Find my mentor
+                    <ArrowRight
+                      size={18}
+                      strokeWidth={1.5}
+                      aria-hidden="true"
+                    />
+                  </Link>
+                </Button>
+                <Button variant="secondary" size="lg" asChild>
+                  <Link href="#how-it-works">How it works</Link>
+                </Button>
+              </div>
+
+              {/* Social proof strip */}
+              <div className="mt-12 flex items-center gap-6 flex-wrap">
+                <div className="flex flex-col">
+                  <span className="font-display font-bold text-2xl text-primary">
+                    500+
+                  </span>
+                  <span className="font-body text-xs text-on-surface-variant uppercase tracking-widest">
+                    Students guided
+                  </span>
+                </div>
+                <div className="w-px h-8 bg-outline-variant" aria-hidden="true" />
+                <div className="flex flex-col">
+                  <span className="font-display font-bold text-2xl text-primary">
+                    50+
+                  </span>
+                  <span className="font-body text-xs text-on-surface-variant uppercase tracking-widest">
+                    Verified mentors
+                  </span>
+                </div>
+                <div className="w-px h-8 bg-outline-variant" aria-hidden="true" />
+                <div className="flex flex-col">
+                  <span className="font-display font-bold text-2xl text-primary">
+                    8
+                  </span>
+                  <span className="font-body text-xs text-on-surface-variant uppercase tracking-widest">
+                    Melbourne universities
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Photo panel (editorial placeholder) */}
+            <div className="lg:col-span-5 relative">
+              {/*
+                IMAGE NEEDED — public/images/hero-laneway-cafe.webp
+                Prompt:
+                  "A young international university student sitting in a sunlit Melbourne
+                  laneway café, laptop open, smiling warmly, surrounded by exposed brick
+                  and trailing greenery. Morning golden hour light filtering through the
+                  gap between buildings. editorial photography, soft natural light, warm
+                  tones, shallow depth of field, shot on 35mm film, slightly desaturated,
+                  cream and warm brown palette with cool blue accents, Kinfolk magazine
+                  aesthetic, no text overlays, no logos"
+                Alt text: "A student working at a Melbourne laneway café"
+                Export: WebP quality 80, max 200 KB, asymmetric crop (subject on left third)
+              */}
+              <div
+                className="relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/5] rotate-1 shadow-[0_24px_64px_rgba(0,24,66,0.18)]"
+                aria-hidden="true"
+              >
+                <div className="absolute inset-0 bg-[linear-gradient(160deg,#001842_0%,#0d2b52_50%,#dbe5f1_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,24,66,0.15)_0%,transparent_60%)]" />
+                {/* Placeholder caption overlay */}
+                <div className="absolute bottom-0 inset-x-0 p-8 bg-[linear-gradient(to_top,rgba(0,24,66,0.6),transparent)]">
+                  <p className="font-display italic text-on-primary/90 text-lg font-light leading-snug">
+                    &ldquo;Melbourne Central Campus — connect where you study.&rdquo;
+                  </p>
+                </div>
+              </div>
+
+              {/* Floating credential card */}
+              <div
+                className="absolute -bottom-6 -left-6 bg-surface-container-lowest rounded-[var(--radius-md)] p-5 shadow-[var(--shadow-ambient)] max-w-[220px] -rotate-2 hidden md:block"
+                aria-hidden="true"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+                    <div className="w-3 h-3 rounded-full bg-secondary" />
+                  </div>
+                  <p className="font-body text-sm font-semibold text-on-surface">
+                    Top 5% Mentors Only
+                  </p>
+                </div>
+                <p className="font-body text-xs text-on-surface-variant leading-relaxed">
+                  Vetted students from Melbourne&apos;s leading universities.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Narrative — Priya at 2am ──────────────────────
+            Asymmetric magazine layout — the emotional heart of the page
+        ─────────────────────────────────────────────────── */}
+        <section className="py-28 bg-surface">
+          <div className={`${C} grid lg:grid-cols-12 gap-16 items-start`}>
+            {/* Pull quote — sits offset on the left */}
+            <div className="lg:col-span-5 lg:sticky lg:top-24">
+              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-secondary mb-6">
+                Why Hoddle exists
+              </p>
+              <blockquote className="font-display font-bold text-4xl lg:text-5xl text-primary leading-[1.1] tracking-tight mb-8">
+                &ldquo;For the first time since arriving in Melbourne, she felt
+                like she had a roadmap.&rdquo;
+              </blockquote>
+
+              {/* Decorative editorial rule */}
+              <div className="h-1 w-16 bg-primary rounded-full mb-8" aria-hidden="true" />
+
+              {/* Tonal insight card */}
+              <div className="bg-surface-container-low rounded-[var(--radius-md)] p-8">
+                <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-4">
+                  International students outperform their peers when they have
+                  access to the right guidance. The problem isn&apos;t
+                  ability — it&apos;s awareness.
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-1 h-12 bg-secondary rounded-full" aria-hidden="true" />
+                  <p className="font-body text-xs font-medium text-secondary uppercase tracking-widest">
+                    Hoddle&apos;s founding insight
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Story narrative */}
+            <div className="lg:col-span-7 space-y-8">
+              <p className="font-body text-lg lg:text-xl text-on-surface leading-relaxed">
+                It&apos;s 2 AM and Priya is staring at her laptop, overwhelmed.
+                She just received her first assignment feedback and it&apos;s
+                not what she expected. Back home in Mumbai, she was top of her
+                class. Here in Melbourne,{" "}
+                <strong className="font-semibold text-on-surface">
+                  everything feels different
+                </strong>{" "}
+                — the grading system, the academic expectations, even the way
+                professors communicate.
+              </p>
+
+              <p className="font-body text-lg text-on-surface-variant leading-relaxed">
+                She doesn&apos;t know who to ask. Her parents are 6,000 miles
+                away and don&apos;t understand the Australian system. She
+                doesn&apos;t want to bother her new friends who seem to have it
+                all figured out.
+              </p>
+
+              <div className="bg-surface-container rounded-[var(--radius-md)] p-8 border-l-4 border-primary">
+                <p className="font-body text-lg text-on-surface leading-relaxed italic">
+                  She opens Hoddle Melbourne and sees Raj&apos;s profile. He&apos;s
+                  from Delhi, graduated with honours last year, and now works at
+                  one of Melbourne&apos;s top tech firms. His story sounds
+                  familiar:{" "}
+                  <em className="not-italic font-semibold">
+                    &ldquo;I bombed my first essay. Got a Pass when I was used to
+                    Distinctions. Here&apos;s what I learned…&rdquo;
+                  </em>
+                </p>
+              </div>
+
+              <p className="font-body text-lg text-on-surface-variant leading-relaxed">
+                Two hours later, Priya has watched three mentors share their
+                strategies. She&apos;s downloaded a time management template,
+                bookmarked an upcoming Q&amp;A about interview prep, and posted
+                her first question in the &ldquo;First Semester Struggles&rdquo;
+                forum.
+              </p>
+
+              <div className="bg-secondary-container rounded-[var(--radius-md)] p-8">
+                <p className="font-body text-base text-on-secondary-container leading-relaxed font-medium">
+                  Six months later, Priya aces her next assignment. She lands a
+                  retail job using interview tips from the platform. When she
+                  receives her first High Distinction, she opens Hoddle and
+                  clicks{" "}
+                  <em>
+                    &ldquo;Share your success story.&rdquo;
+                  </em>
+                </p>
+              </div>
+
+              <div className="pt-4">
+                <Button variant="hero" size="lg" asChild>
+                  <Link href="/signup" className="gap-3">
+                    Start your story
+                    <ArrowRight
+                      size={18}
+                      strokeWidth={1.5}
+                      aria-hidden="true"
+                    />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Mentor preview strip ─────────────────────────
+            3 placeholder cards — real data from Supabase in Phase 2
+        ─────────────────────────────────────────────────── */}
+        <section className="py-28 bg-surface-container-low">
+          <div className={C}>
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16">
+              <div>
+                <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-3">
+                  Phase 2 — Live mentor profiles
+                </p>
+                <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight">
+                  Meet your future mentors.
+                </h2>
+              </div>
+              <p className="font-body text-sm text-on-surface-variant max-w-xs text-right hidden sm:block">
+                High-achievers who&apos;ve navigated the same trams, laneways,
+                and lecture halls.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {MENTORS.map((mentor) => (
+                <article
+                  key={mentor.id}
+                  className="group bg-surface-container-lowest rounded-[var(--radius-md)] overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-ambient)] hover:-translate-y-1"
+                >
+                  {/*
+                    IMAGE NEEDED — public/images/mentor-portrait-{mentor.id}.webp
+                    Prompt (personalise [man/woman] and origin per mentor):
+                      "Natural headshot of a confident young [man/woman] in casual smart
+                      clothing, standing against a blurred Melbourne café interior backdrop.
+                      Warm smile, direct eye contact, shoulders slightly angled. Head-and-
+                      shoulders crop, background bokeh. editorial photography, soft natural
+                      light, warm tones, shallow depth of field, shot on 35mm film, slightly
+                      desaturated, cream and warm brown palette with cool blue accents,
+                      Kinfolk magazine aesthetic, no text overlays, no logos"
+                    Alt text: "{mentor.name}, mentor at {mentor.university}"
+                    Export: WebP quality 80, max 80 KB
+                  */}
+                  <div
+                    className={`relative aspect-[4/3] bg-gradient-to-br ${mentor.gradient} overflow-hidden`}
+                    aria-hidden="true"
+                  >
+                    <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,24,66,0.08),transparent)]" />
+                    {/* Origin tag */}
+                    <div className="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                      <span className="font-body text-xs font-semibold text-primary">
+                        {mentor.origin}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div>
+                        <h3 className="font-display font-bold text-xl text-on-surface">
+                          {mentor.name}
+                        </h3>
+                        <p className="font-body text-sm text-primary font-medium mt-0.5">
+                          {mentor.university}
+                        </p>
+                      </div>
+                      {/* Verified badge */}
+                      <div className="shrink-0 mt-1 px-2.5 py-1 bg-secondary-container rounded-full">
+                        <span className="font-body text-xs font-semibold text-secondary">
+                          Verified
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="font-body text-xs text-on-surface-variant uppercase tracking-[0.1em] mb-3">
+                      {mentor.field}
+                    </p>
+
+                    <p className="font-body text-sm italic text-on-surface leading-relaxed">
+                      &ldquo;{mentor.tagline}&rdquo;
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="font-body text-sm text-on-surface-variant">
+                Full mentor profiles, matching, and content arrive in{" "}
+                <span className="font-medium text-on-surface">Phase 2</span>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Value propositions / How it works ────────────
+            3 tonal cards — no borders, photography-led backdrop
+        ─────────────────────────────────────────────────── */}
+        <section id="how-it-works" className="py-28 bg-surface">
+          <div className={C}>
+            <div className="text-center mb-20 max-w-2xl mx-auto">
+              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
+                How Hoddle works
+              </p>
+              <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight mb-6">
+                Your journey to excellence.
+              </h2>
+              <p className="font-body text-lg text-on-surface-variant leading-relaxed">
+                Three simple steps to unlock everything Melbourne has to offer.
+              </p>
+            </div>
+
+            {/* Bento grid */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+              {/* Card 1 — surface-container */}
+              <div className="md:col-span-4 bg-surface-container rounded-[var(--radius-md)] p-8 lg:p-10 flex flex-col justify-between min-h-[320px] hover:bg-surface-container-high transition-colors duration-200">
+                <div>
+                  <div className="w-11 h-11 bg-primary text-on-primary rounded-full flex items-center justify-center font-display font-bold text-lg mb-8 shadow-[0_4px_12px_rgba(0,24,66,0.25)]">
+                    1
+                  </div>
+                  <h3 className="font-display font-bold text-2xl text-on-surface mb-4 leading-tight">
+                    Tell us your goals.
+                  </h3>
+                  <p className="font-body text-on-surface-variant leading-relaxed">
+                    Complete a quick onboarding to share your challenges — from
+                    academic stress to career navigation. Takes 3 minutes.
+                  </p>
+                </div>
+                <Link
+                  href="/signup"
+                  className="mt-8 flex items-center gap-2 font-body text-sm font-semibold text-primary hover:gap-3 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+                >
+                  Get started
+                  <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
+                </Link>
+              </div>
+
+              {/* Card 2 — secondary-container (wide) */}
+              <div className="md:col-span-8 bg-secondary-container rounded-[var(--radius-md)] p-8 lg:p-12 relative overflow-hidden min-h-[320px] flex flex-col justify-between">
+                <div className="relative z-10 max-w-md">
+                  <div className="w-11 h-11 bg-secondary text-on-secondary rounded-full flex items-center justify-center font-display font-bold text-lg mb-8 shadow-[0_4px_12px_rgba(45,106,79,0.30)]">
+                    2
+                  </div>
+                  <h3 className="font-display font-bold text-3xl text-on-secondary-container mb-4 leading-tight">
+                    Get matched with the right mentor.
+                  </h3>
+                  <p className="font-body text-on-secondary-container/80 text-lg leading-relaxed">
+                    Our matching pairs you with mentors who share your field of
+                    study, cultural background, and the exact challenges
+                    you&apos;re facing.
+                  </p>
+                </div>
+                {/* Decorative blob */}
+                <div
+                  className="absolute bottom-0 right-0 w-48 h-48 bg-secondary/10 rounded-full translate-x-16 translate-y-16"
+                  aria-hidden="true"
+                />
+              </div>
+
+              {/* Card 3 — primary-container (full width) */}
+              <div className="md:col-span-12 bg-surface-container-highest rounded-[var(--radius-md)] p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                  <div className="w-11 h-11 bg-on-surface text-surface rounded-full flex items-center justify-center font-display font-bold text-lg mb-8 shadow-[0_4px_12px_rgba(42,38,32,0.20)]">
+                    3
+                  </div>
+                  <h3 className="font-display font-bold text-3xl text-on-surface mb-4 leading-tight">
+                    Learn, grow, and give back.
+                  </h3>
+                  <p className="font-body text-on-surface-variant text-lg leading-relaxed">
+                    Access exclusive content, live Q&amp;As, and a community of
+                    high-achievers. When you&apos;ve found your feet, share
+                    your own story.
+                  </p>
+                </div>
+
+                {/* Sub-feature tiles */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    {
+                      title: "Weekly Live Q&As",
+                      desc: "Real-time advice from industry grads.",
+                    },
+                    {
+                      title: "Resource Library",
+                      desc: "Essay guides & internship templates.",
+                    },
+                    {
+                      title: "Community Forums",
+                      desc: "Find peers facing the same challenges.",
+                    },
+                    {
+                      title: "Success Stories",
+                      desc: "Real wins from real students.",
+                    },
+                  ].map(({ title, desc }) => (
+                    <div
+                      key={title}
+                      className="bg-surface-container-lowest rounded-md p-5"
+                    >
+                      <h4 className="font-body font-semibold text-sm text-on-surface mb-1">
+                        {title}
+                      </h4>
+                      <p className="font-body text-xs text-on-surface-variant leading-relaxed">
+                        {desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Final CTA ─────────────────────────────────────
+            Signature hero gradient — the emotional full stop
+        ─────────────────────────────────────────────────── */}
+        <section
+          className="py-28"
+          style={{
+            background:
+              "linear-gradient(135deg, var(--color-primary) 0%, #1e3a5f 100%)",
+          }}
+        >
+          <div className={`${C} text-center max-w-3xl mx-auto`}>
+            <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-primary/60 mb-6">
+              Ready to begin?
+            </p>
+            <h2 className="font-display font-extrabold text-4xl lg:text-6xl text-on-primary leading-[1.05] tracking-tight mb-6">
+              Your Melbourne story is waiting.
+            </h2>
+            <p className="font-body text-lg text-on-primary/80 leading-relaxed mb-12 max-w-xl mx-auto">
+              Join 500+ international students who found their footing — and
+              their community — through Hoddle Melbourne.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="bg-on-primary text-primary hover:bg-surface-container-lowest gap-3"
+                asChild
+              >
+                <Link href="/signup">
+                  Create your free account
+                  <ArrowRight
+                    size={18}
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
+                </Link>
+              </Button>
+            </div>
+
+            <p className="mt-6 font-body text-sm text-on-primary/50">
+              No credit card. No commitment. Just mentorship.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      {/* ── Footer ────────────────────────────────────────── */}
+      <footer className="bg-surface-container-high">
+        <div className={`${C} py-16 grid grid-cols-1 md:grid-cols-4 gap-10`}>
+          {/* Brand column */}
+          <div className="md:col-span-1">
+            <span className="font-display font-bold text-lg text-on-surface block mb-3">
+              Hoddle
+            </span>
+            <p className="font-body text-sm text-on-surface-variant leading-relaxed max-w-[220px]">
+              Connecting Melbourne&apos;s international student community with
+              the guidance that changes everything.
+            </p>
+          </div>
+
+          {/* Community */}
+          <div>
+            <h3 className="font-body text-xs font-bold uppercase tracking-[0.18em] text-on-surface mb-5">
+              Community
+            </h3>
+            <ul className="space-y-3">
+              {["About", "Success Stories", "Forums", "Mentors"].map(
+                (label) => (
+                  <li key={label}>
+                    <Link
+                      href="#"
+                      className="font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:underline"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ),
+              )}
+            </ul>
+          </div>
+
+          {/* Opportunities */}
+          <div>
+            <h3 className="font-body text-xs font-bold uppercase tracking-[0.18em] text-on-surface mb-5">
+              Opportunities
+            </h3>
+            <ul className="space-y-3">
+              {["Become a Mentor", "Careers", "Partner with Us"].map(
+                (label) => (
+                  <li key={label}>
+                    <Link
+                      href="#"
+                      className="font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:underline"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ),
+              )}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="font-body text-xs font-bold uppercase tracking-[0.18em] text-on-surface mb-5">
+              Legal
+            </h3>
+            <ul className="space-y-3">
+              {["Privacy Policy", "Terms of Service", "Contact Us"].map(
+                (label) => (
+                  <li key={label}>
+                    <Link
+                      href="#"
+                      className="font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:underline"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ),
+              )}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className={`${C} py-6`}>
+          <div className="h-px bg-outline-variant mb-6" aria-hidden="true" />
+          <p className="font-body text-xs text-on-surface-variant">
+            © {new Date().getFullYear()} Hoddle Melbourne. Designed for
+            international students, by people who remember what it felt like.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
   );
 }

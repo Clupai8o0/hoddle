@@ -622,9 +622,18 @@ export default function OnboardingPage() {
 
           {/* ── Editorial sidebar ── */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            {/* Decorative panel — replace with photography once available.
-                Target image: close-up of hands holding a warm mug, city map visible,
-                see docs/design.md §7 "Onboarding — step illustrations" */}
+            {/*
+              IMAGE NEEDED — public/images/onboarding-step-illustration.webp
+              Prompt:
+                "Close-up of hands holding a warm cup of coffee in a ceramic mug,
+                sitting at a café table with a city map partially visible underneath.
+                Cosy, personal, first-person perspective. editorial photography, soft
+                natural light, warm tones, shallow depth of field, shot on 35mm film,
+                slightly desaturated, cream and warm brown palette with cool blue
+                accents, Kinfolk magazine aesthetic, no text overlays, no logos"
+              Alt: "" (decorative — panel is aria-hidden)
+              Export: WebP quality 80, max 200 KB, overhead crop
+            */}
             <div className="relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/3] bg-[linear-gradient(150deg,#001842_0%,#0d2b52_50%,#dbe5f1_100%)] hidden lg:block">
               <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,24,66,0.20)_0%,transparent_100%)]" />
               <div className="absolute inset-0 flex items-end p-8">

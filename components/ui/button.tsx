@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, type ButtonHTMLAttributes } from "react";
+import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils/cn";
 
 type Variant = "primary" | "secondary" | "hero" | "ghost";
@@ -9,6 +10,8 @@ type Size = "sm" | "default" | "lg";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
+  /** Render as a child element (e.g. next/link) using Radix Slot */
+  asChild?: boolean;
 }
 
 const variants: Record<Variant, string> = {
@@ -41,36 +44,40 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       variant = "primary",
       size = "default",
+      asChild = false,
       className,
       disabled,
       children,
       ...props
     },
     ref,
-  ) => (
-    <button
-      ref={ref}
-      disabled={disabled}
-      className={cn(
-        // Base
-        "inline-flex items-center justify-center gap-2",
-        "font-body font-medium tracking-wide",
-        "rounded-md transition-all duration-200",
-        "cursor-pointer select-none",
-        // Focus
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
-        // Variant
-        variants[variant],
-        // Size
-        sizes[size],
-        // Disabled
-        disabled && "opacity-50 cursor-not-allowed pointer-events-none",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </button>
-  ),
+  ) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        ref={ref}
+        disabled={!asChild ? disabled : undefined}
+        className={cn(
+          // Base
+          "inline-flex items-center justify-center gap-2",
+          "font-body font-medium tracking-wide",
+          "rounded-md transition-all duration-200",
+          "cursor-pointer select-none",
+          // Focus
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+          // Variant
+          variants[variant],
+          // Size
+          sizes[size],
+          // Disabled
+          disabled && "opacity-50 cursor-not-allowed pointer-events-none",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </Comp>
+    );
+  },
 );
 Button.displayName = "Button";

@@ -11,6 +11,8 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 ## [Unreleased]
 
 ### Added
+- `app/page.tsx` — landing page: glass nav, hero (cream-to-sky backdrop), Priya narrative section, 3 placeholder mentor cards, 3-step bento value props, CTA section, minimal footer.
+- `components/ui/button.tsx` — added `asChild` support via `@radix-ui/react-slot` so Button renders as Link when needed.
 - `middleware.ts` — session refresh on every request; protects `/dashboard` and `/onboarding`; redirects away from `/login`/`/signup` when already authenticated.
 - `app/api/auth/callback/route.ts` — exchanges PKCE code for session, routes first-time users to `/onboarding` and returning users to `/dashboard`.
 - `lib/actions/auth.ts` — `sendMagicLink` server action (Supabase `signInWithOtp`).

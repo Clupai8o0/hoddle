@@ -71,6 +71,24 @@ The full spec is in [`docs/design.md`](./docs/design.md). Before writing any UI 
 
 All design tokens must be wired through Tailwind's `theme.extend` in `tailwind.config.ts` and exposed as CSS custom properties in `globals.css`. Never hardcode hex values in components.
 
+### Photography placeholders
+
+Whenever a component needs a photo that doesn't exist yet, **do both of the following — never skip either step:**
+
+1. **Leave an `IMAGE NEEDED` comment** directly above the placeholder `<div>` (not in a separate file). The comment must include:
+   - Target path: `public/images/kebab-case-name.webp`
+   - Full generation prompt drawn from `docs/design.md §7` (including the general style modifiers)
+   - Alt text the `<Image>` tag will use
+   - Export spec: format (WebP), quality, max file size, crop guidance
+
+2. **Add a checklist item to `todo.md §5b`** (create the section if it doesn't exist) with the filename, source component, and a reference to the inline prompt.
+
+The post-generation checklist in `todo.md §5b` must always include:
+- Colour grade (highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`)
+- Asymmetric crop (subjects on editorial thirds)
+- Export at WebP quality 80 — hero images max 200 KB, card images max 80 KB
+- Replace gradient `<div>` placeholder with `<Image>` (next/image) and correct alt text
+
 ---
 
 ## 4. Supabase conventions

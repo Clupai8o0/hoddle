@@ -26,9 +26,19 @@ export function AuthShell({
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col">
         {photoPanelContent ?? (
           <>
-            {/* Signature gradient backdrop — replace with photography once available.
-                Target image: close-up portrait of a student on a Melbourne tram,
-                see docs/design.md §7 "Auth shell — split-screen editorial portrait" */}
+            {/*
+              IMAGE NEEDED — public/images/auth-tram-portrait.webp
+              Prompt:
+                "Close-up portrait of a young international student looking out a
+                rain-dotted window in a Melbourne tram, expression thoughtful and
+                hopeful. Soft reflections of city buildings on the glass. Shot from
+                the shoulder up, tight crop. editorial photography, soft natural light,
+                warm tones, shallow depth of field, shot on 35mm film, slightly
+                desaturated, cream and warm brown palette with cool blue accents,
+                Kinfolk magazine aesthetic, no text overlays, no logos"
+              Alt: "" (decorative — panel is aria-hidden)
+              Export: WebP quality 80, max 200 KB, subject offset to right third
+            */}
             <div className="absolute inset-0 bg-[linear-gradient(160deg,#001842_0%,#0d2b52_55%,#1e3a5f_80%,#dbe5f1_100%)]" />
 
             {/* Blue-tint overlay for when real photography is added */}
