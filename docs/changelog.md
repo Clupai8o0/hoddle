@@ -13,6 +13,12 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 _Phase 2 work in progress. See `todo.md`._
 
 ### Added
+- `app/(app)/mentors/page.tsx` — browse verified mentors with expertise filter chips
+- `app/(app)/mentors/[slug]/page.tsx` — full mentor profile: avatar, headline, bio, expertise tags, published content grid, upcoming session sidebar with question form
+- `app/(app)/mentors/[slug]/question-form.tsx` — client question form (react-hook-form + Zod, anonymous toggle, char count)
+- `components/patterns/mentor-card.tsx` — `MentorCard` pattern component with real DB data, avatar/initials fallback, verified badge, expertise tags
+- `lib/actions/session-questions.ts` — `submitSessionQuestion` server action (validates session is upcoming + scheduled)
+- `lib/validation/session-question.ts` — Zod schema for question submission
 - Phase 2 dependencies installed: `@tanstack/react-query`, `date-fns`, `@tiptap/react`, `@tiptap/starter-kit`, `react-day-picker`, `resend`
 - `lib/email/index.ts` — typed `sendEmail` wrapper around Resend SDK
 - `.env.local.example` with `RESEND_API_KEY` and `RESEND_FROM_EMAIL` vars
