@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { Tag } from "@/components/ui/tag";
@@ -58,6 +59,17 @@ export default async function DashboardPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Mentors have their own dashboard — redirect them before rendering student UI
+  const { data: roleCheck } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user!.id)
+    .single();
+
+  if (roleCheck?.role === "mentor") {
+    redirect("/mentor");
+  }
 
   const [{ data: profile }, { data: onboarding }] = await Promise.all([
     supabase
