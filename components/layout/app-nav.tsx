@@ -29,13 +29,18 @@ export function AppNav({ userName, avatarUrl, activePath = "/dashboard" }: AppNa
           <NavLink href="/dashboard" active={activePath === "/dashboard"}>
             Dashboard
           </NavLink>
-          {/* Phase 2 nav items — visible but not yet wired */}
-          <span className="px-3 py-1.5 font-body text-sm font-medium text-on-surface-variant/40 cursor-default select-none">
+          <NavLink href="/mentors" active={activePath.startsWith("/mentors")}>
             Mentors
-          </span>
-          <span className="px-3 py-1.5 font-body text-sm font-medium text-on-surface-variant/40 cursor-default select-none">
+          </NavLink>
+          <NavLink href="/content" active={activePath.startsWith("/content")}>
+            Library
+          </NavLink>
+          <NavLink href="/forums" active={activePath.startsWith("/forums")}>
             Forums
-          </span>
+          </NavLink>
+          <NavLink href="/sessions" active={activePath.startsWith("/sessions")}>
+            Sessions
+          </NavLink>
         </>
       }
       actions={

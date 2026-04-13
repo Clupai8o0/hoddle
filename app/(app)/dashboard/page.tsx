@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { Tag } from "@/components/ui/tag";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";

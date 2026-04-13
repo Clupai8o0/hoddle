@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Button } from "@/components/ui/button";
@@ -19,8 +20,6 @@ const MENTORS = [
     university: "Monash University",
     field: "Engineering",
     tagline: "I bombed my first essay. Here's exactly how I turned it around.",
-    // Gradient placeholder — replace with real photo: mentor-portrait-raj.webp
-    gradient: "from-primary-container via-surface-container to-surface-container-low",
   },
   {
     id: "sarah",
@@ -30,7 +29,6 @@ const MENTORS = [
     field: "Business",
     tagline:
       "Time management is the secret weapon nobody tells you about.",
-    gradient: "from-secondary-container via-surface-container to-surface-container-low",
   },
   {
     id: "minh",
@@ -39,7 +37,6 @@ const MENTORS = [
     university: "RMIT University",
     field: "Information Technology",
     tagline: "Don't wait until graduation to start building your career.",
-    gradient: "from-tertiary-container via-surface-container to-surface-container-low",
   },
 ];
 

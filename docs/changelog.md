@@ -13,7 +13,14 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 _Phase 2 work in progress. See `todo.md`._
 
 ### Added
-- _(pending)_
+- Phase 2 dependencies installed: `@tanstack/react-query`, `date-fns`, `@tiptap/react`, `@tiptap/starter-kit`, `react-day-picker`, `resend`
+- `lib/email/index.ts` — typed `sendEmail` wrapper around Resend SDK
+- `.env.local.example` with `RESEND_API_KEY` and `RESEND_FROM_EMAIL` vars
+- `components/providers/query-provider.tsx` — `QueryClientProvider` client wrapper; mounted in `app/(app)/layout.tsx`
+- Route stubs for all Phase 2 surfaces: `/mentors`, `/content`, `/forums`, `/stories`, `/sessions`, `/inbox`
+- `app/(admin)/layout.tsx` — admin-only layout; redirects non-admin users to `/dashboard`
+- `app/(admin)/page.tsx` — admin home stub
+- `AppNav` updated: Mentors, Library, Forums, Sessions links are now live `NavLink`s (replaced Phase 1 placeholder spans)
 
 ---
 

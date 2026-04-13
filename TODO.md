@@ -8,13 +8,13 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 
 ## 0. Phase 2 foundations
 
-- [ ] Install dependencies: `@tanstack/react-query` (interactive dashboards), `date-fns`, `@tiptap/react` + `@tiptap/starter-kit` (rich-text editor), `react-day-picker` (Q&A scheduling), `resend` (transactional email)
-- [ ] Add Resend API key to `.env.local.example` and Vercel envs
-- [ ] Set up `lib/email/` with typed email-sending wrapper around Resend
-- [ ] Add `RESEND_FROM_EMAIL`, `RESEND_API_KEY` env vars
-- [ ] Create new route segments: `app/(app)/mentors`, `app/(app)/content`, `app/(app)/forums`, `app/(app)/stories`, `app/(app)/sessions`, `app/(app)/inbox`, `app/(admin)`
-- [ ] Add `(admin)` route group with admin-only middleware check (`profiles.role = 'admin'`)
-- [ ] Update `MarketingShell` and `AuthenticatedShell` nav to expose new top-level destinations
+- [x] Install dependencies: `@tanstack/react-query` (interactive dashboards), `date-fns`, `@tiptap/react` + `@tiptap/starter-kit` (rich-text editor), `react-day-picker` (Q&A scheduling), `resend` (transactional email)
+- [x] Add Resend API key to `.env.local.example` and Vercel envs
+- [x] Set up `lib/email/` with typed email-sending wrapper around Resend
+- [x] Add `RESEND_FROM_EMAIL`, `RESEND_API_KEY` env vars
+- [x] Create new route segments: `app/(app)/mentors`, `app/(app)/content`, `app/(app)/forums`, `app/(app)/stories`, `app/(app)/sessions`, `app/(app)/inbox`, `app/(admin)`
+- [x] Add `(admin)` route group with admin-only middleware check (`profiles.role = 'admin'`)
+- [x] Update `MarketingShell` and `AuthenticatedShell` nav to expose new top-level destinations
 
 ## 1. Schema migrations
 
