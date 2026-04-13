@@ -74,15 +74,15 @@ See `docs/database-schema.md` for full table definitions, RLS policies, and trig
 
 ## 5. Content library + article reader
 
-- [ ] `app/(app)/content/page.tsx` — content library index with filters (type, expertise, mentor)
-- [ ] `app/(app)/content/[slug]/page.tsx` — article reader with editorial layout, hero image, byline, body, downloadable resources, related content
-- [ ] Tiptap-based rich-text editor for mentor content authoring
-- [ ] `app/(app)/mentor/content/new` — create new content item (article / video / resource)
-- [ ] `app/(app)/mentor/content/[id]/edit` — edit existing content
-- [ ] Content publish/unpublish server actions with `published_at` timestamp
-- [ ] View counter — increment on article load (server action, debounced per session)
-- [ ] Video content type — embed YouTube/Vimeo via URL parsing, no custom player
-- [ ] Downloadable resources — Supabase Storage signed URLs, file size limit 25MB
+- [x] `app/(app)/content/page.tsx` — content library index with filters (type, expertise, mentor)
+- [x] `app/(app)/content/[slug]/page.tsx` — article reader with editorial layout, hero image, byline, body, downloadable resources, related content
+- [x] Tiptap-based rich-text editor for mentor content authoring
+- [x] `app/(app)/mentor/content/new` — create new content item (article / video / resource)
+- [x] `app/(app)/mentor/content/[id]/edit` — edit existing content
+- [x] Content publish/unpublish server actions with `published_at` timestamp
+- [x] View counter — increment on article load (server action, debounced per session)
+- [x] Video content type — embed YouTube/Vimeo via URL parsing, no custom player
+- [x] Downloadable resources — Supabase Storage signed URLs, file size limit 25MB
 - [ ] Reference screen: `docs/design/article_decoding_academic_writing/screen.png`
 
 ## 5b. Photography — swap gradient placeholders with generated images
@@ -107,6 +107,12 @@ All prompts are inline in code as `IMAGE NEEDED` comments. Generate with Midjour
       Prompt in code. Empty bench, Royal Botanic Gardens Melbourne, dappled sunlight.
 - [x] `public/images/empty-state-library.webp` — success stories empty state, `app/(app)/dashboard/page.tsx`
       Prompt in code. Students at State Library of Victoria reading room timber table.
+- [ ] `public/images/mentor-avatar-placeholder.webp` — mentor profile fallback, `app/(app)/mentors/[slug]/page.tsx`
+      Prompt in code. Close-cropped portrait, warm editorial light, cream highlights, Hoddle Blue shadows. 400×400 square.
+- [ ] `public/images/content-card-placeholder.webp` — content card fallback, `components/patterns/content-card.tsx`
+      Prompt in code. Overhead flat-lay, open notebook, fountain pen, flat white, timber café table. 4:3 crop. Max 80 KB.
+- [ ] `public/images/content-hero-placeholder.webp` — article hero fallback, `app/(app)/content/[slug]/page.tsx`
+      Prompt in code. Overhead desk shot, fountain pen, open notebook, flat white, soft morning light. 16:9 crop. Max 200 KB.
 
 Post-generation checklist (per `docs/design.md §7`):
 - [x] Colour grade: highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`
