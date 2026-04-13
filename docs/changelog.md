@@ -13,6 +13,18 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 _Phase 2 work in progress. See `todo.md`._
 
 ### Added
+- `app/(app)/content/page.tsx` — browse content library with type filter chips (article/video/resource)
+- `app/(app)/content/[slug]/page.tsx` — editorial article reader: hero, byline, Tiptap body, video embed, downloadable resources sidebar, "Continue Learning" section
+- `app/(app)/content/[slug]/view-tracker.tsx` — client component, increments view count once per page load
+- `app/(app)/mentor/content/new/page.tsx` + `content-form.tsx` — create drafts with Tiptap editor, excerpt, hero URL, video URL
+- `app/(app)/mentor/content/[id]/edit/page.tsx` — edit + publish/unpublish existing content
+- `app/(app)/mentor/content/page.tsx` — updated: "New article" button and edit links now active
+- `components/patterns/content-card.tsx` — `ContentCard` pattern with hero image, type badge, author byline, view count
+- `components/patterns/tiptap-editor.tsx` — Tiptap rich-text editor client component with toolbar
+- `components/patterns/tiptap-renderer.tsx` — read-only Tiptap JSON renderer, styled via Tailwind
+- `lib/actions/content-items.ts` — `createContentItem`, `updateContentItem`, `publishContentItem`, `unpublishContentItem`, `incrementViewCount` server actions
+- `lib/utils/video-embed.ts` — `getVideoEmbedUrl` (YouTube + Vimeo, privacy-enhanced embed URLs)
+- `lib/validation/content-item.ts` — Zod schema for content creation/editing
 - `app/(app)/mentors/page.tsx` — browse verified mentors with expertise filter chips
 - `app/(app)/mentors/[slug]/page.tsx` — full mentor profile: avatar, headline, bio, expertise tags, published content grid, upcoming session sidebar with question form
 - `app/(app)/mentors/[slug]/question-form.tsx` — client question form (react-hook-form + Zod, anonymous toggle, char count)
