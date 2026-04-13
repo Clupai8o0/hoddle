@@ -17,7 +17,7 @@ The palette pairs a **deep editorial blue** — evoking trust, focus, and the ca
 ### The Color Logic
 
 **Primary — "Hoddle Blue"**
-- `primary` — `#1e3a5f` — Deep editorial navy. Used for primary actions, headlines, logo, and high-impact moments. Represents trust and mentor wisdom.
+- `primary` — `#001842` — Deep editorial navy. Used for primary actions, headlines, logo, and high-impact moments. Represents trust and mentor wisdom.
 - `primary-container` — `#dbe5f1` — Soft powder blue. Used for primary tag backgrounds, selected states, and container fills.
 - `on-primary` — `#fef8f1` — Cream text on blue (never pure white).
 - `on-primary-container` — `#142845` — Deepest ink blue for text on powder blue.
@@ -56,7 +56,7 @@ Prohibit 1px solid borders for sectioning. Structural boundaries must be defined
 - **The Glass Recipe:** `surface` at 70% opacity with `backdrop-filter: blur(20px)`. This lets warm photography bleed through cool-blue navigation, creating the signature tension of the brand.
 
 **Signature Gradient (Hero CTAs & brand moments):**
-- Linear gradient `135deg` from `primary` (`#1e3a5f`) → `#2c5282` (a lifted mid-blue).
+- Linear gradient `135deg` from `primary` (`#001842`) → `#1e3a5f` (a lifted mid-blue).
 - For soft hero backdrops, layer `primary-container` (`#dbe5f1`) → `surface` (`#fef8f1`) at `160deg` — this is the signature "cream-to-sky" wash unique to Hoddle.
 
 ---
@@ -70,7 +70,7 @@ We pair a characterful modern sans-serif for headings with a clean, legible sans
 
 **Editorial Tips:**
 - Use **hanging punctuation** and wide letter-spacing (tracking `0.12em`) for uppercase `label-md` to create a premium, curated feel.
-- Headlines should sit in `primary` (`#1e3a5f`), not pure black — this reinforces brand voice at every scroll.
+- Headlines should sit in `primary` (`#001842`), not pure black — this reinforces brand voice at every scroll.
 - Body copy in `on-surface` (`#2a2620`) for maximum readability on cream backgrounds.
 
 ---
@@ -86,7 +86,7 @@ We do not use shadows to create "pop" — we use **tonal layering** to create "p
 
 **Ambient Shadows** — when an element must float (e.g., a Mentor Card on hover), use an extra-diffused, blue-tinted shadow:
 ```
-box-shadow: 0 12px 40px rgba(30, 58, 95, 0.08);
+box-shadow: 0 12px 40px rgba(0, 24, 66, 0.10);
 ```
 The subtle blue tint (rather than neutral grey) ties the shadow to the brand.
 
@@ -266,7 +266,7 @@ warm amber at the horizon. No people, no text. [append general style modifiers]
 
 After generating, apply the following before placing in `/public/images`:
 
-1. **Colour grade** — shift highlights toward cream (`#fef8f1`) and shadows toward Hoddle Blue (`#1e3a5f`). The image should feel like it already lives on the cream surface.
+1. **Colour grade** — shift highlights toward cream (`#fef8f1`) and shadows toward Hoddle Blue (`#001842`). The image should feel like it already lives on the cream surface.
 2. **Crop asymmetrically** — avoid perfectly centred subjects. Subjects should sit on editorial thirds, leaving breathing room.
 3. **Blue-tint overlay** — for images that will have text overlaid, add a `linear-gradient(135deg, rgba(30,58,95,0.35), rgba(30,58,95,0.10))` in CSS rather than baking it into the image. This keeps the brand tension between warm photo and cool overlay.
 4. **Export** — WebP at quality 80 for inline images, AVIF where browser support allows. Keep file sizes under 200KB for hero images, under 80KB for cards.

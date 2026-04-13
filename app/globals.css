@@ -2,7 +2,7 @@
 
 @theme {
   /* ── Primary — Hoddle Blue ── */
-  --color-primary: #1e3a5f;
+  --color-primary: #001842;
   --color-primary-container: #dbe5f1;
   --color-on-primary: #fef8f1;
   --color-on-primary-container: #142845;
@@ -41,7 +41,7 @@
   --font-body: var(--font-be-vietnam-pro);
 
   /* ── Elevation ── */
-  --shadow-ambient: 0 12px 40px rgba(30, 58, 95, 0.08);
+  --shadow-ambient: 0 12px 40px rgba(0, 24, 66, 0.10);
 
   /* ── Radius ── */
   --radius-md: 0.75rem;

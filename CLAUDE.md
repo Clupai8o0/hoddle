@@ -64,9 +64,9 @@ The full spec is in [`docs/design.md`](./docs/design.md). Before writing any UI 
 2. **Never use `#000000` for text.** Use `on-surface` `#2a2620`.
 3. **No 1px solid borders for sectioning.** Use background tonal shifts or 48–64px whitespace.
 4. **Icons are functional, never decorative.** Use `lucide-react` at `strokeWidth={1.5}` for nav, form controls, and menu toggles. Hero visuals, empty states, and mentor context use cropped photography.
-5. **Primary is Hoddle Blue `#1e3a5f`** — deep, desaturated, editorial. Never bright/electric blue.
+5. **Primary is Hoddle Blue `#001842`** — deep, desaturated, editorial. Never bright/electric blue.
 6. **Botanical green `#2d6a4f` is reserved** for verified-mentor, success, and progress signals. Do not use it decoratively.
-7. **Shadows are blue-tinted and diffused:** `0 12px 40px rgba(30, 58, 95, 0.08)`. Default CSS drop shadows are banned.
+7. **Shadows are blue-tinted and diffused:** `0 12px 40px rgba(0, 24, 66, 0.10)`. Default CSS drop shadows are banned.
 8. **Asymmetric layouts are encouraged** — Hoddle is an editorial journal, not a dashboard template.
 
 All design tokens must be wired through Tailwind's `theme.extend` in `tailwind.config.ts` and exposed as CSS custom properties in `globals.css`. Never hardcode hex values in components.

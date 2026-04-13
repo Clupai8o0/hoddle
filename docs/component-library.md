@@ -30,7 +30,7 @@ Variants: `primary`, `secondary`, `hero` (gradient), `ghost`.
 - `bg-surface-container-lowest` (the brightest "paper").
 - Radius `md`.
 - No border. No divider lines inside.
-- Hover (when interactive): ambient blue-tinted shadow `0 12px 40px rgba(30, 58, 95, 0.08)` and a 2px upward translate.
+- Hover (when interactive): ambient blue-tinted shadow `0 12px 40px rgba(0, 24, 66, 0.10)` and a 2px upward translate.
 - Hierarchy inside is created by typography shifts (`title-md` → `body-sm`) and whitespace, never by rules.
 
 ### `Tag` / `Chip`
@@ -145,7 +145,7 @@ shadcn's semantic tokens do not match Hoddle's palette. When installing or adapt
 |---|---|---|
 | `--background` / `bg-background` | `surface` (`#fef8f1`) | Never `#ffffff` |
 | `--foreground` / `text-foreground` | `on-surface` (`#2a2620`) | Never `#000000` |
-| `--primary` | `primary` (`#1e3a5f`) | Hoddle Blue |
+| `--primary` | `primary` (`#001842`) | Hoddle Blue |
 | `--primary-foreground` | `on-primary` (`#fef8f1`) | Cream on blue |
 | `--secondary` | `secondary` (`#2d6a4f`) | Botanical green — reserved for trust/success signals |
 | `--muted` / `bg-muted` | `surface-container-high` (`#eee7dd`) | |
@@ -157,7 +157,7 @@ shadcn's semantic tokens do not match Hoddle's palette. When installing or adapt
 | `--radius` | `0.75rem` (`md`) | |
 | `--destructive` | `#8b2e2e` | Deep warm red, never bright red |
 
-**Rule:** after installing a shadcn component, grep for any hardcoded `gray-`, `neutral-`, `slate-`, `zinc-`, `white`, or `black` classes and replace them with the Hoddle tokens above. Default CSS shadows must also be replaced with the blue-tinted ambient shadow (`0 12px 40px rgba(30, 58, 95, 0.08)`).
+**Rule:** after installing a shadcn component, grep for any hardcoded `gray-`, `neutral-`, `slate-`, `zinc-`, `white`, or `black` classes and replace them with the Hoddle tokens above. Default CSS shadows must also be replaced with the blue-tinted ambient shadow (`0 12px 40px rgba(0, 24, 66, 0.10)`).
 
 ---
 
