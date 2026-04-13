@@ -28,6 +28,20 @@ _Phase 2 work in progress. See `todo.md`._
 - `lib/actions/mentor-invites.ts` — `inviteMentor`, `verifyMentor`, `unverifyMentor`, `acceptMentorInvite` server actions
 - `lib/supabase/admin.ts` — service-role Supabase client (server-only) for privileged mutations
 - `lib/validation/mentor-invite.ts` — Zod schema for invite form
+- `app/(auth)/mentor-onboarding/page.tsx` — 4-step mentor onboarding wizard (identity, story, expertise, background)
+- `app/(app)/mentor/layout.tsx` — mentor sub-layout with `MentorSidebar` (Dashboard, My Content, Sessions, Inbox, Edit Profile) + verified badge
+- `app/(app)/mentor/page.tsx` — mentor dashboard: impact stats, content list, upcoming sessions, inbox preview
+- `app/(app)/mentor/content/page.tsx` — content list grouped by draft/published, editing stub
+- `app/(app)/mentor/sessions/page.tsx` — upcoming/past session list, scheduling stub
+- `app/(app)/mentor/inbox/page.tsx` — session questions grouped unanswered/answered
+- `app/(app)/mentor/profile/edit/page.tsx` + `edit-profile-form.tsx` — full inline edit form with instant save
+- `components/layout/mentor-sidebar.tsx` — sticky sidebar nav with active-path highlighting
+- `lib/actions/mentor-onboarding.ts` — `submitMentorOnboarding` + `updateMentorProfile` server actions
+- `lib/validation/mentor-onboarding.ts` — Zod schema for mentor onboarding + profile edit
+
+### Changed
+- `app/(app)/layout.tsx` — mentor role without `onboarded_at` now redirects to `/mentor-onboarding` instead of `/onboarding`
+- `app/(app)/dashboard/page.tsx` — mentors redirected to `/mentor` on dashboard load
 
 ### Fixed
 - `lib/email/index.ts` — lazy-initialize Resend client to prevent build-time failure when `RESEND_API_KEY` is not set
