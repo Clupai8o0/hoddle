@@ -21,6 +21,7 @@ _Phase 2 work in progress. See `todo.md`._
 - `app/(admin)/layout.tsx` — admin-only layout; redirects non-admin users to `/dashboard`
 - `app/(admin)/page.tsx` — admin home stub
 - `AppNav` updated: Mentors, Library, Forums, Sessions links are now live `NavLink`s (replaced Phase 1 placeholder spans)
+- `supabase/migrations/20260413000003_phase2_schema.sql` — full Phase 2 schema: `mentors`, `mentor_invites`, `content_items`, `content_resources`, `content_tags`, `content_item_tags`, `forum_categories` (seeded), `forum_threads`, `forum_posts`, `forum_reactions`, `success_stories`, `live_sessions`, `session_registrations`, `session_questions`, `notifications`, `notification_preferences`, `mentor_recommendations`, `mentor_follows`; new enums `content_type`, `reaction_type`, `story_status`, `session_status`, `notification_type`; `is_admin()`/`is_mentor()` security-definer helpers; storage buckets `content-media`, `content-resources`, `session-recordings`, `story-images` with full RLS; trigger `bump_thread_activity` on `forum_posts` insert
 
 ---
 

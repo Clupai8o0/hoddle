@@ -98,7 +98,7 @@ Extended profile for users with `profiles.role = 'mentor'`. One row per mentor.
 | `bio` | `text` | Long-form mentor story, markdown |
 | `expertise` | `text[]` | Tags for matching algorithm (`'academic_writing'`, `'internships'`, etc.) |
 | `hometown` | `text` | Country/city of origin |
-| `current_role` | `text` | Job title and company |
+| `current_position` | `text` | Job title and company |
 | `verified_at` | `timestamptz` | Null until admin verifies. Mentors with null `verified_at` are not surfaced to students. |
 | `accepting_questions` | `boolean` | Default `true` |
 | `created_at` / `updated_at` | `timestamptz` | |

@@ -27,22 +27,14 @@ export function AuthShell({
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col">
         {photoPanelContent ?? (
           <>
-            {/*
-              IMAGE NEEDED — public/images/auth-tram-portrait.webp
-              Prompt:
-                "Close-up portrait of a young international student looking out a
-                rain-dotted window in a Melbourne tram, expression thoughtful and
-                hopeful. Soft reflections of city buildings on the glass. Shot from
-                the shoulder up, tight crop. editorial photography, soft natural light,
-                warm tones, shallow depth of field, shot on 35mm film, slightly
-                desaturated, cream and warm brown palette with cool blue accents,
-                Kinfolk magazine aesthetic, no text overlays, no logos"
-              Alt: "" (decorative — panel is aria-hidden)
-              Export: WebP quality 80, max 200 KB, subject offset to right third
-            */}
-            <div className="absolute inset-0 bg-[linear-gradient(160deg,var(--color-primary)_0%,var(--color-primary-mid)_55%,var(--color-primary-elevated)_80%,var(--color-primary-container)_100%)]" />
-
-            {/* Blue-tint overlay for when real photography is added */}
+            <Image
+              src="/images/auth-tram-portrait.webp"
+              alt=""
+              fill
+              className="object-cover"
+              priority
+            />
+            {/* Branded tint overlay — keeps quote legible over photography */}
             <div className="absolute inset-0 bg-[linear-gradient(135deg,color-mix(in_srgb,var(--color-primary)_45%,transparent)_0%,color-mix(in_srgb,var(--color-primary)_10%,transparent)_100%)]" />
 
             {/* Wordmark */}

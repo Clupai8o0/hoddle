@@ -20,25 +20,25 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 
 See `docs/database-schema.md` for full table definitions, RLS policies, and triggers. Each migration ships with regenerated TypeScript types.
 
-- [ ] Migration: `mentors` table (profile_id PK, headline, bio, expertise[], verified_at, accepting_questions, hometown, current_role)
-- [ ] Migration: `mentor_invites` table (email, token, created_by, accepted_at, expires_at)
-- [ ] Migration: `content_items` table (id, mentor_id, type enum, title, slug, body, video_url, hero_image_url, published_at, view_count)
-- [ ] Migration: `content_resources` table (id, content_item_id, label, file_path, file_size_bytes)
-- [ ] Migration: `content_tags` and `content_item_tags` join table
-- [ ] Migration: `forum_categories` table (slug, name, description, sort_order)
-- [ ] Migration: `forum_threads` table (id, category_id, author_id, title, body, pinned, locked, last_activity_at)
-- [ ] Migration: `forum_posts` table (id, thread_id, author_id, body, parent_post_id, edited_at)
-- [ ] Migration: `forum_reactions` table (post_id, profile_id, reaction enum)
-- [ ] Migration: `success_stories` table (id, author_id, title, body, hero_image_url, milestones[], featured, published_at)
-- [ ] Migration: `live_sessions` table (id, mentor_id, title, description, scheduled_at, duration_minutes, max_attendees, meeting_url, status)
-- [ ] Migration: `session_registrations` table (session_id, profile_id, registered_at, attended)
-- [ ] Migration: `session_questions` table (session_id, profile_id, body, anonymous, answered)
-- [ ] Migration: `notifications` table (id, recipient_id, type, payload jsonb, read_at, created_at)
-- [ ] Migration: `notification_preferences` table (profile_id, email_enabled, in_app_enabled, types_muted[])
-- [ ] Migration: `mentor_recommendations` materialised view or table (profile_id, mentor_id, score, reasoning, computed_at)
-- [ ] Enable RLS on every new table; document each policy in `docs/database-schema.md`
-- [ ] Storage buckets: `content-media` (mentor-uploaded images, public read), `content-resources` (downloadable files, signed URLs), `session-recordings` (private)
-- [ ] Regenerate `lib/supabase/database.types.ts` after each migration batch
+- [x] Migration: `mentors` table (profile_id PK, headline, bio, expertise[], verified_at, accepting_questions, hometown, current_role)
+- [x] Migration: `mentor_invites` table (email, token, created_by, accepted_at, expires_at)
+- [x] Migration: `content_items` table (id, mentor_id, type enum, title, slug, body, video_url, hero_image_url, published_at, view_count)
+- [x] Migration: `content_resources` table (id, content_item_id, label, file_path, file_size_bytes)
+- [x] Migration: `content_tags` and `content_item_tags` join table
+- [x] Migration: `forum_categories` table (slug, name, description, sort_order)
+- [x] Migration: `forum_threads` table (id, category_id, author_id, title, body, pinned, locked, last_activity_at)
+- [x] Migration: `forum_posts` table (id, thread_id, author_id, body, parent_post_id, edited_at)
+- [x] Migration: `forum_reactions` table (post_id, profile_id, reaction enum)
+- [x] Migration: `success_stories` table (id, author_id, title, body, hero_image_url, milestones[], featured, published_at)
+- [x] Migration: `live_sessions` table (id, mentor_id, title, description, scheduled_at, duration_minutes, max_attendees, meeting_url, status)
+- [x] Migration: `session_registrations` table (session_id, profile_id, registered_at, attended)
+- [x] Migration: `session_questions` table (session_id, profile_id, body, anonymous, answered)
+- [x] Migration: `notifications` table (id, recipient_id, type, payload jsonb, read_at, created_at)
+- [x] Migration: `notification_preferences` table (profile_id, email_enabled, in_app_enabled, types_muted[])
+- [x] Migration: `mentor_recommendations` materialised view or table (profile_id, mentor_id, score, reasoning, computed_at)
+- [x] Enable RLS on every new table; document each policy in `docs/database-schema.md`
+- [x] Storage buckets: `content-media` (mentor-uploaded images, public read), `content-resources` (downloadable files, signed URLs), `session-recordings` (private)
+- [x] Regenerate `lib/supabase/database.types.ts` after each migration batch
 
 ## 2. Admin: mentor invitation flow
 
@@ -102,16 +102,16 @@ All prompts are inline in code as `IMAGE NEEDED` comments. Generate with Midjour
       Prompt in code. Hands holding coffee mug, city map on table.
 - [x] `public/images/empty-state-journal.webp` — content library empty state, `app/(app)/dashboard/page.tsx`
       Prompt in code. Open journal on desk, flat white, potted succulent. Overhead shot.
-- [ ] `public/images/empty-state-botanic.webp` — forums empty state, `app/(app)/dashboard/page.tsx`
+- [x] `public/images/empty-state-botanic.webp` — forums empty state, `app/(app)/dashboard/page.tsx`
       Prompt in code. Empty bench, Royal Botanic Gardens Melbourne, dappled sunlight.
-- [ ] `public/images/empty-state-library.webp` — success stories empty state, `app/(app)/dashboard/page.tsx`
+- [x] `public/images/empty-state-library.webp` — success stories empty state, `app/(app)/dashboard/page.tsx`
       Prompt in code. Students at State Library of Victoria reading room timber table.
 
 Post-generation checklist (per `docs/design.md §7`):
-- [ ] Colour grade: highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`
-- [ ] Crop asymmetrically (subjects on editorial thirds)
-- [ ] Export WebP at quality 80 — hero max 200 KB, mentor cards max 80 KB
-- [ ] Replace gradient `<div>` placeholders with `<Image>` (next/image) + correct alt text
+- [x] Colour grade: highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`
+- [x] Crop asymmetrically (subjects on editorial thirds)
+- [x] Export WebP at quality 80 — hero max 200 KB, mentor cards max 80 KB
+- [x] Replace gradient `<div>` placeholders with `<Image>` (next/image) + correct alt text
 
 ## 6. Community forums
 

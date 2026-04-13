@@ -22,8 +22,6 @@ const PLACEHOLDER_MENTORS = [
     university: "Monash University",
     field: "Engineering",
     tagline: "I bombed my first essay. Here's exactly how I turned it around.",
-    gradientFrom: "from-primary-container",
-    gradientTo: "to-surface-container",
   },
   {
     id: "sarah",
@@ -31,8 +29,6 @@ const PLACEHOLDER_MENTORS = [
     university: "University of Melbourne",
     field: "Business",
     tagline: "Time management is the secret weapon nobody tells you about.",
-    gradientFrom: "from-secondary-container",
-    gradientTo: "to-surface-container",
   },
   {
     id: "minh",
@@ -40,8 +36,6 @@ const PLACEHOLDER_MENTORS = [
     university: "RMIT University",
     field: "Information Technology",
     tagline: "Don't wait until graduation to start building your career.",
-    gradientFrom: "from-tertiary-container",
-    gradientTo: "to-surface-container",
   },
 ];
 
@@ -274,21 +268,14 @@ export default async function DashboardPage() {
               className="bg-surface-container-lowest rounded-md overflow-hidden"
               aria-label={`Mentor placeholder: ${mentor.name}`}
             >
-              {/* IMAGE NEEDED
-                  Target path: public/images/mentor-portrait-{mentor.id}.webp
-                  Prompt: Natural headshot of a confident young person in casual smart clothing,
-                  standing against a blurred Melbourne café interior backdrop. Warm smile,
-                  direct eye contact, shoulders slightly angled. Head-and-shoulders crop,
-                  background bokeh. editorial photography, soft natural light, warm tones,
-                  shallow depth of field, shot on 35mm film, slightly desaturated, cream and
-                  warm brown palette with cool blue accents, Kinfolk magazine aesthetic,
-                  no text overlays, no logos
-                  Alt: Portrait of {mentor.name}, mentor at Hoddle Melbourne
-                  Export: WebP quality 80, max 80 KB, asymmetric crop on editorial thirds
-              */}
-              <div
-                className={`h-44 bg-gradient-to-br ${mentor.gradientFrom} ${mentor.gradientTo}`}
-              />
+              <div className="relative h-44">
+                <Image
+                  src={`/images/mentor-portrait-${mentor.id}.webp`}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <div className="p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <Avatar name={mentor.name} size="sm" />
@@ -327,21 +314,14 @@ export default async function DashboardPage() {
         <div className="grid md:grid-cols-3 gap-6">
           {/* Content library */}
           <div className="bg-surface-container-low rounded-md overflow-hidden">
-            {/* IMAGE NEEDED
-                Target path: public/images/empty-state-journal.webp
-                Prompt: An open journal lying on a wooden desk beside a flat white coffee and
-                a small potted succulent. A pen rests on the blank page. Overhead shot, soft
-                morning light from a nearby window. Feeling of calm potential and a fresh start.
-                editorial photography, soft natural light, warm tones, shallow depth of field,
-                shot on 35mm film, slightly desaturated, cream and warm brown palette with
-                cool blue accents, Kinfolk magazine aesthetic, no text overlays, no logos
-                Alt: An open journal on a desk — the content library arrives in Phase 2
-                Export: WebP quality 80, max 80 KB, asymmetric crop on editorial thirds
-            */}
-            <div
-              className="h-36 bg-gradient-to-br from-primary-container to-surface-container-low"
-              aria-hidden="true"
-            />
+            <div className="relative h-36">
+              <Image
+                src="/images/empty-state-journal.webp"
+                alt="An open journal on a desk — the content library arrives in Phase 2"
+                fill
+                className="object-cover"
+              />
+            </div>
             <div className="p-5">
               <Tag variant="muted" className="mb-3">
                 Phase 2
@@ -358,21 +338,14 @@ export default async function DashboardPage() {
 
           {/* Forums */}
           <div className="bg-surface-container-low rounded-md overflow-hidden">
-            {/* IMAGE NEEDED
-                Target path: public/images/empty-state-botanic.webp
-                Prompt: An empty wooden bench in the Royal Botanic Gardens Melbourne, dappled
-                sunlight through eucalyptus canopy, blurred jogger in the far background.
-                Peaceful, inviting, anticipatory. editorial photography, soft natural light,
-                warm tones, shallow depth of field, shot on 35mm film, slightly desaturated,
-                cream and warm brown palette with cool blue accents, Kinfolk magazine aesthetic,
-                no text overlays, no logos
-                Alt: A quiet bench in the Botanic Gardens — the forums arrive in Phase 2
-                Export: WebP quality 80, max 80 KB, asymmetric crop on editorial thirds
-            */}
-            <div
-              className="h-36 bg-gradient-to-br from-secondary-container to-surface-container-low"
-              aria-hidden="true"
-            />
+            <div className="relative h-36">
+              <Image
+                src="/images/empty-state-botanic.webp"
+                alt="A quiet bench in the Botanic Gardens — the forums arrive in Phase 2"
+                fill
+                className="object-cover"
+              />
+            </div>
             <div className="p-5">
               <Tag variant="muted" className="mb-3">
                 Phase 2
@@ -389,21 +362,14 @@ export default async function DashboardPage() {
 
           {/* Success stories */}
           <div className="bg-surface-container-low rounded-md overflow-hidden">
-            {/* IMAGE NEEDED
-                Target path: public/images/empty-state-library.webp
-                Prompt: A diverse group of three university students studying together at a long
-                timber table in the State Library of Victoria reading room. Warm overhead
-                light, stacks of books, one student pointing at a notebook while the others
-                lean in. editorial photography, soft natural light, warm tones, shallow depth
-                of field, shot on 35mm film, slightly desaturated, cream and warm brown palette
-                with cool blue accents, Kinfolk magazine aesthetic, no text overlays, no logos
-                Alt: Students at the State Library — success stories arrive in Phase 2
-                Export: WebP quality 80, max 80 KB, asymmetric crop on editorial thirds
-            */}
-            <div
-              className="h-36 bg-gradient-to-br from-tertiary-container to-surface-container-low"
-              aria-hidden="true"
-            />
+            <div className="relative h-36">
+              <Image
+                src="/images/empty-state-library.webp"
+                alt="Students at the State Library — success stories arrive in Phase 2"
+                fill
+                className="object-cover"
+              />
+            </div>
             <div className="p-5">
               <Tag variant="muted" className="mb-3">
                 Phase 2

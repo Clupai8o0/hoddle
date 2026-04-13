@@ -158,31 +158,16 @@ export default function HomePage() {
 
             {/* Photo panel (editorial placeholder) */}
             <div className="lg:col-span-5 relative">
-              {/*
-                IMAGE NEEDED — public/images/hero-laneway-cafe.webp
-                Prompt:
-                  "A young international university student sitting in a sunlit Melbourne
-                  laneway café, laptop open, smiling warmly, surrounded by exposed brick
-                  and trailing greenery. Morning golden hour light filtering through the
-                  gap between buildings. editorial photography, soft natural light, warm
-                  tones, shallow depth of field, shot on 35mm film, slightly desaturated,
-                  cream and warm brown palette with cool blue accents, Kinfolk magazine
-                  aesthetic, no text overlays, no logos"
-                Alt text: "A student working at a Melbourne laneway café"
-                Export: WebP quality 80, max 200 KB, asymmetric crop (subject on left third)
-              */}
               <div
                 className="relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/5] rotate-1 shadow-[0_24px_64px_rgba(0,24,66,0.18)]"
-                aria-hidden="true"
               >
-                <div className="absolute inset-0 bg-[linear-gradient(160deg,var(--color-primary)_0%,var(--color-primary-mid)_50%,var(--color-primary-container)_100%)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,24,66,0.15)_0%,transparent_60%)]" />
-                {/* Placeholder caption overlay */}
-                <div className="absolute bottom-0 inset-x-0 p-8 bg-[linear-gradient(to_top,rgba(0,24,66,0.6),transparent)]">
-                  <p className="font-display italic text-on-primary/90 text-lg font-light leading-snug">
-                    &ldquo;Melbourne Central Campus — connect where you study.&rdquo;
-                  </p>
-                </div>
+                <Image
+                  src="/images/hero-laneway-cafe.webp"
+                  alt="A student working at a Melbourne laneway café"
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
 
               {/* Floating credential card */}
@@ -336,24 +321,13 @@ export default function HomePage() {
                   key={mentor.id}
                   className="group bg-surface-container-lowest rounded-[var(--radius-md)] overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-ambient)] hover:-translate-y-1"
                 >
-                  {/*
-                    IMAGE NEEDED — public/images/mentor-portrait-{mentor.id}.webp
-                    Prompt (personalise [man/woman] and origin per mentor):
-                      "Natural headshot of a confident young [man/woman] in casual smart
-                      clothing, standing against a blurred Melbourne café interior backdrop.
-                      Warm smile, direct eye contact, shoulders slightly angled. Head-and-
-                      shoulders crop, background bokeh. editorial photography, soft natural
-                      light, warm tones, shallow depth of field, shot on 35mm film, slightly
-                      desaturated, cream and warm brown palette with cool blue accents,
-                      Kinfolk magazine aesthetic, no text overlays, no logos"
-                    Alt text: "{mentor.name}, mentor at {mentor.university}"
-                    Export: WebP quality 80, max 80 KB
-                  */}
-                  <div
-                    className={`relative aspect-[4/3] bg-gradient-to-br ${mentor.gradient} overflow-hidden`}
-                    aria-hidden="true"
-                  >
-                    <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,24,66,0.08),transparent)]" />
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={`/images/mentor-portrait-${mentor.id}.webp`}
+                      alt={`${mentor.name}, mentor at ${mentor.university}`}
+                      fill
+                      className="object-cover"
+                    />
                     {/* Origin tag */}
                     <div className="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full">
                       <span className="font-body text-xs font-semibold text-primary">
