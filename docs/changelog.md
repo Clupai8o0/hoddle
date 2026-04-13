@@ -11,6 +11,17 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 ## [Unreleased]
 
 ### Added
+- `middleware.ts` — session refresh on every request; protects `/dashboard` and `/onboarding`; redirects away from `/login`/`/signup` when already authenticated.
+- `app/api/auth/callback/route.ts` — exchanges PKCE code for session, routes first-time users to `/onboarding` and returning users to `/dashboard`.
+- `lib/actions/auth.ts` — `sendMagicLink` server action (Supabase `signInWithOtp`).
+- `lib/validation/onboarding.ts` — Zod schemas for all 5 onboarding steps plus `GOALS`, `CHALLENGES`, `FIELDS_OF_INTEREST`, `UNIVERSITIES`, and `COUNTRIES` constants.
+- `lib/actions/onboarding.ts` — `submitOnboarding` server action; validates, updates `profiles`, and upserts `onboarding_responses`.
+- `components/layout/auth-shell.tsx` — split-screen auth layout (editorial gradient panel + form panel).
+- `app/(auth)/login/page.tsx` — email magic-link login with post-send "check your inbox" state.
+- `app/(auth)/signup/page.tsx` — email magic-link signup with editorial copy.
+- `app/(auth)/onboarding/page.tsx` — 5-step onboarding wizard: name, background, goals, challenges, fields of interest; chip multi-select for steps 3–5.
+- `app/(app)/layout.tsx` — server-side auth guard; redirects to `/login` if no session, `/onboarding` if not yet onboarded.
+- `app/(app)/dashboard/page.tsx` — placeholder dashboard (full implementation in §5).
 - Design system primitives: `Button` (primary/secondary/hero/ghost), `Input`, `Textarea`, `Card` (with sub-components), `Tag`, `ProgressPill`, `Avatar`, `Container`, `SectionDivider`, `GlassNav` + `NavLink`.
 - `lib/utils/cn.ts` — clsx + tailwind-merge composition utility.
 - Smoke test page at `/dev/components` rendering every primitive against the Hoddle token set.

@@ -43,21 +43,20 @@ Format: `- [ ] task` for pending, `- [x] task` for done. Move completed items to
 
 ## 3. Auth + onboarding flow
 
-- [ ] Signup page — email magic link flow, editorial layout, photography hero
-- [ ] Login page — same magic link flow
-- [ ] Auth callback route handler at `app/auth/callback/route.ts`
-- [ ] Middleware for session refresh across RSCs (`middleware.ts`)
-- [ ] Protected route helper: redirect to `/login` if no session on `(app)` group
-- [ ] Onboarding wizard — 5–7 question flow capturing background, goals, challenges
-  - [ ] Step 1: Welcome + name
-  - [ ] Step 2: Where are you from + which university
-  - [ ] Step 3: What are your top 3 goals (multi-select)
-  - [ ] Step 4: What are your biggest challenges (multi-select)
-  - [ ] Step 5: Fields of interest (multi-select)
-  - [ ] Review + submit → writes to `onboarding_responses`
-- [ ] Zod schemas for each step in `lib/validation/onboarding.ts`
-- [ ] Server action: `submitOnboarding` with `{ ok, data | error }` return shape
-- [ ] Redirect post-onboarding to `/dashboard`
+- [x] Signup page — email magic link flow, editorial layout, photography hero
+- [x] Login page — same magic link flow
+- [x] Auth callback route handler at `app/api/auth/callback/route.ts`
+- [x] Middleware for session refresh across RSCs (`middleware.ts`)
+- [x] Protected route helper: redirect to `/login` if no session on `(app)` group
+- [x] Onboarding wizard — 5-step flow capturing background, goals, challenges
+  - [x] Step 1: Welcome + name
+  - [x] Step 2: Where are you from + which university
+  - [x] Step 3: What are your top 3 goals (multi-select chips)
+  - [x] Step 4: What are your biggest challenges (multi-select chips)
+  - [x] Step 5: Fields of interest + submit
+- [x] Zod schemas for each step in `lib/validation/onboarding.ts`
+- [x] Server action: `submitOnboarding` with `{ ok, data | error }` return shape
+- [x] Redirect post-onboarding to `/dashboard`
 
 ## 4. Landing page (`app/(marketing)/page.tsx`)
 
