@@ -19,11 +19,14 @@ export default async function AppLayout({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("onboarded_at, full_name, avatar_url")
+    .select("onboarded_at, full_name, avatar_url, role")
     .eq("id", user.id)
     .single();
 
   if (!profile?.onboarded_at) {
+    if (profile?.role === "mentor") {
+      redirect("/mentor-onboarding");
+    }
     redirect("/onboarding");
   }
 
