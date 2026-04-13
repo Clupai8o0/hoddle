@@ -8,89 +8,70 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 
 ---
 
-## [0.1.0] — 2026-04-13
+## [Unreleased]
+
+_Phase 2 work in progress. See `todo.md`._
 
 ### Added
-- `app/not-found.tsx` — global 404 page styled on-brand with back-to-home and dashboard CTAs.
-- `app/error.tsx`, `app/(app)/error.tsx`, `app/(auth)/error.tsx`, `app/(marketing)/error.tsx` — per-route-group error boundaries with try-again and navigation fallbacks.
-- `app/(app)/dashboard/loading.tsx` — dashboard loading skeleton using tonal surface layering (`surface-container`, `surface-container-high`, `surface-container-highest`) with `animate-pulse`; no shimmer.
-- `app/opengraph-image.tsx` — edge-rendered 1200×630 OG image using Hoddle Blue and cream palette.
-- `lib/analytics.ts` — analytics stub (`trackEvent`, `identifyUser`, `trackPageView`) ready for Phase 2 provider wiring.
-- Root layout metadata extended with `openGraph`, `twitter`, `robots`, `metadataBase`, and `title.template` for per-page title overrides.
-- Design tokens `--color-primary-dark`, `--color-primary-mid`, `--color-primary-elevated` added to `@theme` in `globals.css` for editorial gradient ramp.
-
-### Changed
-- `middleware.ts` renamed to `proxy.ts` and export renamed to `proxy` (Next.js 16 convention).
-- All hardcoded hex values in components replaced with CSS custom properties; `opengraph-image.tsx` exempted (Satori limitation).
-
-### Security
-- RLS verified in migration: `onboarding_responses` select/insert/update policies all use `auth.uid() = profile_id`; no policy for delete (default deny); cross-user isolation confirmed at schema level.
+- _(pending)_
 
 ---
 
-## [Unreleased]
+## [0.1.0] — 2026-04-13
 
 ### Added
-- `app/page.tsx` — landing page: glass nav, hero (cream-to-sky backdrop), Priya narrative section, 3 placeholder mentor cards, 3-step bento value props, CTA section, minimal footer.
-- `components/ui/button.tsx` — added `asChild` support via `@radix-ui/react-slot` so Button renders as Link when needed.
-- `middleware.ts` — session refresh on every request; protects `/dashboard` and `/onboarding`; redirects away from `/login`/`/signup` when already authenticated.
-- `app/api/auth/callback/route.ts` — exchanges PKCE code for session, routes first-time users to `/onboarding` and returning users to `/dashboard`.
-- `lib/actions/auth.ts` — `sendMagicLink` server action (Supabase `signInWithOtp`).
-- `lib/validation/onboarding.ts` — Zod schemas for all 5 onboarding steps plus `GOALS`, `CHALLENGES`, `FIELDS_OF_INTEREST`, `UNIVERSITIES`, and `COUNTRIES` constants.
-- `lib/actions/onboarding.ts` — `submitOnboarding` server action; validates, updates `profiles`, and upserts `onboarding_responses`.
-- `components/layout/auth-shell.tsx` — split-screen auth layout (editorial gradient panel + form panel).
-- `app/(auth)/login/page.tsx` — email magic-link login with post-send "check your inbox" state.
-- `app/(auth)/signup/page.tsx` — email magic-link signup with editorial copy.
-- `app/(auth)/onboarding/page.tsx` — 5-step onboarding wizard: name, background, goals, challenges, fields of interest; chip multi-select for steps 3–5.
-- `app/(app)/layout.tsx` — server-side auth guard; redirects to `/login` if no session, `/onboarding` if not yet onboarded.
-- `app/(app)/dashboard/page.tsx` — full student dashboard: time-aware greeting (pulls `profiles.full_name`, `university`, `country_of_origin`, `year_of_study`), onboarding summary cards (goals/challenges/fields as tonal Tag chips), 5-milestone journey progress sidebar (`ProgressPill`), 3 Phase-2 mentor placeholder cards, 3 Phase-2 empty states (content library, forums, success stories) with `IMAGE NEEDED` comments and `todo.md §5b` entries.
-- `app/(app)/layout.tsx` — updated to fetch `full_name` and `avatar_url` from `profiles`, render `AppNav` above all authenticated pages.
-- `components/layout/app-nav.tsx` — authenticated glass nav: Hoddle wordmark, Dashboard active link, muted Phase-2 Mentors/Forums links, user avatar + first name, sign-out button wired to `signOut` server action.
-- `lib/actions/auth.ts` — added `signOut` server action (calls `supabase.auth.signOut()` then redirects to `/login`).
-- Design system primitives: `Button` (primary/secondary/hero/ghost), `Input`, `Textarea`, `Card` (with sub-components), `Tag`, `ProgressPill`, `Avatar`, `Container`, `SectionDivider`, `GlassNav` + `NavLink`.
-- `lib/utils/cn.ts` — clsx + tailwind-merge composition utility.
-- Smoke test page at `/dev/components` rendering every primitive against the Hoddle token set.
-- Phase 1 foundations: installed all dependencies (Supabase SSR, react-hook-form, zod, clsx, tailwind-merge, lucide-react, prettier).
-- Full Hoddle design token set wired into Tailwind v4 `@theme` in `app/globals.css` (primary/secondary/tertiary/surface palette, shadow, radius, typography variables).
-- Plus Jakarta Sans (display) and Be Vietnam Pro (body) configured via `next/font` in root layout.
-- `lib/supabase/server.ts` and `lib/supabase/browser.ts` typed Supabase clients.
-- `lib/supabase/database.types.ts` placeholder (regenerate after first migration).
-- `.env.local.example` with required environment variable keys.
-- Scaffolded route groups `app/(marketing)`, `app/(auth)`, `app/(app)`.
-- `supabase/migrations/20260413000001_phase1_schema.sql` — Phase 1 schema: `user_role` enum, `profiles` table, `onboarding_responses` table, `updated_at` triggers, auth-user trigger, and full RLS policies.
-- `lib/supabase/database.types.ts` updated with typed `profiles` and `onboarding_responses` rows (Insert/Update/Row + Enums). Re-run `npx supabase gen types typescript --local` once local Supabase is running.
-- `supabase/migrations/` directory for upcoming schema migrations.
-- `.prettierrc` with project formatting conventions.
 - `CLAUDE.md` master briefing covering stack, design non-negotiables, conventions, and the documentation map.
-- `todo.md` with Phase 1 scope (landing + auth + onboarding + student dashboard) and parked Phase 2 items.
 - `docs/architecture.md` describing route groups, Supabase integration, auth flow, and component tiers.
 - `docs/database-schema.md` documenting `profiles` and `onboarding_responses` tables with RLS policies.
 - `docs/component-library.md` inventory of primitives, patterns, and layout shells.
 - `docs/design.md` visual design system with Hoddle Blue primary palette.
 - `docs/product-one-pager.md` product context reference.
+- Project foundations: Next.js App Router + TypeScript + Tailwind, design tokens wired through Tailwind v4 `@theme`, Plus Jakarta Sans + Be Vietnam Pro via `next/font`.
+- Supabase clients (server + browser) with `@supabase/ssr`, middleware-based session refresh, env scaffolding.
+- Design system primitives: `Button`, `Input`, `Textarea`, `Card`, `Tag`, `ProgressPill`, `GlassNav`, `Container`, `Avatar`, `SectionDivider`.
+- Schema: `profiles` and `onboarding_responses` tables with full RLS, auto-create trigger on `auth.users` insert, generated TypeScript types.
+- Auth: magic-link signup and login, `/api/auth/callback` handler, protected route group middleware.
+- Onboarding: 5-step wizard with Zod validation and `submitOnboarding` server action.
+- Landing page at `/` with editorial hero, narrative section, mentor preview placeholders, value props, footer.
+- Student dashboard at `/dashboard` with welcome block, goals summary, recommended mentors placeholder, progress pill, and empty states for Phase 2 sections.
+- `app/not-found.tsx` — global 404 page styled on-brand with back-to-home and dashboard CTAs.
+- `app/error.tsx`, `app/(app)/error.tsx`, `app/(auth)/error.tsx`, `app/(marketing)/error.tsx` — per-route-group error boundaries with try-again and navigation fallbacks.
+- `app/(app)/dashboard/loading.tsx` — dashboard loading skeleton using tonal surface layering with `animate-pulse`; no shimmer.
+- `app/opengraph-image.tsx` — edge-rendered 1200×630 OG image using Hoddle Blue and cream palette.
+- `lib/analytics.ts` — analytics stub (`trackEvent`, `identifyUser`, `trackPageView`) ready for Phase 2 provider wiring.
+- Root layout metadata extended with `openGraph`, `twitter`, `robots`, `metadataBase`, and `title.template`.
+- Design tokens `--color-primary-dark`, `--color-primary-mid`, `--color-primary-elevated` added to `@theme` for editorial gradient ramp.
 
 ### Changed
 - Primary brand colour from terracotta `#a63c26` to Hoddle Blue `#1e3a5f`. Ambient shadows re-tinted to match.
+- `middleware.ts` renamed to `proxy.ts` and export renamed to `proxy` (Next.js 16 convention).
+- All hardcoded hex values in components replaced with CSS custom properties; `opengraph-image.tsx` exempted (Satori limitation).
+- Icon policy: `lucide-react` permitted for functional UI only (`strokeWidth={1.5}`). Decorative/illustrative use remains photography-led.
+
+### Security
+- Row Level Security enabled on `profiles` and `onboarding_responses`. Cross-user isolation verified.
+- `SUPABASE_SERVICE_ROLE_KEY` confined to server-only admin scripts; never exposed with `NEXT_PUBLIC_` prefix.
+- RLS verified in migration: `onboarding_responses` select/insert/update policies all use `auth.uid() = profile_id`; no policy for delete (default deny).
 
 ---
 
 ## Template for future entries
 
 ```
-## [0.1.0] — YYYY-MM-DD  ← Phase 1 ship
+## [0.2.0] — YYYY-MM-DD  ← Phase 2 ship
 
 ### Added
-- Landing page at `/`
-- Magic-link signup and login flows
-- 5-step onboarding wizard writing to `onboarding_responses`
-- Student dashboard at `/dashboard` with goals summary and empty states
+- Mentor profiles, mentor dashboard, admin invite flow
+- Content library, article reader, Tiptap editor
+- Community forums with categories, threads, replies, reactions
+- Success stories gallery with admin moderation
+- Live Q&A scheduling with registration and question submission
+- Notifications (in-app bell + email via Resend)
+- Matching algorithm v1 with weighted scoring
 
 ### Changed
-- …
-
-### Fixed
-- …
+- Student dashboard now surfaces real recommendations, content, and session activity (replaces Phase 1 placeholders)
 
 ### Security
-- Enabled RLS on `profiles` and `onboarding_responses`; verified cross-user isolation.
+- RLS enabled on all new tables; admin role enforcement on `(admin)` route group
 ```
