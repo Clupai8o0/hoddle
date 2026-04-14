@@ -4,33 +4,33 @@
   /* ── Primary — Hoddle Blue ── */
   --color-primary: #001842;
   --color-primary-container: #dbe5f1;
-  --color-on-primary: #fef8f1;
+  --color-on-primary: #f5f7fa;
   --color-on-primary-container: #142845;
 
   /* ── Secondary — Botanical Green (mentor & success) ── */
   --color-secondary: #2d6a4f;
   --color-secondary-container: #dbeee2;
-  --color-on-secondary: #fef8f1;
+  --color-on-secondary: #f5f7fa;
   --color-on-secondary-container: #1a3d2e;
 
-  /* ── Tertiary — Encouragement Gold (focus & highlights) ── */
-  --color-tertiary: #b8860b;
-  --color-tertiary-container: #f5e6b8;
-  --color-on-tertiary: #fef8f1;
-  --color-on-tertiary-container: #6b4d00;
+  /* ── Tertiary — Focus Blue (input focus rings & editorial accents) ── */
+  --color-tertiary: #1d6fd6;
+  --color-tertiary-container: #d0e4f8;
+  --color-on-tertiary: #f5f7fa;
+  --color-on-tertiary-container: #0a2d5e;
 
-  /* ── Surface — Warm Cream Foundation ── */
-  --color-surface: #fef8f1;
-  --color-surface-container-lowest: #fffdf8;
-  --color-surface-container-low: #f9f3eb;
-  --color-surface-container: #f3ede4;
-  --color-surface-container-high: #eee7dd;
-  --color-surface-container-highest: #e8e2d7;
+  /* ── Surface — Cool Gray Foundation ── */
+  --color-surface: #f5f7fa;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eef1f6;
+  --color-surface-container: #e5e9f0;
+  --color-surface-container-high: #dbe0ea;
+  --color-surface-container-highest: #d0d6e3;
 
   /* ── Text & On-Surface ── */
-  --color-on-surface: #2a2620;
-  --color-on-surface-variant: #635f56;
-  --color-outline-variant: rgba(42, 38, 32, 0.15);
+  --color-on-surface: #1a2035;
+  --color-on-surface-variant: #5a6275;
+  --color-outline-variant: rgba(0, 24, 66, 0.12);
 
   /* ── Primary tonal ramp — editorial gradients only ── */
   --color-primary-dark: #001228;
@@ -56,8 +56,8 @@
 @layer base {
   html {
     font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-    background-color: #fef8f1;
-    color: #2a2620;
+    background-color: #f5f7fa;
+    color: #1a2035;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

@@ -10,39 +10,41 @@ To break the "standard template" look, we use **intentional asymmetry**. Layouts
 
 ---
 
-## 2. Colors: Editorial Blue on Warm Cream
+## 2. Colors: Editorial Blue on Cool Gray
 
-The palette pairs a **deep editorial blue** — evoking trust, focus, and the calm of a late-night library — with the warm cream tones of Melbourne's coffee culture. Blue replaces the previous terracotta as the primary brand colour, but the warm, organic surface family is preserved. This tension between cool-blue hierarchy and warm-cream foundation is the signature of Hoddle.
+The palette is built entirely in the blue-gray family — a deliberate choice to eliminate visual warmth that competes with the Hoddle Blue brand color. Every surface, text tone, and container shade is derived from the same cool-blue axis. The result is a cohesive, restful system that feels clean and focused without the clinical harshness of pure white and black.
 
 ### The Color Logic
 
 **Primary — "Hoddle Blue"**
 - `primary` — `#001842` — Deep editorial navy. Used for primary actions, headlines, logo, and high-impact moments. Represents trust and mentor wisdom.
 - `primary-container` — `#dbe5f1` — Soft powder blue. Used for primary tag backgrounds, selected states, and container fills.
-- `on-primary` — `#fef8f1` — Cream text on blue (never pure white).
+- `on-primary` — `#f5f7fa` — Cool off-white text on blue (never pure white).
 - `on-primary-container` — `#142845` — Deepest ink blue for text on powder blue.
 
 **Secondary — "Botanical Green"** (mentor & success accent)
 - `secondary` — `#2d6a4f` — Reserved for trust-building elements, success states, verified-mentor badges, and progress fills.
 - `secondary-container` — `#dbeee2`
-- `on-secondary` — `#fef8f1`
+- `on-secondary` — `#f5f7fa`
 
-**Tertiary — "Encouragement Gold"** (focus states & highlights)
-- `tertiary` — `#b8860b` — Warm gold used for input focus rings and editorial accents.
-- `tertiary-container` — `#f5e6b8`
+**Tertiary — "Focus Blue"** (interactive highlights & focus states)
+- `tertiary` — `#1d6fd6` — Medium cornflower blue used for input focus rings, links, and interactive accents. Stays in the blue family — no warm tones.
+- `tertiary-container` — `#d0e4f8` — Pale sky blue for highlighted containers.
+- `on-tertiary` — `#f5f7fa`
+- `on-tertiary-container` — `#0a2d5e`
 
-**Surface & Background** (the cream foundation — do not change)
-- `surface` — `#fef8f1` — Soft, buttery off-white. The foundation. **Never use `#ffffff` for backgrounds.**
-- `surface-container-lowest` — `#fffdf8` — Brightest "paper" for top-layer content cards.
-- `surface-container-low` — `#f9f3eb`
-- `surface-container` — `#f3ede4`
-- `surface-container-high` — `#eee7dd`
-- `surface-container-highest` — `#e8e2d7` — Used for inset sections and secondary button fills.
+**Surface & Background** (the cool gray foundation — do not change)
+- `surface` — `#f5f7fa` — Cool off-white. The foundation. **Never use `#ffffff` for backgrounds.**
+- `surface-container-lowest` — `#ffffff` — Pure white for top-layer content cards where maximum contrast is needed.
+- `surface-container-low` — `#eef1f6`
+- `surface-container` — `#e5e9f0`
+- `surface-container-high` — `#dbe0ea`
+- `surface-container-highest` — `#d0d6e3` — Used for inset sections and secondary button fills.
 
 **Text & On-Surface**
-- `on-surface` — `#2a2620` — Soft warm black. **Never use `#000000` for text.**
-- `on-surface-variant` — `#635f56` — Secondary text, captions, metadata.
-- `outline-variant` — `rgba(42, 38, 32, 0.15)` — Ghost borders only when accessibility demands it.
+- `on-surface` — `#1a2035` — Deep blue-black. **Never use `#000000` for text.**
+- `on-surface-variant` — `#5a6275` — Secondary text, captions, metadata.
+- `outline-variant` — `rgba(0, 24, 66, 0.12)` — Ghost borders only when accessibility demands it.
 
 ### The "No-Line" Rule
 
@@ -53,11 +55,11 @@ Prohibit 1px solid borders for sectioning. Structural boundaries must be defined
 ### Signature Textures & Glass
 
 **Glassmorphism** is used for floating navigation bars and overlay cards to create layered depth.
-- **The Glass Recipe:** `surface` at 70% opacity with `backdrop-filter: blur(20px)`. This lets warm photography bleed through cool-blue navigation, creating the signature tension of the brand.
+- **The Glass Recipe:** `surface` (`#f5f7fa`) at 70% opacity with `backdrop-filter: blur(20px)`. The cool-blue tint of the surface naturally reinforces the brand while allowing photography to bleed through.
 
 **Signature Gradient (Hero CTAs & brand moments):**
 - Linear gradient `135deg` from `primary` (`#001842`) → `#1e3a5f` (a lifted mid-blue).
-- For soft hero backdrops, layer `primary-container` (`#dbe5f1`) → `surface` (`#fef8f1`) at `160deg` — this is the signature "cream-to-sky" wash unique to Hoddle.
+- For soft hero backdrops, layer `primary-container` (`#dbe5f1`) → `surface` (`#f5f7fa`) at `160deg` — a sky-to-atmosphere wash that anchors every page to the blue axis.
 
 ---
 
@@ -71,7 +73,7 @@ We pair a characterful modern sans-serif for headings with a clean, legible sans
 **Editorial Tips:**
 - Use **hanging punctuation** and wide letter-spacing (tracking `0.12em`) for uppercase `label-md` to create a premium, curated feel.
 - Headlines should sit in `primary` (`#001842`), not pure black — this reinforces brand voice at every scroll.
-- Body copy in `on-surface` (`#2a2620`) for maximum readability on cream backgrounds.
+- Body copy in `on-surface` (`#1a2035`) for maximum readability on the cool-gray surface.
 
 ---
 
@@ -119,7 +121,7 @@ Substantial and encouraging — never thin or clinical.
 ### Input Fields
 - Min height 56px.
 - Background `surface-container-low`.
-- Focus state: 2px `outline` using `tertiary` (gold `#b8860b`) — "warm encouragement," not system alert.
+- Focus state: 2px `outline` using `tertiary` (blue `#1d6fd6`) — stays in the blue family, clearly interactive without reading as an alert.
 - Error state: `#8b2e2e` (deep warm red, never bright red).
 
 ### Navigation
@@ -138,16 +140,17 @@ Substantial and encouraging — never thin or clinical.
 - Use asymmetrical margins — if the left margin is 80px, try 120px on the right for editorial layouts.
 - Lean heavily on photography of students in Melbourne environments (cafés, laneways, libraries, Yarra-side parks).
 - Use blue-tinted "surface tint" overlays on photos to ensure text readability while reinforcing brand colour.
-- Let the warm cream foundation do the heavy emotional work — blue is for hierarchy, cream is for hospitality.
+- Let the cool-gray surface family carry the breathing room — blue is for hierarchy, gray is for calm.
 
 **Don't:**
 - Don't decorate with icons. Icons are functional UI only — nav items, form controls, menu toggles, close buttons. Use `lucide-react` at `strokeWidth={1.5}` in `on-surface-variant` or `primary`. For illustrative or emotional moments (hero visuals, empty states, mentor context), use cropped photography — never an icon.
-- Don't use pure black (`#000000`) for text. Use `on-surface` (`#2a2620`).
-- Don't use pure white (`#ffffff`) for backgrounds. Always use `surface` (`#fef8f1`).
-- Don't use bright or electric blue (`#0066ff`, `#1e90ff`). Hoddle blue is always deep, desaturated, and editorial.
+- Don't use pure black (`#000000`) for text. Use `on-surface` (`#1a2035`).
+- Don't use pure white (`#ffffff`) for page backgrounds. Always use `surface` (`#f5f7fa`). White (`#ffffff`) is reserved for `surface-container-lowest` — top-layer cards only.
+- Don't use warm or orange-tinted colors anywhere. The entire palette lives on the blue-gray axis. Warm tones fight the Hoddle Blue brand color.
+- Don't use bright or electric blue (`#0066ff`, `#1e90ff`). Hoddle blue is always deep, desaturated, and editorial. `tertiary` (`#1d6fd6`) is the lightest permissible blue.
 - Don't use default CSS drop shadows — if a shadow looks standard, it is too heavy. Tint it with the primary blue and diffuse it.
 - Don't use grid-based dividers. If separation is needed, use 48px or 64px of whitespace.
-- Don't let blue dominate surface area. It should appear as *punctuation* — headlines, CTAs, key actions — against the cream foundation.
+- Don't let blue dominate surface area. It should appear as *punctuation* — headlines, CTAs, key actions — against the cool-gray foundation.
 
 ---
 
@@ -160,9 +163,9 @@ Hoddle uses photography — not icons or illustrations — for all hero visuals,
 Append these to **every** prompt below to maintain visual consistency:
 
 ```
-editorial photography, soft natural light, warm tones, shallow depth of field,
-shot on 35mm film, slightly desaturated, cream and warm brown palette with
-cool blue accents, Kinfolk magazine aesthetic, no text overlays, no logos
+editorial photography, soft natural light, cool tones, shallow depth of field,
+shot on 35mm film, slightly desaturated, blue-gray and white palette with
+deep navy accents, Kinfolk magazine aesthetic, no text overlays, no logos
 ```
 
 ### Prompt library
@@ -266,9 +269,9 @@ warm amber at the horizon. No people, no text. [append general style modifiers]
 
 After generating, apply the following before placing in `/public/images`:
 
-1. **Colour grade** — shift highlights toward cream (`#fef8f1`) and shadows toward Hoddle Blue (`#001842`). The image should feel like it already lives on the cream surface.
+1. **Colour grade** — shift highlights toward cool off-white (`#f5f7fa`) and shadows toward Hoddle Blue (`#001842`). The image should feel like it already lives on the cool-gray surface.
 2. **Crop asymmetrically** — avoid perfectly centred subjects. Subjects should sit on editorial thirds, leaving breathing room.
-3. **Blue-tint overlay** — for images that will have text overlaid, add a `linear-gradient(135deg, rgba(30,58,95,0.35), rgba(30,58,95,0.10))` in CSS rather than baking it into the image. This keeps the brand tension between warm photo and cool overlay.
+3. **Blue-tint overlay** — for images that will have text overlaid, add a `linear-gradient(135deg, rgba(30,58,95,0.35), rgba(30,58,95,0.10))` in CSS rather than baking it into the image. This unifies the photo with the blue-gray palette.
 4. **Export** — WebP at quality 80 for inline images, AVIF where browser support allows. Keep file sizes under 200KB for hero images, under 80KB for cards.
 5. **Name** — `kebab-case` describing the scene: `hero-laneway-cafe.webp`, `mentor-portrait-01.webp`, `empty-state-journal.webp`.
 

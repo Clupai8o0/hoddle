@@ -32,29 +32,29 @@ export function sessionReminderHtml(data: SessionReminderData): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#fef8f1;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#fef8f1;padding:40px 16px;">
+<body style="margin:0;padding:0;background:#f5f7fa;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fa;padding:40px 16px;">
     <tr><td align="center">
       <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
 
         <!-- Header -->
         <tr>
           <td style="background:#001842;border-radius:16px 16px 0 0;padding:28px 36px;">
-            <p style="margin:0;font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#fef8f1;letter-spacing:-0.02em;">Hoddle</p>
+            <p style="margin:0;font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#f5f7fa;letter-spacing:-0.02em;">Hoddle</p>
           </td>
         </tr>
 
         <!-- Body -->
         <tr>
-          <td style="background:#fef8f1;padding:36px 36px 28px;border-radius:0 0 16px 16px;box-shadow:0 12px 40px rgba(0,24,66,0.08);">
+          <td style="background:#f5f7fa;padding:36px 36px 28px;border-radius:0 0 16px 16px;box-shadow:0 12px 40px rgba(0,24,66,0.08);">
             <p style="margin:0 0 8px;font-family:'Be Vietnam Pro',sans-serif;font-size:12px;color:#2d6a4f;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">Session reminder</p>
-            <h1 style="margin:0 0 8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:#2a2620;line-height:1.2;">Your session is tomorrow</h1>
+            <h1 style="margin:0 0 8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:#1a2035;line-height:1.2;">Your session is tomorrow</h1>
             <p style="margin:0 0 28px;font-family:'Be Vietnam Pro',sans-serif;font-size:16px;color:#6b7280;">Hi ${data.attendeeName}, just a reminder about your upcoming Q&amp;A with ${data.mentorName}.</p>
 
             <!-- Session card -->
-            <div style="border:1.5px solid #e8e0d6;border-radius:12px;padding:20px 24px;margin-bottom:24px;">
-              <p style="margin:0 0 6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#2a2620;">${data.sessionTitle}</p>
-              <p style="margin:0 0 4px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#6b7280;">with <strong style="color:#2a2620;">${data.mentorName}</strong></p>
+            <div style="border:1.5px solid #dbe0ea;border-radius:12px;padding:20px 24px;margin-bottom:24px;">
+              <p style="margin:0 0 6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#1a2035;">${data.sessionTitle}</p>
+              <p style="margin:0 0 4px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#6b7280;">with <strong style="color:#1a2035;">${data.mentorName}</strong></p>
               <p style="margin:8px 0 0;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#001842;font-weight:600;">${dateStr} · ${data.durationMinutes} min</p>
             </div>
 

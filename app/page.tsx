@@ -69,6 +69,7 @@ export default async function HomePage() {
             <NavLink href="/forums">Forums</NavLink>
             <NavLink href="/stories">Stories</NavLink>
             <NavLink href="/sessions">Sessions</NavLink>
+            <NavLink href="/apply">Apply as mentor</NavLink>
           </>
         }
         actions={
@@ -497,20 +498,20 @@ export default async function HomePage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[
                     {
-                      title: "Weekly Live Q&As",
-                      desc: "Real-time advice from industry grads.",
+                      title: "Live Q&A Sessions",
+                      desc: "Register for mentor sessions and submit questions in advance.",
                     },
                     {
-                      title: "Resource Library",
-                      desc: "Essay guides & internship templates.",
+                      title: "Content Library",
+                      desc: "Articles, videos, and downloadable resources from verified mentors.",
                     },
                     {
                       title: "Community Forums",
-                      desc: "Find peers facing the same challenges.",
+                      desc: "Five categories covering academics, careers, and life in Melbourne.",
                     },
                     {
                       title: "Success Stories",
-                      desc: "Real wins from real students.",
+                      desc: "Real wins from real students — submit your own when you're ready.",
                     },
                   ].map(({ title, desc }) => (
                     <div
@@ -574,22 +575,22 @@ export default async function HomePage() {
                   },
                   {
                     label: "Live session registration",
-                    desc: "Join upcoming Q&As and submit your questions in advance. Free seats reserved for registered members.",
+                    desc: "Join upcoming Q&As, submit questions in advance (anonymously if you prefer), and watch recordings after.",
                     accent: "bg-secondary",
                   },
                   {
-                    label: "Forum participation",
-                    desc: "Post threads, reply to peers, and get responses directly from verified mentors in your field.",
+                    label: "Community forums",
+                    desc: "Post threads, reply to peers, and get direct responses from verified mentors across five topic areas.",
                     accent: "bg-tertiary",
                   },
                   {
-                    label: "Progress tracking",
-                    desc: "Set goals when you onboard and track your wins — academic, career, and social — through your Melbourne journey.",
+                    label: "Smart notifications",
+                    desc: "In-app bell and email alerts for session reminders, forum replies, new mentor content, and story approvals.",
                     accent: "bg-secondary",
                   },
                   {
                     label: "Your success story",
-                    desc: "When you've found your footing, share it. Your story becomes the guide someone else desperately needs.",
+                    desc: "When you've found your footing, share it. Submit your story for review and inspire the next Priya.",
                     accent: "bg-tertiary",
                   },
                 ].map(({ label, desc, accent }) => (
@@ -706,18 +707,20 @@ export default async function HomePage() {
               Opportunities
             </h3>
             <ul className="space-y-3">
-              {["Become a Mentor", "Careers", "Partner with Us"].map(
-                (label) => (
-                  <li key={label}>
-                    <Link
-                      href="#"
-                      className="font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:underline"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ),
-              )}
+              {[
+                { label: "Become a Mentor", href: "/apply" },
+                { label: "Careers", href: "#" },
+                { label: "Partner with Us", href: "#" },
+              ].map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:underline"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

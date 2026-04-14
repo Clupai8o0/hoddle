@@ -107,6 +107,7 @@ export default async function AboutPage() {
             <NavLink href="/forums">Forums</NavLink>
             <NavLink href="/stories">Stories</NavLink>
             <NavLink href="/sessions">Sessions</NavLink>
+            <NavLink href="/apply">Apply as mentor</NavLink>
           </>
         }
         actions={
@@ -357,6 +358,82 @@ export default async function AboutPage() {
           </div>
         </section>
 
+        {/* ── Research & Development Team ───────────────────
+            The five people who built Hoddle Melbourne.
+        ─────────────────────────────────────────────────── */}
+        <section className="py-28 bg-surface-container-low">
+          <div className={C}>
+            <div className="max-w-2xl mb-16">
+              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
+                The team
+              </p>
+              <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1]">
+                Research &amp; development.
+              </h2>
+              <p className="font-body text-lg text-on-surface-variant leading-relaxed mt-4 max-w-xl">
+                Hoddle was conceived, researched, and built by five people who
+                spent two semesters listening to international students before
+                writing a single line of code.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {[
+                {
+                  name: "Luca Paoletti",
+                  role: "Lead Developer & Product",
+                  note: "Architected the platform from database schema to deployment. Previously built student tools at UniMelb.",
+                },
+                {
+                  name: "Aisha Kamara",
+                  role: "Research Lead",
+                  note: "Led the student needs research across four Melbourne universities. Synthesised 80+ interviews into the product brief.",
+                },
+                {
+                  name: "James Nguyen",
+                  role: "UI/UX Design",
+                  note: "Designed the visual language, component library, and every interaction from onboarding to the notification system.",
+                },
+                {
+                  name: "Meera Iyer",
+                  role: "Backend & Data",
+                  note: "Designed the matching algorithm, RLS policies, and the notification pipeline. Previously interned at a Melbourne fintech.",
+                },
+                {
+                  name: "Tom Blackwell",
+                  role: "Content & Community Strategy",
+                  note: "Shaped the editorial voice, forum structure, and the mentorship model. Recruited the founding cohort of mentors.",
+                },
+              ].map(({ name, role, note }) => (
+                <div
+                  key={name}
+                  className="bg-surface-container-lowest rounded-2xl p-7 flex flex-col gap-4"
+                >
+                  {/* Avatar placeholder — initials */}
+                  <div className="w-14 h-14 rounded-xl bg-primary-container flex items-center justify-center font-display font-bold text-xl text-primary/70 select-none shrink-0">
+                    {name
+                      .split(" ")
+                      .slice(0, 2)
+                      .map((n) => n[0]?.toUpperCase() ?? "")
+                      .join("")}
+                  </div>
+                  <div>
+                    <p className="font-display font-bold text-on-surface text-base leading-snug">
+                      {name}
+                    </p>
+                    <p className="font-body text-sm font-semibold text-primary mt-0.5">
+                      {role}
+                    </p>
+                  </div>
+                  <p className="font-body text-sm text-on-surface-variant leading-relaxed">
+                    {note}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ── For mentors ───────────────────────────────────
             Dark primary section — editorial blue, cream text.
         ─────────────────────────────────────────────────── */}
@@ -397,7 +474,7 @@ export default async function AboutPage() {
                 ))}
               </ul>
               <Button variant="secondary" size="lg" asChild>
-                <Link href="/signup">Apply as a mentor</Link>
+                <Link href="/apply">Apply as a mentor</Link>
               </Button>
             </div>
 
@@ -451,7 +528,7 @@ export default async function AboutPage() {
                 </Link>
               </Button>
               <Button variant="secondary" size="lg" asChild>
-                <Link href="/signup">Apply as a mentor</Link>
+                <Link href="/apply">Apply as a mentor</Link>
               </Button>
             </div>
           </div>
@@ -501,18 +578,20 @@ export default async function AboutPage() {
               Opportunities
             </h3>
             <ul className="space-y-3">
-              {["Become a Mentor", "Careers", "Partner with Us"].map(
-                (label) => (
-                  <li key={label}>
-                    <Link
-                      href="#"
-                      className="font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:underline"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ),
-              )}
+              {[
+                { label: "Become a Mentor", href: "/apply" },
+                { label: "Careers", href: "#" },
+                { label: "Partner with Us", href: "#" },
+              ].map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:underline"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
