@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { MentorSignupForm } from "./mentor-signup-form";
 import { AuthShell } from "@/components/layout/auth-shell";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 interface PageProps {
   params: Promise<{ token: string }>;
@@ -11,11 +12,13 @@ export const metadata = { title: "Mentor Signup — Hoddle" };
 
 export default async function MentorSignupPage({ params }: PageProps) {
   const { token } = await params;
-  const supabase = await createClient();
+
+  // Use admin client — mentor_invites is admin-only RLS, unauthenticated visitors can't read it
+  const admin = createAdminClient();
 
   // Validate token server-side before rendering the form
   const now = new Date().toISOString();
-  const { data: invite } = await supabase
+  const { data: invite } = await admin
     .from("mentor_invites")
     .select("email, accepted_at, expires_at")
     .eq("token", token)
@@ -35,6 +38,7 @@ export default async function MentorSignupPage({ params }: PageProps) {
 
   // If user is already authenticated with the correct email, redirect to
   // the accept callback directly
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
