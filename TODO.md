@@ -187,17 +187,17 @@ Post-generation checklist (per `docs/design.md §7`):
 
 Goal: surface 3–5 mentor recommendations per student based on onboarding answers. Phase 2 uses a simple weighted-score approach, not ML.
 
-- [ ] Define scoring rules in `lib/matching/score.ts`:
+- [x] Define scoring rules in `lib/matching/score.ts`:
   - country_of_origin match → +30
   - field_of_interest overlap → +15 per overlap
   - challenges overlap with mentor expertise → +10 per overlap
   - goals overlap with mentor expertise → +10 per overlap
   - verified mentor → required (filter, not score)
-- [ ] Server function `computeRecommendationsForProfile(profileId)` — runs the score, returns top 5 with reasoning strings
-- [ ] Persist results in `mentor_recommendations` table; recompute on onboarding update or nightly via cron
-- [ ] Recommendation card with "why this mentor" line ("Also from India, also studying engineering")
-- [ ] Recommended mentors section on student dashboard (replaces Phase 1 placeholder)
-- [ ] Fallback: if fewer than 3 matches score above threshold, fill with most-recently-active verified mentors
+- [x] Server function `computeRecommendationsForProfile(profileId)` — runs the score, persists top 5 to `mentor_recommendations` with rank, score, reasoning
+- [x] Persist results in `mentor_recommendations` table; recompute on onboarding update or nightly via cron
+- [x] Recommendation card with "why this mentor" reasoning line shown below `MentorCard` on dashboard
+- [x] Recommended mentors section on student dashboard (replaces Phase 1 placeholder)
+- [x] Fallback: if fewer than 3 matches score above threshold (10), fill with top-ranked verified mentors; empty state if no verified mentors exist
 - [ ] Log click-throughs from recommendation → mentor profile for future ranking improvements (Phase 3)
 
 ## 11. Cross-cutting

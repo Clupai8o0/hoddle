@@ -5,7 +5,9 @@ import { createClient } from "@/lib/supabase/server";
 import { Tag } from "@/components/ui/tag";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ProgressPill } from "@/components/ui/progress-pill";
-import { Avatar } from "@/components/ui/avatar";
+import { MentorCard } from "@/components/patterns/mentor-card";
+import { computeRecommendationsForProfile } from "@/lib/matching/compute";
+import type { MentorCardData } from "@/components/patterns/mentor-card";
 
 export const dynamic = "force-dynamic";
 
@@ -13,33 +15,6 @@ export const dynamic = "force-dynamic";
 // Layout constant
 // ─────────────────────────────────────────
 const C = "max-w-7xl mx-auto px-5 sm:px-10 lg:px-16";
-
-// ─────────────────────────────────────────
-// Placeholder mentors — replace with live Supabase query in Phase 2
-// ─────────────────────────────────────────
-const PLACEHOLDER_MENTORS = [
-  {
-    id: "raj",
-    name: "Raj Patel",
-    university: "Monash University",
-    field: "Engineering",
-    tagline: "I bombed my first essay. Here's exactly how I turned it around.",
-  },
-  {
-    id: "sarah",
-    name: "Sarah Chen",
-    university: "University of Melbourne",
-    field: "Business",
-    tagline: "Time management is the secret weapon nobody tells you about.",
-  },
-  {
-    id: "minh",
-    name: "Minh Nguyen",
-    university: "RMIT University",
-    field: "Information Technology",
-    tagline: "Don't wait until graduation to start building your career.",
-  },
-];
 
 // ─────────────────────────────────────────
 // Time-aware greeting
@@ -72,30 +47,100 @@ export default async function DashboardPage() {
     redirect("/mentor");
   }
 
-  const [{ data: profile }, { data: onboarding }, { data: featuredStory }] =
-    await Promise.all([
-      supabase
-        .from("profiles")
-        .select("full_name, country_of_origin, university, year_of_study")
-        .eq("id", user!.id)
-        .single(),
-      supabase
-        .from("onboarding_responses")
-        .select("goals, challenges, fields_of_interest")
-        .eq("profile_id", user!.id)
-        .single(),
-      supabase
-        .from("success_stories")
-        .select(
-          `id, slug, title, body, hero_image_url, milestones,
-           profiles!success_stories_author_id_fkey(full_name, university)`,
-        )
-        .eq("status", "published")
-        .eq("featured", true)
-        .order("published_at", { ascending: false })
-        .limit(1)
-        .maybeSingle(),
-    ]);
+  const [
+    { data: profile },
+    { data: onboarding },
+    { data: featuredStory },
+    { data: rawRecs },
+  ] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("full_name, country_of_origin, university, year_of_study")
+      .eq("id", user!.id)
+      .single(),
+    supabase
+      .from("onboarding_responses")
+      .select("goals, challenges, fields_of_interest")
+      .eq("profile_id", user!.id)
+      .single(),
+    supabase
+      .from("success_stories")
+      .select(
+        `id, slug, title, body, hero_image_url, milestones,
+         profiles!success_stories_author_id_fkey(full_name, university)`,
+      )
+      .eq("status", "published")
+      .eq("featured", true)
+      .order("published_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("mentor_recommendations")
+      .select(
+        `rank, reasoning,
+         mentors!mentor_recommendations_mentor_id_fkey(
+           slug, headline, expertise, verified_at,
+           profiles!mentors_profile_id_fkey(full_name, avatar_url, university, country_of_origin)
+         )`,
+      )
+      .eq("profile_id", user!.id)
+      .order("rank", { ascending: true })
+      .limit(5),
+  ]);
+
+  // If no pre-computed recommendations exist, compute now (first login)
+  let recommendations = rawRecs ?? [];
+  if (recommendations.length === 0) {
+    await computeRecommendationsForProfile(user!.id).catch(() => null);
+    const { data: freshRecs } = await supabase
+      .from("mentor_recommendations")
+      .select(
+        `rank, reasoning,
+         mentors!mentor_recommendations_mentor_id_fkey(
+           slug, headline, expertise, verified_at,
+           profiles!mentors_profile_id_fkey(full_name, avatar_url, university, country_of_origin)
+         )`,
+      )
+      .eq("profile_id", user!.id)
+      .order("rank", { ascending: true })
+      .limit(5);
+    recommendations = freshRecs ?? [];
+  }
+
+  // Shape into MentorCardData
+  type RecRow = (typeof recommendations)[number];
+  const mentorRecs: Array<{ mentor: MentorCardData; reasoning: string }> =
+    recommendations
+      .map((rec: RecRow) => {
+        const m = Array.isArray(rec.mentors)
+          ? rec.mentors[0]
+          : (rec.mentors as {
+              slug: string;
+              headline: string | null;
+              expertise: string[];
+              verified_at: string | null;
+              profiles: {
+                full_name: string | null;
+                avatar_url: string | null;
+                university: string | null;
+                country_of_origin: string | null;
+              } | null;
+            } | null);
+        if (!m) return null;
+        return {
+          mentor: {
+            slug: m.slug,
+            headline: m.headline,
+            expertise: m.expertise ?? [],
+            verified_at: m.verified_at,
+            profiles: Array.isArray(m.profiles)
+              ? (m.profiles[0] ?? null)
+              : (m.profiles as MentorCardData["profiles"]),
+          } satisfies MentorCardData,
+          reasoning: rec.reasoning as string,
+        };
+      })
+      .filter((r): r is { mentor: MentorCardData; reasoning: string } => r !== null);
 
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
   const greeting = getGreeting();
@@ -269,9 +314,8 @@ export default async function DashboardPage() {
       </section>
 
       {/* ── Recommended mentors ─────────────────────────────────────
-          Phase 2 placeholder. Photography slots are gradient divs
-          until mentor-portrait images are generated.
-          See todo.md §5b for the full generation checklist.
+          Live recommendations from the matching algorithm (§10).
+          Falls back to "Explore all mentors" CTA if none computed yet.
       ───────────────────────────────────────────────────────────────── */}
       <section className={`${C} mt-20`}>
         <div className="flex items-baseline justify-between mb-8">
@@ -280,46 +324,44 @@ export default async function DashboardPage() {
               Your network
             </span>
             <h2 className="font-display font-bold text-2xl text-primary">
-              Mentors being matched for you
+              {mentorRecs.length > 0
+                ? "Recommended for you"
+                : "Find your mentor"}
             </h2>
           </div>
-          <Tag variant="muted">Coming in Phase 2</Tag>
+          <Link
+            href="/mentors"
+            className="font-body text-sm text-on-surface-variant hover:text-primary transition-colors duration-150 underline underline-offset-2"
+          >
+            Browse all
+          </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {PLACEHOLDER_MENTORS.map((mentor) => (
-            <div
-              key={mentor.id}
-              className="bg-surface-container-lowest rounded-md overflow-hidden"
-              aria-label={`Mentor placeholder: ${mentor.name}`}
-            >
-              <div className="relative h-44">
-                <Image
-                  src={`/images/mentor-portrait-${mentor.id}.webp`}
-                  alt=""
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <Avatar name={mentor.name} size="sm" />
-                  <div>
-                    <p className="font-body font-semibold text-sm text-on-surface">
-                      {mentor.name}
-                    </p>
-                    <p className="font-body text-xs text-on-surface-variant">
-                      {mentor.field} · {mentor.university}
-                    </p>
-                  </div>
-                </div>
-                <p className="font-body text-sm text-on-surface-variant leading-relaxed italic">
-                  &ldquo;{mentor.tagline}&rdquo;
+        {mentorRecs.length > 0 ? (
+          <div className="grid md:grid-cols-3 gap-6">
+            {mentorRecs.slice(0, 3).map(({ mentor, reasoning }) => (
+              <div key={mentor.slug} className="flex flex-col gap-2">
+                <MentorCard mentor={mentor} />
+                <p className="font-body text-xs text-on-surface-variant px-1 italic leading-snug">
+                  {reasoning}
                 </p>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-surface-container-low rounded-2xl p-8 text-center">
+            <p className="font-body text-on-surface-variant mb-4">
+              No verified mentors have joined yet — check back soon, or browse
+              the full mentor list.
+            </p>
+            <Link
+              href="/mentors"
+              className="inline-block font-body text-sm font-semibold text-primary underline underline-offset-2 hover:opacity-80 transition-opacity"
+            >
+              Browse mentors
+            </Link>
+          </div>
+        )}
       </section>
 
       {/* ── Phase 2 empty states ─────────────────────────────────────

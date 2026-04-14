@@ -78,6 +78,12 @@ _Phase 2 work in progress. See `todo.md`._
 - `app/api/cron/session-starting-soon/route.ts` — Vercel cron (every 5 min): sends `session_starting_soon` notifications 10–20 min before sessions
 - `lib/actions/forums.ts` — `createPost` now calls `notify()` for `forum_reply_to_your_thread` when replying to another user's thread
 - `lib/actions/success-stories.ts` — `moderateStory` now calls `notify()` for `success_story_approved` on approval
+- `lib/matching/score.ts` — pure `scoreMentor(student, mentor)` function: country_of_origin +30, field_of_interest overlap +15 each, challenges/goals overlap +10 each; generates human-readable reasoning string
+- `lib/matching/compute.ts` — `computeRecommendationsForProfile(profileId)` and `computeRecommendationsForAllStudents()` using admin client; deletes stale rows, inserts ranked top-5 results
+- `app/api/cron/recompute-recommendations/route.ts` — nightly Vercel cron (02:00 AEST) recomputes recommendations for all onboarded students
+- `vercel.json` — added nightly `recompute-recommendations` cron
+- `lib/actions/onboarding.ts` — `submitOnboarding` now fires `computeRecommendationsForProfile()` after save (fire-and-forget)
+- `app/(app)/dashboard/page.tsx` — replaces Phase 1 placeholder mentors with live `mentor_recommendations` rows; on first load with no pre-computed results, computes inline; reasoning line rendered below each `MentorCard`
 - `app/(admin)/layout.tsx` — admin-only layout; redirects non-admin users to `/dashboard`
 - `app/(admin)/admin/page.tsx` — admin home with live pending-invite and unverified-mentor counts
 - `app/(admin)/admin/mentors/page.tsx` — mentor list with verification status; pending-invites tab

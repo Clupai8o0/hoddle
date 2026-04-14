@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { onboardingSchema } from "@/lib/validation/onboarding";
+import { computeRecommendationsForProfile } from "@/lib/matching/compute";
 
 export async function submitOnboarding(
   data: unknown,
@@ -70,6 +71,11 @@ export async function submitOnboarding(
       error: "Failed to save your responses. Please try again.",
     };
   }
+
+  // Fire-and-forget: compute recommendations now that onboarding data exists
+  void computeRecommendationsForProfile(user.id).catch((e) =>
+    console.error("[onboarding] recommendation compute failed:", e),
+  );
 
   return { ok: true };
 }
