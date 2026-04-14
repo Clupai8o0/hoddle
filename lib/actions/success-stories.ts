@@ -5,6 +5,7 @@ import {
   submitSuccessStorySchema,
   moderateStorySchema,
 } from "@/lib/validation/success-story";
+import { notify } from "@/lib/actions/notifications";
 import { revalidatePath } from "next/cache";
 
 async function getCurrentUserId(
@@ -100,12 +101,22 @@ export async function moderateStory(
       ? { status: "published" as const, published_at: new Date().toISOString() }
       : { status: "rejected" as const };
 
-  const { error } = await supabase
+  const { data: story, error } = await supabase
     .from("success_stories")
     .update(updates)
-    .eq("id", parsed.data.id);
+    .eq("id", parsed.data.id)
+    .select("author_id, title, slug")
+    .single();
 
-  if (error) return { ok: false, error: "Failed to update story." };
+  if (error || !story) return { ok: false, error: "Failed to update story." };
+
+  // Notify author on approval
+  if (parsed.data.action === "approve") {
+    void notify(story.author_id, "success_story_approved", {
+      story_title: story.title,
+      story_slug: story.slug,
+    });
+  }
 
   revalidatePath("/stories");
   revalidatePath("/admin/stories");

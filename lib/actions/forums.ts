@@ -7,6 +7,7 @@ import {
   editPostSchema,
   reactionSchema,
 } from "@/lib/validation/forum";
+import { notify } from "@/lib/actions/notifications";
 import { revalidatePath } from "next/cache";
 
 async function getCurrentUserId(
@@ -97,6 +98,13 @@ export async function createPost(
   if (!thread) return { ok: false, error: "Thread not found." };
   if (thread.locked) return { ok: false, error: "This thread is locked." };
 
+  // Fetch thread for notification — need title, slug, category, and original author
+  const { data: threadFull } = await supabase
+    .from("forum_threads")
+    .select("title, slug, category_slug, author_id")
+    .eq("id", parsed.data.thread_id)
+    .single();
+
   const { error } = await supabase.from("forum_posts").insert({
     thread_id: parsed.data.thread_id,
     author_id: userId,
@@ -105,6 +113,22 @@ export async function createPost(
   });
 
   if (error) return { ok: false, error: "Failed to post reply." };
+
+  // Notify thread author if they didn't post this reply themselves
+  if (threadFull && threadFull.author_id !== userId) {
+    const { data: replierProfile } = await supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("id", userId)
+      .single();
+
+    void notify(threadFull.author_id, "forum_reply_to_your_thread", {
+      thread_title: threadFull.title,
+      thread_slug: threadFull.slug,
+      category_slug: threadFull.category_slug,
+      replier_name: replierProfile?.full_name ?? "Someone",
+    });
+  }
 
   revalidatePath(threadPath);
 

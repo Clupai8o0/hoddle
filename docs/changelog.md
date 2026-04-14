@@ -56,6 +56,28 @@ _Phase 2 work in progress. See `todo.md`._
 - `lib/validation/success-story.ts` — Zod schemas and `MILESTONE_OPTIONS` constant for story submission and moderation
 - `app/(admin)/admin/page.tsx` — added "Success stories" card with pending-count badge
 - `app/(app)/dashboard/page.tsx` — featured story slot: shows featured published story (or falls back to placeholder), links to `/stories`
+- `app/(app)/sessions/page.tsx` — upcoming sessions grid (date block, capacity, mentor row) + past sessions list with recording badge
+- `app/(app)/sessions/[id]/page.tsx` — session detail: status badge, meta, register/unregister button, question submission, mentor sidebar, recording link for completed sessions
+- `app/(app)/sessions/[id]/register-button.tsx` — register/unregister toggle with capacity guard
+- `app/(app)/mentor/sessions/page.tsx` — updated: "Schedule session" button active, session cards link to management page
+- `app/(app)/mentor/sessions/new/page.tsx` + `session-form.tsx` — schedule session (title, description, datetime-local, duration select, optional capacity and meeting URL)
+- `app/(app)/mentor/sessions/[id]/page.tsx` — session management: questions list (unanswered first), attendance checkboxes, recording URL input
+- `app/(app)/mentor/sessions/[id]/attendance-form.tsx` — mark attended students + complete session client component
+- `app/(app)/mentor/sessions/[id]/recording-form.tsx` — add/update recording URL client component
+- `lib/actions/sessions.ts` — `scheduleSession`, `registerForSession`, `unregisterFromSession`, `completeSession`, `setRecordingUrl` server actions
+- `lib/validation/session.ts` — Zod schemas for session creation, recording URL, and attendance
+- `lib/email/templates/session-reminder.ts` — branded HTML email template for 24h session reminders
+- `app/api/cron/session-reminders/route.ts` — Vercel cron route: finds sessions 24h out, sends reminder emails via Resend to all registrants
+- `vercel.json` — cron schedules: `session-reminders` hourly, `session-starting-soon` every 5 min
+- `lib/actions/notifications.ts` — `notify(recipientId, type, payload)` server helper: writes `notifications` row + dispatches email if prefs allow; `markNotificationRead`, `markAllNotificationsRead`, `updateNotificationPreferences` server actions
+- `lib/email/templates/notification-emails.ts` — editorial HTML email templates for all 6 notification types (`forum_reply_to_your_thread`, `success_story_approved`, `mentor_replied_to_your_question`, `new_content_from_mentor_you_follow`, `session_reminder_24h`, `session_starting_soon`)
+- `lib/validation/notifications.ts` — Zod schema for notification preference updates
+- `components/layout/notification-bell.tsx` — client bell icon with Supabase Realtime subscription for live unread count badge
+- `app/(app)/inbox/page.tsx` — full notification list: unread/earlier sections, per-item dismiss, mark-all-read, link to preferences
+- `app/(app)/settings/notifications/page.tsx` + `preferences-form.tsx` — channel toggles (email/in-app) + per-type mute toggles
+- `app/api/cron/session-starting-soon/route.ts` — Vercel cron (every 5 min): sends `session_starting_soon` notifications 10–20 min before sessions
+- `lib/actions/forums.ts` — `createPost` now calls `notify()` for `forum_reply_to_your_thread` when replying to another user's thread
+- `lib/actions/success-stories.ts` — `moderateStory` now calls `notify()` for `success_story_approved` on approval
 - `app/(admin)/layout.tsx` — admin-only layout; redirects non-admin users to `/dashboard`
 - `app/(admin)/admin/page.tsx` — admin home with live pending-invite and unverified-mentor counts
 - `app/(admin)/admin/mentors/page.tsx` — mentor list with verification status; pending-invites tab

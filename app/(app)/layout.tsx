@@ -17,11 +17,18 @@ export default async function AppLayout({
     redirect("/login");
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("onboarded_at, full_name, avatar_url, role")
-    .eq("id", user.id)
-    .single();
+  const [{ data: profile }, { count: unreadCount }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("onboarded_at, full_name, avatar_url, role")
+      .eq("id", user.id)
+      .single(),
+    supabase
+      .from("notifications")
+      .select("id", { count: "exact", head: true })
+      .eq("recipient_id", user.id)
+      .is("read_at", null),
+  ]);
 
   if (!profile?.onboarded_at) {
     if (profile?.role === "mentor") {
@@ -35,6 +42,8 @@ export default async function AppLayout({
       <AppNav
         userName={profile?.full_name ?? "You"}
         avatarUrl={profile?.avatar_url}
+        userId={user.id}
+        initialUnreadCount={unreadCount ?? 0}
       />
       {children}
     </QueryProvider>

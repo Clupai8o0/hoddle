@@ -151,31 +151,37 @@ Post-generation checklist (per `docs/design.md §7`):
 
 ## 8. Live Q&A scheduling
 
-- [ ] `app/(app)/sessions/page.tsx` — upcoming sessions calendar/list
-- [ ] `app/(app)/sessions/[id]/page.tsx` — session detail with mentor info, register button, question submission
-- [ ] `app/(app)/mentor/sessions/new` — mentor schedules a session (date picker, duration, capacity, meeting URL)
-- [ ] Server action `registerForSession` — creates `session_registrations` row, enforces capacity
-- [ ] Server action `submitSessionQuestion` — anonymous toggle, saves to `session_questions`
-- [ ] Pre-session reminder email (24h before) via scheduled function
-- [ ] Post-session attendance tracking (mentor marks attendees)
-- [ ] Past sessions show recording link if uploaded
+- [x] `app/(app)/sessions/page.tsx` — upcoming sessions list + past sessions with recording badge
+- [x] `app/(app)/sessions/[id]/page.tsx` — session detail: mentor card, register button, question form, recording link
+- [x] `app/(app)/sessions/[id]/register-button.tsx` — register/unregister toggle with capacity enforcement
+- [x] `app/(app)/mentor/sessions/new` — schedule session form (datetime-local, duration, capacity, meeting URL)
+- [x] `app/(app)/mentor/sessions/[id]/page.tsx` — session management: questions list, attendance form, recording URL input
+- [x] Server action `scheduleSession` — mentor-only, creates session row
+- [x] Server action `registerForSession` — creates `session_registrations` row, enforces capacity
+- [x] Server action `unregisterFromSession` — removes registration
+- [x] Server action `completeSession` — marks status completed + records attendance
+- [x] Server action `setRecordingUrl` — mentor adds recording URL post-session
+- [x] Server action `submitSessionQuestion` — already existed (§4); question form reused on session detail page
+- [x] Pre-session reminder email (24h before) via Vercel cron — `app/api/cron/session-reminders/route.ts` + `vercel.json`
+- [x] Post-session attendance tracking — mentor marks attendees via `AttendanceForm` on session detail
+- [x] Past sessions show recording link if uploaded
 
 ## 9. Notifications
 
-- [ ] In-app notification bell in `AuthenticatedShell` nav with unread count
-- [ ] `app/(app)/inbox/page.tsx` — full notification list with mark-read actions
-- [ ] Notification types (Phase 2 set):
-  - [ ] `mentor_replied_to_your_question`
-  - [ ] `new_content_from_mentor_you_follow`
-  - [ ] `forum_reply_to_your_thread`
-  - [ ] `session_reminder_24h`
-  - [ ] `session_starting_soon`
-  - [ ] `success_story_approved`
-- [ ] Email template per notification type using a shared editorial layout (Hoddle blue header, cream body, Plus Jakarta Sans)
-- [ ] `app/(app)/settings/notifications` — preference toggles (per-type, channel)
-- [ ] Server-side helper `notify(recipientId, type, payload)` writes row + dispatches email if enabled
-- [ ] Realtime subscription on `notifications` table for the bell badge (Supabase realtime, browser client only)
-- [ ] Background job for scheduled reminders (Supabase Edge Function or Vercel cron) — Phase 2 ships with Vercel cron
+- [x] In-app notification bell in `AppNav` with unread count (`components/layout/notification-bell.tsx`)
+- [x] `app/(app)/inbox/page.tsx` — full notification list with mark-read actions
+- [x] Notification types (Phase 2 set):
+  - [x] `mentor_replied_to_your_question`
+  - [x] `new_content_from_mentor_you_follow`
+  - [x] `forum_reply_to_your_thread`
+  - [x] `session_reminder_24h`
+  - [x] `session_starting_soon`
+  - [x] `success_story_approved`
+- [x] Email template per notification type using a shared editorial layout (Hoddle blue header, cream body, Plus Jakarta Sans)
+- [x] `app/(app)/settings/notifications/page.tsx` — preference toggles (per-type, channel)
+- [x] Server-side helper `notify(recipientId, type, payload)` writes row + dispatches email if enabled
+- [x] Realtime subscription on `notifications` table for the bell badge (Supabase realtime, browser client only)
+- [x] Background job for scheduled reminders (Supabase Edge Function or Vercel cron) — ships with two Vercel crons: `session-reminders` (hourly, 24h window) + `session-starting-soon` (every 5 min, 10–20 min window)
 
 ## 10. Matching algorithm v1
 

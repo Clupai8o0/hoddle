@@ -1,17 +1,27 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Avatar } from "@/components/ui/avatar";
+import { NotificationBell } from "@/components/layout/notification-bell";
 import { signOut } from "@/lib/actions/auth";
 
 export interface AppNavProps {
   userName: string;
   avatarUrl?: string | null;
-  /** Current pathname to derive the active nav link */
-  activePath?: string;
+  userId: string;
+  initialUnreadCount?: number;
 }
 
-export function AppNav({ userName, avatarUrl, activePath = "/dashboard" }: AppNavProps) {
+export function AppNav({
+  userName,
+  avatarUrl,
+  userId,
+  initialUnreadCount = 0,
+}: AppNavProps) {
+  const activePath = usePathname();
   const firstName = userName.split(" ")[0] ?? userName;
 
   return (
@@ -48,6 +58,9 @@ export function AppNav({ userName, avatarUrl, activePath = "/dashboard" }: AppNa
       }
       actions={
         <div className="flex items-center gap-4">
+          {/* Notification bell */}
+          <NotificationBell userId={userId} initialUnreadCount={initialUnreadCount} />
+
           {/* User identity */}
           <div className="flex items-center gap-2.5">
             <Avatar
