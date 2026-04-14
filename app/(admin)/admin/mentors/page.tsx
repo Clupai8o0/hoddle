@@ -32,15 +32,16 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
       .order("created_at", { ascending: false }),
   ]);
 
-  if (mentorsResult.error) {
-    console.error("[admin/mentors] mentors query error:", mentorsResult.error);
-  }
-
   const mentors = mentorsResult.data ?? [];
   const pendingInvites = invitesResult.data ?? [];
 
   return (
     <Container className="py-16">
+      {mentorsResult.error && (
+        <pre className="mb-6 p-4 bg-red-50 text-red-800 text-xs rounded overflow-auto">
+          {JSON.stringify(mentorsResult.error, null, 2)}
+        </pre>
+      )}
       <header className="flex items-start justify-between mb-10">
         <div>
           <nav className="font-body text-sm text-on-surface-variant mb-3">
