@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/browser";
+import { sendMentorMagicLink } from "@/lib/actions/mentor-magic-link";
 
 interface MentorSignupFormProps {
   token: string;
@@ -17,11 +17,6 @@ export function MentorSignupForm({ token, inviteEmail }: MentorSignupFormProps) 
   const [serverError, setServerError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [sent, setSent] = useState(false);
-
-  const siteUrl =
-    typeof window !== "undefined"
-      ? window.location.origin
-      : process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -42,19 +37,11 @@ export function MentorSignupForm({ token, inviteEmail }: MentorSignupFormProps) 
     }
 
     setIsPending(true);
-
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email: trimmed,
-      options: {
-        emailRedirectTo: `${siteUrl}/api/auth/mentor-callback?token=${encodeURIComponent(token)}`,
-      },
-    });
-
+    const result = await sendMentorMagicLink(trimmed, token);
     setIsPending(false);
 
-    if (error) {
-      setServerError(error.message);
+    if (!result.ok) {
+      setServerError(result.error);
       return;
     }
 

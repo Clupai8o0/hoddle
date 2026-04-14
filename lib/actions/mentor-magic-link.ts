@@ -1,19 +1,12 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
 
-export async function signOut(): Promise<never> {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  redirect("/login");
-}
-
-export async function sendMagicLink(
+export async function sendMentorMagicLink(
   email: string,
+  inviteToken: string,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
   const headersList = await headers();
   const host = headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "localhost:3000";
@@ -24,7 +17,9 @@ export async function sendMagicLink(
   const { data, error } = await admin.auth.admin.generateLink({
     type: "magiclink",
     email,
-    options: { redirectTo: `${siteUrl}/api/auth/callback` },
+    options: {
+      redirectTo: `${siteUrl}/api/auth/mentor-callback?token=${encodeURIComponent(inviteToken)}`,
+    },
   });
 
   if (error || !data?.properties?.action_link) {
@@ -33,8 +28,8 @@ export async function sendMagicLink(
 
   const result = await sendEmail({
     to: email,
-    subject: "Your Hoddle sign-in link",
-    html: magicLinkEmailHtml({ link: data.properties.action_link }),
+    subject: "Your Hoddle mentor sign-in link",
+    html: mentorMagicLinkEmailHtml({ link: data.properties.action_link }),
   });
 
   if (!result.ok) {
@@ -44,7 +39,7 @@ export async function sendMagicLink(
   return { ok: true };
 }
 
-function magicLinkEmailHtml({ link }: { link: string }): string {
+function mentorMagicLinkEmailHtml({ link }: { link: string }): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,10 +58,10 @@ function magicLinkEmailHtml({ link }: { link: string }): string {
                 Hoddle Melbourne
               </p>
               <h1 style="margin:0 0 16px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:28px;font-weight:700;color:#f5f7fa;line-height:1.2;">
-                Your sign-in link.
+                Complete your mentor signup.
               </h1>
               <p style="margin:0;font-size:16px;color:rgba(245,247,250,0.75);line-height:1.6;">
-                Click the button below to sign in to your Hoddle account. This link expires in one hour.
+                Click the button below to verify your email and create your mentor account.
               </p>
             </td>
           </tr>
@@ -76,10 +71,10 @@ function magicLinkEmailHtml({ link }: { link: string }): string {
           <tr>
             <td style="padding:0 4px;">
               <a href="${link}" style="display:inline-block;background-color:#001842;color:#f5f7fa;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;font-weight:600;padding:16px 32px;border-radius:8px;text-decoration:none;">
-                Sign in to Hoddle →
+                Create mentor account →
               </a>
               <p style="margin:40px 0 0;font-size:13px;color:#5a6275;line-height:1.5;">
-                If you didn't request this, you can safely ignore it.
+                If you weren't expecting this, you can safely ignore it.
               </p>
               <p style="margin:8px 0 0;font-size:13px;color:#5a6275;">
                 Or copy this URL into your browser:<br />
