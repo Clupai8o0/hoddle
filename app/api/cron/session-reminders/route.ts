@@ -2,12 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { sendEmail } from "@/lib/email";
 import { sessionReminderHtml } from "@/lib/email/templates/session-reminder";
+import { notify } from "@/lib/actions/notifications";
 import type { Database } from "@/lib/supabase/database.types";
 
 /**
  * Vercel cron job — runs every hour.
- * Finds sessions starting in the next 24 hours (within a 1-hour check window)
- * and sends reminder emails to all registered students.
+ *
+ * Two tasks per run:
+ * 1. 24-hour reminder emails — sessions starting in the 23–25h window.
+ * 2. Starting-soon in-app notifications — sessions starting in the 50–70 min
+ *    window (non-overlapping with each hourly check; replaces the former
+ *    5-minute cron that ran on a 10–20 min window).
  *
  * Protected by CRON_SECRET header set in vercel.json.
  */
@@ -29,11 +34,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const supabase = createSupabaseClient<Database>(supabaseUrl, serviceKey);
 
-  // Find sessions in the 24h–25h from now window
-  const windowStart = new Date(Date.now() + 23 * 60 * 60 * 1000).toISOString();
-  const windowEnd = new Date(Date.now() + 25 * 60 * 60 * 1000).toISOString();
+  const now = Date.now();
 
-  const { data: sessions, error: sessionsError } = await supabase
+  // ── Task 1: 24-hour reminder emails ──────────────────────────────────────
+
+  const reminderWindowStart = new Date(now + 23 * 60 * 60 * 1000).toISOString();
+  const reminderWindowEnd = new Date(now + 25 * 60 * 60 * 1000).toISOString();
+
+  const { data: reminderSessions, error: reminderError } = await supabase
     .from("live_sessions")
     .select(
       `id, title, scheduled_at, duration_minutes, meeting_url,
@@ -42,27 +50,22 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
        )`,
     )
     .eq("status", "scheduled")
-    .gte("scheduled_at", windowStart)
-    .lte("scheduled_at", windowEnd);
+    .gte("scheduled_at", reminderWindowStart)
+    .lte("scheduled_at", reminderWindowEnd);
 
-  if (sessionsError) {
-    return NextResponse.json({ error: sessionsError.message }, { status: 500 });
+  if (reminderError) {
+    return NextResponse.json({ error: reminderError.message }, { status: 500 });
   }
 
-  if (!sessions || sessions.length === 0) {
-    return NextResponse.json({ sent: 0, message: "No sessions in window." });
-  }
+  let remindersSent = 0;
 
-  let sent = 0;
-
-  for (const session of sessions) {
+  for (const session of reminderSessions ?? []) {
     const mentorName =
       (
         (session.mentors as { profiles: { full_name: string | null } | null } | null)
           ?.profiles as { full_name: string | null } | null
       )?.full_name ?? "Your mentor";
 
-    // Get all registrations for this session
     const { data: registrations } = await supabase
       .from("session_registrations")
       .select("profile_id")
@@ -70,7 +73,6 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
     if (!registrations || registrations.length === 0) continue;
 
-    // Get user emails via auth admin
     for (const reg of registrations) {
       const { data: userData, error: userError } =
         await supabase.auth.admin.getUserById(reg.profile_id);
@@ -100,9 +102,52 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
         html,
       });
 
-      if (result.ok) sent++;
+      if (result.ok) remindersSent++;
     }
   }
 
-  return NextResponse.json({ sent, sessions: sessions.length });
+  // ── Task 2: Starting-soon in-app notifications ────────────────────────────
+  // Window: 50–70 min from now (20-min window, non-overlapping per hourly run).
+
+  const soonWindowStart = new Date(now + 50 * 60 * 1000).toISOString();
+  const soonWindowEnd = new Date(now + 70 * 60 * 1000).toISOString();
+
+  const { data: soonSessions, error: soonError } = await supabase
+    .from("live_sessions")
+    .select("id, title, scheduled_at, meeting_url")
+    .eq("status", "scheduled")
+    .gte("scheduled_at", soonWindowStart)
+    .lte("scheduled_at", soonWindowEnd);
+
+  if (soonError) {
+    return NextResponse.json({ error: soonError.message }, { status: 500 });
+  }
+
+  let soonSent = 0;
+
+  for (const session of soonSessions ?? []) {
+    const { data: registrations } = await supabase
+      .from("session_registrations")
+      .select("profile_id")
+      .eq("session_id", session.id);
+
+    if (!registrations || registrations.length === 0) continue;
+
+    for (const reg of registrations) {
+      void notify(reg.profile_id, "session_starting_soon", {
+        session_id: session.id,
+        session_title: session.title,
+        scheduled_at: session.scheduled_at,
+        meeting_url: session.meeting_url ?? null,
+      });
+      soonSent++;
+    }
+  }
+
+  return NextResponse.json({
+    reminders_sent: remindersSent,
+    soon_notified: soonSent,
+    reminder_sessions: (reminderSessions ?? []).length,
+    soon_sessions: (soonSessions ?? []).length,
+  });
 }
