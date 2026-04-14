@@ -1,13 +1,23 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 // Lazy-initialized so build-time module evaluation doesn't throw without env vars
-let _resend: Resend | null = null;
-function getResend(): Resend {
-  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
-  return _resend;
+let _transporter: nodemailer.Transporter | null = null;
+function getTransporter(): nodemailer.Transporter {
+  if (!_transporter) {
+    _transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // STARTTLS
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
+  }
+  return _transporter;
 }
 
-const FROM = process.env.RESEND_FROM_EMAIL ?? "hello@hoddle.com.au";
+const FROM = process.env.GMAIL_USER ?? "hoddle@gmail.com";
 
 export interface SendEmailOptions {
   to: string | string[];
@@ -23,19 +33,15 @@ export type EmailResult =
 
 export async function sendEmail(opts: SendEmailOptions): Promise<EmailResult> {
   try {
-    const { data, error } = await getResend().emails.send({
-      from: FROM,
+    const info = await getTransporter().sendMail({
+      from: `Hoddle Melbourne <${FROM}>`,
       to: opts.to,
       subject: opts.subject,
       html: opts.html,
-      replyTo: opts.replyTo,
+      replyTo: opts.replyTo ?? FROM,
     });
 
-    if (error) {
-      return { ok: false, error: error.message };
-    }
-
-    return { ok: true, id: data!.id };
+    return { ok: true, id: info.messageId };
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown email error";
     return { ok: false, error: message };
