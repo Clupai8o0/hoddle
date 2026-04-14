@@ -1,19 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { AuthShell } from "@/components/layout/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { sendMagicLink } from "@/lib/actions/auth";
+import { createClient } from "@/lib/supabase/browser";
+import { acceptMentorInvite } from "@/lib/actions/mentor-invites";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [sent, setSent] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const hashHandled = useRef(false);
+
+  // Handle implicit-flow magic link — access_token lands in the URL hash.
+  // This fires whenever the user ends up here after clicking a magic link,
+  // regardless of which redirect_to was set in the original email.
+  useEffect(() => {
+    if (hashHandled.current) return;
+    const hash = window.location.hash;
+    if (!hash.includes("access_token=")) return;
+
+    hashHandled.current = true;
+
+    const params = new URLSearchParams(hash.slice(1));
+    const accessToken = params.get("access_token");
+    const refreshToken = params.get("refresh_token");
+
+    if (!accessToken || !refreshToken) return;
+
+    const supabase = createClient();
+
+    supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
+      .then(async ({ error }) => {
+        if (error) {
+          setServerError("Sign-in failed. Please request a new link.");
+          return;
+        }
+
+        // Check if this is a mentor invite flow
+        const mentorToken = sessionStorage.getItem("pendingMentorToken");
+        sessionStorage.removeItem("pendingMentorToken");
+
+        if (mentorToken) {
+          const result = await acceptMentorInvite(mentorToken);
+          if (!result.ok) {
+            setServerError(result.error);
+            return;
+          }
+        }
+
+        router.replace("/dashboard");
+      });
+  }, [router]);
 
   function validateEmail(value: string) {
     if (!value) return "Email is required.";

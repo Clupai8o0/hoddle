@@ -37,6 +37,8 @@ export function MentorSignupForm({ token, inviteEmail }: MentorSignupFormProps) 
     }
 
     setIsPending(true);
+    // Store token so the login page can recover it after the redirect chain
+    sessionStorage.setItem("pendingMentorToken", token);
     const result = await sendMentorMagicLink(trimmed, token);
     setIsPending(false);
 
