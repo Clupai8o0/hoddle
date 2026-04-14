@@ -40,22 +40,12 @@ export async function inviteMentor(
     return { ok: false, error: "Insufficient permissions." };
   }
 
-  // Check for an unexpired, unaccepted invite already in flight
-  const now = new Date().toISOString();
-  const { data: existing } = await supabase
+  // Delete any existing unaccepted invites so a fresh one can be sent
+  await supabase
     .from("mentor_invites")
-    .select("id, accepted_at, expires_at")
+    .delete()
     .eq("email", email)
-    .is("accepted_at", null)
-    .gt("expires_at", now)
-    .maybeSingle();
-
-  if (existing) {
-    return {
-      ok: false,
-      error: "An active invite already exists for this email address.",
-    };
-  }
+    .is("accepted_at", null);
 
   const token = randomUUID();
   const expiresAt = new Date(
@@ -73,7 +63,11 @@ export async function inviteMentor(
     return { ok: false, error: insertError.message };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const { headers } = await import("next/headers");
+  const headersList = await headers();
+  const host = headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") ?? "http";
+  const siteUrl = `${proto}://${host}`;
   const signupUrl = `${siteUrl}/mentor-signup/${token}`;
 
   const noteHtml = note
