@@ -47,6 +47,15 @@ _Phase 2 work in progress. See `todo.md`._
 - `lib/utils/format-time.ts` — `formatRelativeTime` utility (relative timestamps with en-AU fallback)
 - `components/providers/query-provider.tsx` — `QueryClientProvider` client wrapper; mounted in `app/(app)/layout.tsx`
 - Route stubs for all Phase 2 surfaces: `/mentors`, `/content`, `/forums`, `/stories`, `/sessions`, `/inbox`
+- `app/(app)/stories/page.tsx` — success stories gallery: featured editorial cards, regular story grid, empty state, submit CTA strip
+- `app/(app)/stories/[slug]/page.tsx` — story reader: hero image, author byline, body paragraphs, milestone tags sidebar, "More stories" section
+- `app/(app)/stories/new/page.tsx` + `story-form.tsx` — submission form: title, body, milestone multi-select (12 predefined options), optional hero image URL
+- `app/(admin)/stories/page.tsx` — admin moderation queue: pending stories list with approve/reject actions, recently moderated history
+- `app/(admin)/stories/moderation-buttons.tsx` — approve/reject client component with optimistic feedback
+- `lib/actions/success-stories.ts` — `submitSuccessStory` (saves as pending, revalidates paths), `moderateStory` (admin approve/reject) server actions
+- `lib/validation/success-story.ts` — Zod schemas and `MILESTONE_OPTIONS` constant for story submission and moderation
+- `app/(admin)/admin/page.tsx` — added "Success stories" card with pending-count badge
+- `app/(app)/dashboard/page.tsx` — featured story slot: shows featured published story (or falls back to placeholder), links to `/stories`
 - `app/(admin)/layout.tsx` — admin-only layout; redirects non-admin users to `/dashboard`
 - `app/(admin)/admin/page.tsx` — admin home with live pending-invite and unverified-mentor counts
 - `app/(admin)/admin/mentors/page.tsx` — mentor list with verification status; pending-invites tab

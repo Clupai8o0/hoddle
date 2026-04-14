@@ -114,6 +114,11 @@ All prompts are inline in code as `IMAGE NEEDED` comments. Generate with Midjour
 - [ ] `public/images/content-hero-placeholder.webp` — article hero fallback, `app/(app)/content/[slug]/page.tsx`
       Prompt in code. Overhead desk shot, fountain pen, open notebook, flat white, soft morning light. 16:9 crop. Max 200 KB.
 
+- [ ] `public/images/story-hero-placeholder.webp` — story reader + featured card fallback, `app/(app)/stories/[slug]/page.tsx` + `app/(app)/stories/page.tsx`
+      Prompt in code. Young international student at Melbourne café, laptop open, smiling. 16:9 crop. Max 200 KB.
+- [ ] `public/images/story-card-placeholder.webp` — story grid card fallback, `app/(app)/stories/page.tsx`
+      Prompt in code. Overhead flat-lay, open journal, fountain pen, flat white, timber table. 4:3 crop. Max 80 KB.
+
 Post-generation checklist (per `docs/design.md §7`):
 - [x] Colour grade: highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`
 - [x] Crop asymmetrically (subjects on editorial thirds)
@@ -136,12 +141,12 @@ Post-generation checklist (per `docs/design.md §7`):
 
 ## 7. Success stories gallery
 
-- [ ] `app/(app)/stories/page.tsx` — gallery of published success stories (editorial grid, photography-led)
-- [ ] `app/(app)/stories/[slug]/page.tsx` — single story reader
-- [ ] `app/(app)/stories/new` — submission form for students (title, body, milestones multi-select, optional photo)
-- [ ] Server action `submitSuccessStory` — saves as draft, queues admin moderation notification
-- [ ] Admin moderation queue at `app/(admin)/stories` — approve/reject submissions
-- [ ] Featured story slot on student dashboard
+- [x] `app/(app)/stories/page.tsx` — gallery of published success stories (editorial grid, photography-led)
+- [x] `app/(app)/stories/[slug]/page.tsx` — single story reader
+- [x] `app/(app)/stories/new` — submission form for students (title, body, milestones multi-select, optional photo)
+- [x] Server action `submitSuccessStory` — saves as pending, queues admin moderation notification
+- [x] Admin moderation queue at `app/(admin)/stories` — approve/reject submissions
+- [x] Featured story slot on student dashboard
 - [ ] Reference screen: `docs/design/success_stories_gallery/screen.png`
 
 ## 8. Live Q&A scheduling

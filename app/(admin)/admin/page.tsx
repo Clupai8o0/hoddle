@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, UserPlus, Clock } from "lucide-react";
+import { Users, UserPlus, Clock, BookOpen } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { createClient } from "@/lib/supabase/server";
 
@@ -8,18 +8,25 @@ export const metadata = { title: "Admin — Hoddle" };
 export default async function AdminHomePage() {
   const supabase = await createClient();
 
-  const [{ count: pendingInvites }, { count: unverifiedMentors }] =
-    await Promise.all([
-      supabase
-        .from("mentor_invites")
-        .select("id", { count: "exact", head: true })
-        .is("accepted_at", null)
-        .gt("expires_at", new Date().toISOString()),
-      supabase
-        .from("mentors")
-        .select("profile_id", { count: "exact", head: true })
-        .is("verified_at", null),
-    ]);
+  const [
+    { count: pendingInvites },
+    { count: unverifiedMentors },
+    { count: pendingStories },
+  ] = await Promise.all([
+    supabase
+      .from("mentor_invites")
+      .select("id", { count: "exact", head: true })
+      .is("accepted_at", null)
+      .gt("expires_at", new Date().toISOString()),
+    supabase
+      .from("mentors")
+      .select("profile_id", { count: "exact", head: true })
+      .is("verified_at", null),
+    supabase
+      .from("success_stories")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "pending"),
+  ]);
 
   const cards = [
     {
@@ -45,6 +52,14 @@ export default async function AdminHomePage() {
       description: "Invites sent but not yet accepted.",
       badge: pendingInvites ?? 0,
       badgeLabel: "outstanding",
+    },
+    {
+      href: "/admin/stories",
+      icon: BookOpen,
+      label: "Success stories",
+      description: "Review and approve student story submissions.",
+      badge: pendingStories ?? 0,
+      badgeLabel: "awaiting review",
     },
   ];
 

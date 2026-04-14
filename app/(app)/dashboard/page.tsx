@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Tag } from "@/components/ui/tag";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -71,18 +72,30 @@ export default async function DashboardPage() {
     redirect("/mentor");
   }
 
-  const [{ data: profile }, { data: onboarding }] = await Promise.all([
-    supabase
-      .from("profiles")
-      .select("full_name, country_of_origin, university, year_of_study")
-      .eq("id", user!.id)
-      .single(),
-    supabase
-      .from("onboarding_responses")
-      .select("goals, challenges, fields_of_interest")
-      .eq("profile_id", user!.id)
-      .single(),
-  ]);
+  const [{ data: profile }, { data: onboarding }, { data: featuredStory }] =
+    await Promise.all([
+      supabase
+        .from("profiles")
+        .select("full_name, country_of_origin, university, year_of_study")
+        .eq("id", user!.id)
+        .single(),
+      supabase
+        .from("onboarding_responses")
+        .select("goals, challenges, fields_of_interest")
+        .eq("profile_id", user!.id)
+        .single(),
+      supabase
+        .from("success_stories")
+        .select(
+          `id, slug, title, body, hero_image_url, milestones,
+           profiles!success_stories_author_id_fkey(full_name, university)`,
+        )
+        .eq("status", "published")
+        .eq("featured", true)
+        .order("published_at", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    ]);
 
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
   const greeting = getGreeting();
@@ -373,28 +386,61 @@ export default async function DashboardPage() {
           </div>
 
           {/* Success stories */}
-          <div className="bg-surface-container-low rounded-md overflow-hidden">
+          <Link
+            href="/stories"
+            className="group bg-surface-container-low rounded-md overflow-hidden hover:shadow-ambient transition-all hover:-translate-y-px block"
+          >
             <div className="relative h-36">
-              <Image
-                src="/images/empty-state-library.webp"
-                alt="Students at the State Library — success stories arrive in Phase 2"
-                fill
-                className="object-cover"
-              />
+              {featuredStory?.hero_image_url ? (
+                <Image
+                  src={featuredStory.hero_image_url}
+                  alt={featuredStory.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              ) : (
+                <Image
+                  src="/images/empty-state-library.webp"
+                  alt="Students at the State Library — success stories"
+                  fill
+                  className="object-cover"
+                />
+              )}
             </div>
             <div className="p-5">
-              <Tag variant="muted" className="mb-3">
-                Phase 2
-              </Tag>
-              <h3 className="font-display font-semibold text-base text-primary mb-1">
-                Success Stories
-              </h3>
-              <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                Real accounts of how Hoddle mentors helped students find their
-                footing.
-              </p>
+              {featuredStory ? (
+                <>
+                  <Tag variant="success" className="mb-3">
+                    Featured story
+                  </Tag>
+                  <h3 className="font-display font-semibold text-base text-primary mb-1 group-hover:underline line-clamp-2">
+                    {featuredStory.title}
+                  </h3>
+                  <p className="font-body text-xs text-on-surface-variant">
+                    {(
+                      featuredStory.profiles as {
+                        full_name: string | null;
+                        university: string | null;
+                      } | null
+                    )?.full_name ?? "Community member"}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <Tag variant="muted" className="mb-3">
+                    Community
+                  </Tag>
+                  <h3 className="font-display font-semibold text-base text-primary mb-1">
+                    Success Stories
+                  </h3>
+                  <p className="font-body text-sm text-on-surface-variant leading-relaxed">
+                    Real accounts of how Hoddle mentors helped students find
+                    their footing.
+                  </p>
+                </>
+              )}
             </div>
-          </div>
+          </Link>
         </div>
       </section>
     </main>
