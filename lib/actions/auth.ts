@@ -24,7 +24,7 @@ export async function sendMagicLink(
   const { data, error } = await admin.auth.admin.generateLink({
     type: "magiclink",
     email,
-    options: { redirectTo: `${siteUrl}/api/auth/callback` },
+    options: { redirectTo: `${siteUrl}/auth/confirm` },
   });
 
   if (error || !data?.properties?.action_link) {

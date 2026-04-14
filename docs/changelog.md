@@ -10,7 +10,21 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 
 ## [Unreleased]
 
-_Nothing pending._
+### Added
+- `app/(auth)/confirm/page.tsx` — client-side auth confirm page that handles implicit-flow magic link redirects (hash fragment `#access_token=…`); routes mentor invites through `acceptMentorInvite` and students to `/dashboard`
+- `lib/actions/mentor-magic-link.ts` — `sendMentorMagicLink` server action: generates magic link via admin API and sends via nodemailer, bypassing Supabase SMTP entirely
+
+### Changed
+- `lib/actions/auth.ts` — `sendMagicLink` now generates link server-side via `admin.auth.admin.generateLink` and sends via nodemailer; removes dependency on Supabase SMTP configuration
+- `lib/actions/mentor-invites.ts` — removed "active invite already exists" guard; re-inviting an email now replaces the old pending invite; invite lookup uses admin client to bypass admin-only RLS; `siteUrl` derived from request headers instead of `NEXT_PUBLIC_SITE_URL`
+- `lib/email/index.ts` — replaced Resend with nodemailer + Gmail SMTP
+- `app/(auth)/mentor-signup/[token]/page.tsx` — invite lookup uses admin client (bypasses admin-only RLS so unauthenticated visitors can view their invite)
+- Magic link `redirect_to` updated to `/auth/confirm` (and `/auth/confirm?token=…` for mentor flow) to handle implicit OAuth flow on the client
+
+### Fixed
+- Magic links landed at `/?code=…` because `NEXT_PUBLIC_SITE_URL` was absent from `.env.example` and Vercel; `sendMagicLink` now reads origin from request headers
+- `invalid_invite` error on mentor signup page and `acceptMentorInvite` caused by admin-only RLS blocking reads from non-admin users
+- `missing_params` error caused by implicit-flow hash fragment never reaching the server callback route handler
 
 ---
 
