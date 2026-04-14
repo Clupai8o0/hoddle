@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 
   if (!code) {
     return NextResponse.redirect(
-      `${origin}/auth/confirm?token=${encodeURIComponent(token)}`,
+      `${origin}/confirm?token=${encodeURIComponent(token)}`,
     );
   }
 

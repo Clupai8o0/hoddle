@@ -18,7 +18,7 @@ export async function sendMentorMagicLink(
     type: "magiclink",
     email,
     options: {
-      redirectTo: `${siteUrl}/auth/confirm?token=${encodeURIComponent(inviteToken)}`,
+      redirectTo: `${siteUrl}/confirm?token=${encodeURIComponent(inviteToken)}`,
     },
   });
 
