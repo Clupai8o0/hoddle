@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { ContentCard, type ContentCardData } from "@/components/patterns/content-card";
+import { Pagination } from "@/components/ui/pagination";
 import Link from "next/link";
 
 export const metadata = { title: "Content Library — Hoddle" };
@@ -11,12 +12,17 @@ const TYPE_FILTERS = [
   { value: "resource", label: "Resources" },
 ] as const;
 
+const PAGE_SIZE = 18;
+
 interface PageProps {
-  searchParams: Promise<{ type?: string; tag?: string }>;
+  searchParams: Promise<{ type?: string; tag?: string; page?: string }>;
 }
 
 export default async function ContentPage({ searchParams }: PageProps) {
-  const { type: typeFilter, tag: tagFilter } = await searchParams;
+  const { type: typeFilter, tag: tagFilter, page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
+  const offset = (page - 1) * PAGE_SIZE;
+
   const supabase = await createClient();
 
   let query = supabase
@@ -29,28 +35,35 @@ export default async function ContentPage({ searchParams }: PageProps) {
            full_name, avatar_url
          )
        ),
-       content_item_tags ( tag_slug )`
+       content_item_tags ( tag_slug )`,
+      { count: "exact" },
     )
     .not("published_at", "is", null)
-    .order("published_at", { ascending: false })
-    .limit(48);
+    .order("published_at", { ascending: false });
 
   if (typeFilter) {
-    // Narrow string to the DB enum type — invalid values return no results
     query = query.eq("type", typeFilter as "article" | "video" | "resource");
   }
 
-  const { data: items } = await query;
+  // Tag filter applied client-side via JS because it's a nested join — we over-fetch
+  // and slice after; counts are approximate when tag filter is active but close enough.
+  const { data: allItems, count } = await query;
 
-  // Tag filter applied after fetch to avoid join-filter complexity
   const filtered =
     tagFilter
-      ? (items ?? []).filter((item) =>
-          item.content_item_tags.some((t) => t.tag_slug === tagFilter)
+      ? (allItems ?? []).filter((item) =>
+          item.content_item_tags.some((t) => t.tag_slug === tagFilter),
         )
-      : (items ?? []);
+      : (allItems ?? []);
 
-  const typedItems = filtered as unknown as ContentCardData[];
+  const total = tagFilter ? filtered.length : (count ?? 0);
+  const typedItems = filtered.slice(offset, offset + PAGE_SIZE) as unknown as ContentCardData[];
+
+  // Build base path for pagination (preserves type + tag filters)
+  const filterParts: string[] = [];
+  if (typeFilter) filterParts.push(`type=${typeFilter}`);
+  if (tagFilter) filterParts.push(`tag=${tagFilter}`);
+  const basePath = `/content${filterParts.length ? `?${filterParts.join("&")}` : ""}`;
 
   return (
     <Container className="py-16">
@@ -105,11 +118,19 @@ export default async function ContentPage({ searchParams }: PageProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {typedItems.map((item) => (
-            <ContentCard key={item.slug} item={item} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {typedItems.map((item) => (
+              <ContentCard key={item.slug} item={item} />
+            ))}
+          </div>
+          <Pagination
+            page={page}
+            total={total}
+            pageSize={PAGE_SIZE}
+            basePath={basePath}
+          />
+        </>
       )}
     </Container>
   );

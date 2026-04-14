@@ -6,6 +6,7 @@ import {
   moderateStorySchema,
 } from "@/lib/validation/success-story";
 import { notify } from "@/lib/actions/notifications";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { revalidatePath } from "next/cache";
 
 async function getCurrentUserId(
@@ -33,6 +34,18 @@ export async function submitSuccessStory(
   const supabase = await createClient();
   const userId = await getCurrentUserId(supabase);
   if (!userId) return { ok: false, error: "Not authenticated." };
+
+  // Rate limit: max 3 story submissions per 60 minutes
+  const limit = await checkRateLimit({
+    supabase,
+    table: "success_stories",
+    userColumn: "author_id",
+    userId,
+    windowMinutes: 60,
+    maxCount: 3,
+    label: "story submissions",
+  });
+  if (!limit.allowed) return { ok: false, error: limit.error };
 
   const slug =
     parsed.data.title

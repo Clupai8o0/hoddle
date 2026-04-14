@@ -4,8 +4,10 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { Tag } from "@/components/ui/tag";
+import { FollowButton } from "@/components/patterns/follow-button";
 import { QuestionForm } from "./question-form";
 import { FIELDS_OF_INTEREST } from "@/lib/validation/onboarding";
+import { getFollowStatus } from "@/lib/actions/mentor-follows";
 import { CheckCircle, MapPin, Briefcase, Calendar } from "lucide-react";
 
 interface PageProps {
@@ -79,9 +81,14 @@ export default async function MentorProfilePage({ params }: PageProps) {
     .map((p) => p[0]?.toUpperCase() ?? "")
     .join("");
 
-  // Fetch published content + upcoming session in parallel
+  // Fetch current user to check follow status
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Fetch published content, upcoming session, and follow status in parallel
   const now = new Date().toISOString();
-  const [{ data: contentItems }, { data: upcomingSession }] = await Promise.all([
+  const [{ data: contentItems }, { data: upcomingSession }, isFollowing] = await Promise.all([
     supabase
       .from("content_items")
       .select("id, type, title, slug, excerpt, published_at, view_count")
@@ -98,6 +105,7 @@ export default async function MentorProfilePage({ params }: PageProps) {
       .order("scheduled_at", { ascending: true })
       .limit(1)
       .maybeSingle(),
+    user ? getFollowStatus(mentor.profile_id) : Promise.resolve(false),
   ]);
 
   const nextSession = upcomingSession ?? null;
@@ -145,6 +153,14 @@ export default async function MentorProfilePage({ params }: PageProps) {
                   </span>
                 )}
               </div>
+              {user && (
+                <div className="mt-1">
+                  <FollowButton
+                    mentorProfileId={mentor.profile_id}
+                    initialFollowing={isFollowing}
+                  />
+                </div>
+              )}
               {mentor.headline && (
                 <p className="font-body text-base text-on-surface-variant leading-snug max-w-md">
                   {mentor.headline}

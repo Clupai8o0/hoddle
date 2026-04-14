@@ -8,6 +8,7 @@ import {
   reactionSchema,
 } from "@/lib/validation/forum";
 import { notify } from "@/lib/actions/notifications";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { revalidatePath } from "next/cache";
 
 async function getCurrentUserId(
@@ -97,6 +98,18 @@ export async function createPost(
 
   if (!thread) return { ok: false, error: "Thread not found." };
   if (thread.locked) return { ok: false, error: "This thread is locked." };
+
+  // Rate limit: max 10 posts per 10 minutes
+  const limit = await checkRateLimit({
+    supabase,
+    table: "forum_posts",
+    userColumn: "author_id",
+    userId,
+    windowMinutes: 10,
+    maxCount: 10,
+    label: "forum posts",
+  });
+  if (!limit.allowed) return { ok: false, error: limit.error };
 
   // Fetch thread for notification — need title, slug, category, and original author
   const { data: threadFull } = await supabase

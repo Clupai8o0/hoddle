@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { contentItemSchema, publishSchema } from "@/lib/validation/content-item";
+import { notifyFollowersOfContent } from "@/lib/actions/mentor-follows";
 import { revalidatePath } from "next/cache";
 import type { Json } from "@/lib/supabase/database.types";
 
@@ -111,13 +112,30 @@ export async function publishContentItem(
   const mentorId = await getMentorId(supabase);
   if (!mentorId) return { ok: false, error: "Not authorised." };
 
-  const { error } = await supabase
+  const { data: item, error } = await supabase
     .from("content_items")
     .update({ published_at: new Date().toISOString() })
     .eq("id", parsed.data.id)
-    .eq("mentor_id", mentorId);
+    .eq("mentor_id", mentorId)
+    .select("title, slug")
+    .single();
 
-  if (error) return { ok: false, error: error.message };
+  if (error || !item) return { ok: false, error: error?.message ?? "Not found." };
+
+  // Notify followers — fire-and-forget
+  const { data: mentorProfile } = await supabase
+    .from("profiles")
+    .select("full_name")
+    .eq("id", mentorId)
+    .single();
+
+  void notifyFollowersOfContent(
+    mentorId,
+    item.title,
+    item.slug,
+    mentorProfile?.full_name ?? "Your mentor",
+  );
+
   revalidatePath("/mentor/content");
   revalidatePath("/content");
   return { ok: true };

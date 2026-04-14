@@ -202,14 +202,14 @@ Goal: surface 3–5 mentor recommendations per student based on onboarding answe
 
 ## 11. Cross-cutting
 
-- [ ] Update student dashboard to surface: recommended mentors, latest content, upcoming sessions you're registered for, recent forum activity in your interest areas
-- [ ] Update `EmptyState` pattern usages — replace Phase 1 placeholders across the dashboard with real data
-- [ ] Search: basic full-text search across content, mentors, and forums using Postgres `tsvector`
-- [ ] Image uploads via Supabase Storage with client-side resize before upload
-- [ ] Slug generation helper for content, mentors, threads, stories
-- [ ] Pagination pattern for list pages (cursor-based on `created_at`)
-- [ ] Rate limiting on user-generated content endpoints (forum posts, questions, story submissions) — Vercel KV or Supabase row-based
-- [ ] Add `useFollow(mentorId)` hook + `mentor_follows` join table for "follow a mentor" interactions
+- [x] Update student dashboard to surface: recommended mentors, latest content, upcoming sessions you're registered for, recent forum activity in your interest areas
+- [x] Update `EmptyState` pattern usages — replace Phase 1 placeholders across the dashboard with real live-data sections
+- [x] Search: `app/(app)/search/page.tsx` — full-text search across content, mentors, and forum threads using ILIKE; search icon in AppNav
+- [ ] Image uploads via Supabase Storage with client-side resize before upload (Phase 3 — requires resize pipeline)
+- [x] Slug generation helper — `lib/utils/slug.ts` with `generateSlug(title)`
+- [x] Pagination pattern — `components/ui/pagination.tsx` (offset-based, ellipsis page window); applied to content library
+- [x] Rate limiting on UGC endpoints — `lib/utils/rate-limit.ts` (DB row-count in window); applied to `createPost` (10/10 min), `submitSuccessStory` (3/60 min), `submitSessionQuestion` (5/60 min)
+- [x] `FollowButton` component + `toggleFollow`/`getFollowStatus` server actions + `notifyFollowersOfContent` — follow button on mentor profile page; `publishContentItem` notifies followers via `new_content_from_mentor_you_follow`
 
 ## 12. Pre-ship checks
 

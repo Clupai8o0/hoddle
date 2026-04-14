@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { sessionQuestionSchema } from "@/lib/validation/session-question";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
 
 export async function submitSessionQuestion(
   input: unknown,
@@ -17,6 +18,18 @@ export async function submitSessionQuestion(
   } = await supabase.auth.getUser();
 
   if (!user) return { ok: false, error: "You must be signed in to ask a question." };
+
+  // Rate limit: max 5 questions per 60 minutes
+  const limit = await checkRateLimit({
+    supabase,
+    table: "session_questions",
+    userColumn: "profile_id",
+    userId: user.id,
+    windowMinutes: 60,
+    maxCount: 5,
+    label: "session questions",
+  });
+  if (!limit.allowed) return { ok: false, error: limit.error };
 
   const { session_id, body, anonymous } = parsed.data;
 

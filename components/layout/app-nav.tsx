@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { LogOut, Search } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Avatar } from "@/components/ui/avatar";
 import { NotificationBell } from "@/components/layout/notification-bell";
@@ -58,6 +58,19 @@ export function AppNav({
       }
       actions={
         <div className="flex items-center gap-4">
+          {/* Search */}
+          <Link
+            href="/search"
+            aria-label="Search"
+            className={`flex items-center justify-center w-8 h-8 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm ${
+              activePath.startsWith("/search")
+                ? "text-primary"
+                : "text-on-surface-variant hover:text-on-surface"
+            }`}
+          >
+            <Search size={17} strokeWidth={1.5} />
+          </Link>
+
           {/* Notification bell */}
           <NotificationBell userId={userId} initialUnreadCount={initialUnreadCount} />
 

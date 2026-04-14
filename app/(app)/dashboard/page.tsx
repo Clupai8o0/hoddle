@@ -52,6 +52,9 @@ export default async function DashboardPage() {
     { data: onboarding },
     { data: featuredStory },
     { data: rawRecs },
+    { data: latestContent },
+    { data: rawRegistrations },
+    { data: recentThreads },
   ] = await Promise.all([
     supabase
       .from("profiles")
@@ -86,6 +89,35 @@ export default async function DashboardPage() {
       .eq("profile_id", user!.id)
       .order("rank", { ascending: true })
       .limit(5),
+    // Latest published content
+    supabase
+      .from("content_items")
+      .select(
+        `slug, type, title, excerpt,
+         mentors!content_items_mentor_id_fkey(
+           profiles!mentors_profile_id_fkey(full_name)
+         )`,
+      )
+      .not("published_at", "is", null)
+      .order("published_at", { ascending: false })
+      .limit(3),
+    // Upcoming registered sessions — fetch registrations + join sessions, filter in JS
+    supabase
+      .from("session_registrations")
+      .select(
+        `live_sessions!session_registrations_session_id_fkey(
+           id, title, scheduled_at, duration_minutes, status
+         )`,
+      )
+      .eq("profile_id", user!.id)
+      .limit(20),
+    // Recent forum threads
+    supabase
+      .from("forum_threads")
+      .select("id, slug, title, category_slug, last_activity_at")
+      .is("deleted_at", null)
+      .order("last_activity_at", { ascending: false })
+      .limit(4),
   ]);
 
   // If no pre-computed recommendations exist, compute now (first login)
@@ -106,6 +138,31 @@ export default async function DashboardPage() {
       .limit(5);
     recommendations = freshRecs ?? [];
   }
+
+  // Filter upcoming registered sessions in JS
+  const now = new Date().toISOString();
+  type SessionRow = {
+    id: string;
+    title: string;
+    scheduled_at: string;
+    duration_minutes: number;
+    status: string;
+  };
+  const upcomingSessions: SessionRow[] = (rawRegistrations ?? [])
+    .map((r) => {
+      const s = Array.isArray(r.live_sessions)
+        ? r.live_sessions[0]
+        : r.live_sessions;
+      return s as SessionRow | null;
+    })
+    .filter(
+      (s): s is SessionRow =>
+        s !== null &&
+        s.status === "scheduled" &&
+        s.scheduled_at >= now,
+    )
+    .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
+    .slice(0, 3);
 
   // Shape into MentorCardData
   type RecRow = (typeof recommendations)[number];
@@ -177,8 +234,8 @@ export default async function DashboardPage() {
               {firstName}.
             </h1>
             <p className="font-body text-lg text-on-surface-variant mt-5 max-w-lg leading-relaxed">
-              Your mentors, community, and resources are being prepared. Here's
-              what we know about you so far.
+              Your mentors, sessions, and community are ready. Let&apos;s get
+              started.
             </p>
           </div>
 
@@ -306,8 +363,8 @@ export default async function DashboardPage() {
               label={hasAnyOnboarding ? "2 of 5 milestones" : "1 of 5 milestones"}
             />
             <p className="font-body text-xs text-on-surface-variant mt-4 leading-relaxed">
-              Mentor connections, community forums, and success stories unlock
-              when we open Phase 2.
+              Connect with a mentor, post in the forums, and share your story to
+              complete your journey.
             </p>
           </div>
         </div>
@@ -364,127 +421,187 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      {/* ── Phase 2 empty states ─────────────────────────────────────
-          Photography placeholder divs — replace with <Image> after
-          generating images per todo.md §5b.
-      ───────────────────────────────────────────────────────────────── */}
-      <section className={`${C} mt-16`}>
-        <div className="mb-8">
-          <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
-            What&apos;s ahead
-          </span>
-          <h2 className="font-display font-bold text-2xl text-primary">
-            More coming soon
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Content library */}
-          <div className="bg-surface-container-low rounded-md overflow-hidden">
-            <div className="relative h-36">
-              <Image
-                src="/images/empty-state-journal.webp"
-                alt="An open journal on a desk — the content library arrives in Phase 2"
-                fill
-                className="object-cover"
-              />
+      {/* ── Latest content ───────────────────────────────────────────── */}
+      {(latestContent ?? []).length > 0 && (
+        <section className={`${C} mt-16`}>
+          <div className="flex items-baseline justify-between mb-6">
+            <div>
+              <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
+                From your mentors
+              </span>
+              <h2 className="font-display font-bold text-2xl text-primary">
+                Latest content
+              </h2>
             </div>
-            <div className="p-5">
-              <Tag variant="muted" className="mb-3">
-                Phase 2
-              </Tag>
-              <h3 className="font-display font-semibold text-base text-primary mb-1">
-                Content Library
-              </h3>
-              <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                Essays, advice, and stories from mentors who&apos;ve been where
-                you are.
-              </p>
-            </div>
+            <Link
+              href="/content"
+              className="font-body text-sm text-on-surface-variant hover:text-primary transition-colors duration-150 underline underline-offset-2"
+            >
+              Browse all
+            </Link>
           </div>
-
-          {/* Forums */}
-          <div className="bg-surface-container-low rounded-md overflow-hidden">
-            <div className="relative h-36">
-              <Image
-                src="/images/empty-state-botanic.webp"
-                alt="A quiet bench in the Botanic Gardens — the forums arrive in Phase 2"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="p-5">
-              <Tag variant="muted" className="mb-3">
-                Phase 2
-              </Tag>
-              <h3 className="font-display font-semibold text-base text-primary mb-1">
-                Community Forums
-              </h3>
-              <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                A space to ask questions, share discoveries, and find your
-                people.
-              </p>
-            </div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {(latestContent ?? []).map((item) => {
+              const mentorName =
+                ((Array.isArray(item.mentors) ? item.mentors[0] : item.mentors) as {
+                  profiles: { full_name: string | null } | null;
+                } | null)?.profiles?.full_name ?? "A mentor";
+              return (
+                <Link
+                  key={item.slug}
+                  href={`/content/${item.slug}`}
+                  className="group flex flex-col gap-2 p-5 rounded-2xl bg-surface-container-lowest hover:shadow-ambient hover:-translate-y-px transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                >
+                  <span className="font-body text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider">
+                    {item.type}
+                  </span>
+                  <p className="font-display font-semibold text-on-surface group-hover:text-primary transition-colors line-clamp-2">
+                    {item.title}
+                  </p>
+                  {item.excerpt && (
+                    <p className="font-body text-sm text-on-surface-variant line-clamp-2">
+                      {item.excerpt}
+                    </p>
+                  )}
+                  <p className="font-body text-xs text-on-surface-variant mt-auto pt-1">
+                    by {mentorName}
+                  </p>
+                </Link>
+              );
+            })}
           </div>
+        </section>
+      )}
 
-          {/* Success stories */}
+      {/* ── Upcoming registered sessions ─────────────────────────────── */}
+      {upcomingSessions.length > 0 && (
+        <section className={`${C} mt-16`}>
+          <div className="flex items-baseline justify-between mb-6">
+            <div>
+              <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
+                Your calendar
+              </span>
+              <h2 className="font-display font-bold text-2xl text-primary">
+                Upcoming sessions
+              </h2>
+            </div>
+            <Link
+              href="/sessions"
+              className="font-body text-sm text-on-surface-variant hover:text-primary transition-colors duration-150 underline underline-offset-2"
+            >
+              All sessions
+            </Link>
+          </div>
+          <div className="space-y-3">
+            {upcomingSessions.map((s) => {
+              const d = new Date(s.scheduled_at);
+              const dayNum = d.toLocaleDateString("en-AU", { day: "numeric", timeZone: "Australia/Melbourne" });
+              const month = d.toLocaleDateString("en-AU", { month: "short", timeZone: "Australia/Melbourne" });
+              const time = d.toLocaleTimeString("en-AU", { hour: "2-digit", minute: "2-digit", timeZone: "Australia/Melbourne" });
+              return (
+                <Link
+                  key={s.id}
+                  href={`/sessions/${s.id}`}
+                  className="group flex items-center gap-5 p-4 rounded-2xl bg-surface-container-lowest hover:shadow-ambient transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                >
+                  <div className="flex-shrink-0 w-12 text-center">
+                    <p className="font-display font-bold text-2xl text-primary leading-none">{dayNum}</p>
+                    <p className="font-body text-xs text-on-surface-variant uppercase tracking-wide">{month}</p>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-display font-semibold text-on-surface group-hover:text-primary transition-colors line-clamp-1">
+                      {s.title}
+                    </p>
+                    <p className="font-body text-xs text-on-surface-variant mt-0.5">
+                      {time} · {s.duration_minutes} min
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ── Recent forum activity ─────────────────────────────────────── */}
+      {(recentThreads ?? []).length > 0 && (
+        <section className={`${C} mt-16`}>
+          <div className="flex items-baseline justify-between mb-6">
+            <div>
+              <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
+                Community
+              </span>
+              <h2 className="font-display font-bold text-2xl text-primary">
+                Active discussions
+              </h2>
+            </div>
+            <Link
+              href="/forums"
+              className="font-body text-sm text-on-surface-variant hover:text-primary transition-colors duration-150 underline underline-offset-2"
+            >
+              All forums
+            </Link>
+          </div>
+          <div className="space-y-2">
+            {(recentThreads ?? []).map((thread) => (
+              <Link
+                key={thread.id}
+                href={`/forums/${thread.category_slug}/${thread.slug}`}
+                className="group flex items-center justify-between gap-4 px-5 py-3.5 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              >
+                <p className="font-body text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-1">
+                  {thread.title}
+                </p>
+                <span className="font-body text-[10px] text-on-surface-variant shrink-0 uppercase tracking-wide">
+                  {thread.category_slug.replace(/-/g, " ")}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Featured story ────────────────────────────────────────────── */}
+      {featuredStory && (
+        <section className={`${C} mt-16`}>
+          <div className="mb-6">
+            <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
+              Inspiration
+            </span>
+            <h2 className="font-display font-bold text-2xl text-primary">
+              From the community
+            </h2>
+          </div>
           <Link
-            href="/stories"
-            className="group bg-surface-container-low rounded-md overflow-hidden hover:shadow-ambient transition-all hover:-translate-y-px block"
+            href={`/stories/${featuredStory.slug}`}
+            className="group flex flex-col sm:flex-row gap-6 p-6 rounded-2xl bg-surface-container-lowest hover:shadow-ambient hover:-translate-y-px transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
           >
-            <div className="relative h-36">
-              {featuredStory?.hero_image_url ? (
+            {featuredStory.hero_image_url && (
+              <div className="relative w-full sm:w-48 h-32 sm:h-auto rounded-xl overflow-hidden flex-shrink-0">
                 <Image
                   src={featuredStory.hero_image_url}
                   alt={featuredStory.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 />
-              ) : (
-                <Image
-                  src="/images/empty-state-library.webp"
-                  alt="Students at the State Library — success stories"
-                  fill
-                  className="object-cover"
-                />
-              )}
-            </div>
-            <div className="p-5">
-              {featuredStory ? (
-                <>
-                  <Tag variant="success" className="mb-3">
-                    Featured story
-                  </Tag>
-                  <h3 className="font-display font-semibold text-base text-primary mb-1 group-hover:underline line-clamp-2">
-                    {featuredStory.title}
-                  </h3>
-                  <p className="font-body text-xs text-on-surface-variant">
-                    {(
-                      featuredStory.profiles as {
-                        full_name: string | null;
-                        university: string | null;
-                      } | null
-                    )?.full_name ?? "Community member"}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <Tag variant="muted" className="mb-3">
-                    Community
-                  </Tag>
-                  <h3 className="font-display font-semibold text-base text-primary mb-1">
-                    Success Stories
-                  </h3>
-                  <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                    Real accounts of how Hoddle mentors helped students find
-                    their footing.
-                  </p>
-                </>
-              )}
+              </div>
+            )}
+            <div className="flex flex-col justify-center gap-2">
+              <Tag variant="success">Featured story</Tag>
+              <h3 className="font-display font-semibold text-lg text-primary group-hover:underline line-clamp-2">
+                {featuredStory.title}
+              </h3>
+              <p className="font-body text-xs text-on-surface-variant">
+                {(
+                  featuredStory.profiles as {
+                    full_name: string | null;
+                  } | null
+                )?.full_name ?? "Community member"}
+              </p>
             </div>
           </Link>
-        </div>
-      </section>
+        </section>
+      )}
     </main>
   );
 }

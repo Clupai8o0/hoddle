@@ -76,6 +76,17 @@ _Phase 2 work in progress. See `todo.md`._
 - `app/(app)/inbox/page.tsx` — full notification list: unread/earlier sections, per-item dismiss, mark-all-read, link to preferences
 - `app/(app)/settings/notifications/page.tsx` + `preferences-form.tsx` — channel toggles (email/in-app) + per-type mute toggles
 - `app/api/cron/session-starting-soon/route.ts` — Vercel cron (every 5 min): sends `session_starting_soon` notifications 10–20 min before sessions
+- `lib/utils/slug.ts` — `generateSlug(title)` utility extracted from inline slug logic used across actions
+- `lib/utils/rate-limit.ts` — `checkRateLimit()` DB row-count rate limiter; applied to `createPost` (10/10 min), `submitSuccessStory` (3/60 min), `submitSessionQuestion` (5/60 min)
+- `lib/actions/mentor-follows.ts` — `toggleFollow`, `getFollowStatus`, `notifyFollowersOfContent` server actions
+- `lib/actions/content-items.ts` — `publishContentItem` now notifies all followers via `notifyFollowersOfContent()`
+- `components/patterns/follow-button.tsx` — `FollowButton` client component with optimistic follow/unfollow toggle
+- `components/ui/pagination.tsx` — `Pagination` component with ellipsis window; applied to content library page
+- `app/(app)/mentors/[slug]/page.tsx` — `FollowButton` added to mentor hero; shows only when authenticated
+- `app/(app)/content/page.tsx` — added offset pagination (18 per page)
+- `app/(app)/search/page.tsx` — search across mentors, content, and forum threads using ILIKE; max 8 results per type with "View all" overflow links
+- `components/layout/app-nav.tsx` — search icon link to `/search`
+- `app/(app)/dashboard/page.tsx` — replaced Phase 1 "coming soon" placeholders with live sections: latest content, upcoming registered sessions, recent forum threads, featured story; welcome text updated for Phase 2
 - `lib/actions/forums.ts` — `createPost` now calls `notify()` for `forum_reply_to_your_thread` when replying to another user's thread
 - `lib/actions/success-stories.ts` — `moderateStory` now calls `notify()` for `success_story_approved` on approval
 - `lib/matching/score.ts` — pure `scoreMentor(student, mentor)` function: country_of_origin +30, field_of_interest overlap +15 each, challenges/goals overlap +10 each; generates human-readable reasoning string
