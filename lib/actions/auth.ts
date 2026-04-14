@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 
 export async function signOut(): Promise<never> {
@@ -14,8 +15,10 @@ export async function sendMagicLink(
 ): Promise<{ ok: true } | { ok: false; error: string }> {
   const supabase = await createClient();
 
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const headersList = await headers();
+  const host = headersList.get("x-forwarded-host") ?? headersList.get("host") ?? "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") ?? "http";
+  const siteUrl = `${proto}://${host}`;
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
