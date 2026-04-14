@@ -13,11 +13,16 @@ const C = "max-w-7xl mx-auto px-5 sm:px-10 lg:px-16";
 // ─────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────
-export const revalidate = 3600; // re-fetch mentor data at most once per hour
+// Cannot use static revalidation — page renders user-specific nav
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const supabase = await createClient();
-  const { data: mentors } = await supabase
+
+  // Fetch auth user and profile in parallel with mentor data
+  const [{ data: { user } }, { data: mentors }] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase
     .from("mentors")
     .select(
       `slug, headline, expertise,
@@ -25,9 +30,21 @@ export default async function HomePage() {
          full_name, avatar_url, country_of_origin, university
        )`,
     )
-    .not("verified_at", "is", null)
-    .order("verified_at", { ascending: false })
-    .limit(3);
+      .not("verified_at", "is", null)
+      .order("verified_at", { ascending: false })
+      .limit(3),
+  ]);
+
+  // If logged in, fetch their profile for the nav
+  let profile: { full_name: string | null; avatar_url: string | null } | null = null;
+  if (user) {
+    const { data } = await supabase
+      .from("profiles")
+      .select("full_name, avatar_url")
+      .eq("id", user.id)
+      .single();
+    profile = data;
+  }
 
   type HomepageMentor = {
     slug: string;
@@ -73,14 +90,45 @@ export default async function HomePage() {
           </>
         }
         actions={
-          <>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/login">Log in</Link>
-            </Button>
-            <Button variant="primary" size="sm" asChild>
-              <Link href="/signup">Get started</Link>
-            </Button>
-          </>
+          user ? (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/dashboard">Dashboard</Link>
+              </Button>
+              <Link
+                href="/profile"
+                className="flex items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary"
+                aria-label="Your profile"
+              >
+                {profile?.avatar_url ? (
+                  <Image
+                    src={profile.avatar_url}
+                    alt={profile.full_name ?? "Your profile"}
+                    width={36}
+                    height={36}
+                    className="rounded-full object-cover ring-2 ring-outline-variant"
+                  />
+                ) : (
+                  <span className="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center font-display font-bold text-sm text-primary ring-2 ring-outline-variant select-none">
+                    {(profile?.full_name ?? user.email ?? "?")
+                      .split(" ")
+                      .slice(0, 2)
+                      .map((p) => p[0]?.toUpperCase() ?? "")
+                      .join("") || "?"}
+                  </span>
+                )}
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/login">Log in</Link>
+              </Button>
+              <Button variant="primary" size="sm" asChild>
+                <Link href="/signup">Get started</Link>
+              </Button>
+            </>
+          )
         }
       />
 
