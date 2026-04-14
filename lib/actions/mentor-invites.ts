@@ -170,9 +170,11 @@ export async function acceptMentorInvite(
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Not authenticated." };
 
-  // Validate invite token
+  const admin = createAdminClient();
+
+  // Validate invite token — use admin client because mentor_invites is admin-only RLS
   const now = new Date().toISOString();
-  const { data: invite } = await supabase
+  const { data: invite } = await admin
     .from("mentor_invites")
     .select("id, email, accepted_at, expires_at")
     .eq("token", token)
@@ -184,8 +186,6 @@ export async function acceptMentorInvite(
   if (invite.email.toLowerCase() !== user.email?.toLowerCase()) {
     return { ok: false, error: "This invite was sent to a different email address." };
   }
-
-  const admin = createAdminClient();
 
   // Set profile role to mentor
   const { error: profileError } = await admin
