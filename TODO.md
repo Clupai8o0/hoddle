@@ -131,7 +131,7 @@ Post-generation checklist (per `docs/design.md §7`):
 - [x] Reactions: heart, thanks, helpful — toggleable per user
 - [x] Edit own post (within 30 minutes of posting); soft-delete after
 - [x] Empty states for each category
-- [ ] Seed initial categories: "First Semester Struggles", "Career & Internships", "Living in Melbourne", "Academic Writing", "Visa & Admin"
+- [x] Seed initial categories: "First Semester Struggles", "Career & Internships", "Living in Melbourne", "Academic Writing", "Visa & Admin" — already in `20260413000003_phase2_schema.sql`
 - [x] Reference screens: `docs/design/community_forums/screen.png`, `docs/design/forum_thread_myki_fine_help/screen.png`
 
 ## 7. Success stories gallery
