@@ -442,6 +442,261 @@ Both functions are owned by the database role, not the authenticated role, so th
 
 ---
 
+## Phase 3 tables
+
+Phase 3 adds badges, graduation, i18n preferences, PWA push, calendars, matching telemetry, resource hub, extended anonymity, and the admin audit log. Every table ships with RLS; the audit log is additionally append-only via a policy that denies `update` and `delete` to everyone including admins.
+
+### `mentor_badges`
+
+Canonical badge catalog. Seeded from `lib/badges/catalog.ts`, one row per badge definition.
+
+| Column | Type | Notes |
+|---|---|---|
+| `slug` | `text` PK | E.g. `'founding_mentor'` |
+| `label` | `text` | Display name |
+| `tier` | `badge_tier` enum | `'bronze'` \| `'silver'` \| `'gold'` |
+| `description` | `text` | Editorial explanation shown on the badge page |
+| `icon_slug` | `text` | References an organic-shape SVG, not a Lucide icon |
+| `criteria` | `jsonb` | Machine-readable criteria used by `evaluateBadgeCriteria()` |
+| `created_at` | `timestamptz` | |
+
+**Enum:** `badge_tier as enum ('bronze', 'silver', 'gold')`
+
+**RLS:** read open to all authenticated users. Writes admin only.
+
+---
+
+### `mentor_badge_awards`
+
+The badges a mentor has actually earned. Composite PK prevents duplicates.
+
+| Column | Type | Notes |
+|---|---|---|
+| `mentor_id` | `uuid` | FK → `mentors(profile_id)` on delete cascade |
+| `badge_slug` | `text` | FK → `mentor_badges(slug)` |
+| `awarded_at` | `timestamptz` | default `now()` |
+| `awarded_by` | `uuid` | FK → `profiles(id)`. Null for auto-awarded. |
+| `reason` | `text` | Optional human-written citation for manual awards |
+| Composite PK on (`mentor_id`, `badge_slug`) | | |
+
+**RLS:** read open to authenticated users. Writes via server function (service role) or admin.
+
+---
+
+### `graduation_applications`
+
+Student applications to become a mentor.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `profile_id` | `uuid` | FK → `profiles(id)` on delete cascade |
+| `submitted_at` | `timestamptz` | |
+| `status` | `graduation_status` enum | `'pending'` \| `'approved'` \| `'rejected'` \| `'withdrawn'` |
+| `why_mentor` | `text` | Essay field |
+| `who_would_you_mentor` | `text` | Essay field |
+| `short_bio` | `text` | Used to seed the `mentors` row on approval |
+| `mentor_reference_id` | `uuid` | FK → `mentors(profile_id)`. The mentor vouching for this applicant. |
+| `milestones_snapshot` | `jsonb` | Captured at submission time: sessions attended, stories published, forum helpful count. Source of truth for eligibility review. |
+| `decision_note` | `text` | Admin's written decision rationale |
+| `decided_at` | `timestamptz` | |
+| `decided_by` | `uuid` | FK → `profiles(id)` |
+
+**Enum:** `graduation_status as enum ('pending', 'approved', 'rejected', 'withdrawn')`
+
+**RLS:**
+- `select`: applicant, the reference mentor, and admin.
+- `insert`: applicant only (`auth.uid() = profile_id`), and only if they pass server-side eligibility check.
+- `update`: status transitions and decision fields are admin only. Applicant can update essay fields while `status = 'pending'`.
+- `delete`: blocked.
+
+---
+
+### `university_calendars`
+
+Registry of ICS feeds pulled nightly.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `university` | `text` | E.g. `'University of Melbourne'` |
+| `term` | `text` | E.g. `'2026 Semester 1'` |
+| `name` | `text` | Human-friendly calendar name |
+| `feed_url` | `text` | The ICS URL (admin-only visibility) |
+| `last_synced_at` | `timestamptz` | |
+| `last_sync_status` | `text` | `'ok'` or error message |
+| `created_at` | `timestamptz` | |
+
+**RLS:** read open for `university` + `name` + `term` fields; `feed_url` visible to admin only (enforced via a view or column-level policy). Writes admin only.
+
+---
+
+### `university_events`
+
+Parsed events from ICS feeds.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `calendar_id` | `uuid` | FK → `university_calendars(id)` on delete cascade |
+| `source_uid` | `text` | ICS UID, used for upsert-idempotency |
+| `title` | `text` | |
+| `description` | `text` | |
+| `starts_at` | `timestamptz` | |
+| `ends_at` | `timestamptz` | |
+| `category` | `text` | `'academic'` \| `'admin'` \| `'social'` \| `'deadline'` |
+| Unique on (`calendar_id`, `source_uid`) | | |
+
+**RLS:** read open to authenticated users. Writes via sync cron using service role.
+
+---
+
+### `user_calendar_subscriptions`
+
+Which students follow which calendars. Auto-subscribed on onboarding based on `profiles.university`.
+
+| Column | Type | Notes |
+|---|---|---|
+| `profile_id` | `uuid` | FK → `profiles(id)` on delete cascade |
+| `calendar_id` | `uuid` | FK → `university_calendars(id)` on delete cascade |
+| Composite PK on both | | |
+| `created_at` | `timestamptz` | |
+
+**RLS:** user reads/writes their own rows only.
+
+---
+
+### `recommendation_clicks`
+
+Telemetry for matching algorithm v2.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `profile_id` | `uuid` | FK → `profiles(id)` |
+| `mentor_id` | `uuid` | FK → `mentors(profile_id)` |
+| `recommendation_rank` | `int` | The rank shown at click time |
+| `algorithm_version` | `text` | `'v1'` or `'v2'` |
+| `clicked_at` | `timestamptz` | |
+| `source` | `text` | `'dashboard'` \| `'directory'` \| `'email'` |
+| `downstream_actions` | `jsonb` | Populated post-click: `{ viewed_content: true, registered_session: false, followed: true }` |
+
+**RLS:** user reads their own rows. Admin reads all. Writes via server action.
+
+---
+
+### `mentor_impact_daily`
+
+Materialised view powering the mentor analytics dashboard. Refreshed nightly.
+
+```sql
+create materialized view mentor_impact_daily as
+  select
+    mentor_id,
+    date_trunc('day', event_at) as date,
+    count(*) filter (where event_type = 'content_view') as content_views,
+    count(distinct viewer_id) filter (where event_type = 'content_view') as unique_readers,
+    count(*) filter (where event_type = 'new_follower') as new_followers,
+    count(*) filter (where event_type = 'forum_reply') as forum_replies,
+    count(*) filter (where event_type = 'session_registration') as session_registrations,
+    count(*) filter (where event_type = 'question_received') as questions_received
+  from mentor_events
+  group by 1, 2;
+```
+
+Requires a simple `mentor_events` append-only event table written by Phase 3 server actions. Refresh via `refresh materialized view concurrently mentor_impact_daily` on nightly cron.
+
+**RLS:** mentor reads their own rows only. Admin reads all.
+
+---
+
+### `resources`
+
+Curated external resource hub.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `title` | `text` | |
+| `url` | `text` | |
+| `description` | `text` | Why this resource is worth linking to |
+| `category` | `text` | `'visa'` \| `'housing'` \| `'health'` \| `'transport'` \| `'finance'` \| `'academic'` \| `'career'` |
+| `university` | `text` | Nullable — null means "applies to all" |
+| `tags` | `text[]` | Free-form tags for search |
+| `curated_by` | `uuid` | FK → `profiles(id)` (the admin who added it) |
+| `added_at` | `timestamptz` | |
+| `last_verified_at` | `timestamptz` | Updated by link-health cron |
+| `status` | `resource_status` enum | `'active'` \| `'broken'` \| `'retired'` |
+| `notes` | `text` | Internal admin notes |
+
+**Enum:** `resource_status as enum ('active', 'broken', 'retired')`
+
+**RLS:** read open for `status = 'active'`. Admin reads all. Writes admin only.
+
+---
+
+### `push_subscriptions`
+
+Web Push endpoints for the PWA.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `profile_id` | `uuid` | FK → `profiles(id)` on delete cascade |
+| `endpoint` | `text` unique | The browser-issued push endpoint URL |
+| `keys` | `jsonb` | `{ p256dh, auth }` |
+| `created_at` | `timestamptz` | |
+| `last_used_at` | `timestamptz` | Touched on every successful send |
+
+**RLS:** user reads/writes their own rows only. Service role reads for sending.
+
+---
+
+### `admin_actions`
+
+Append-only audit log. No updates. No deletes. Ever.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `actor_id` | `uuid` | FK → `profiles(id)` |
+| `action` | `text` | E.g. `'verify_mentor'`, `'reveal_anonymous_author'`, `'retire_resource'` |
+| `target_table` | `text` | |
+| `target_id` | `text` | Text to handle composite PKs |
+| `diff` | `jsonb` | Before/after snapshot of the changed row |
+| `reason` | `text` | Required for reveal / delete actions, enforced at helper level |
+| `created_at` | `timestamptz` | default `now()` |
+
+**RLS:**
+- `select`: admin only.
+- `insert`: server role only (via `logAdminAction()` helper).
+- `update` / `delete`: **policy explicitly denies these for every role, including `authenticated` and `service_role`.** The only way to "correct" the log is to append another row noting the correction.
+
+This is the one table in the system where the database schema itself enforces append-only semantics, rather than relying on application code.
+
+---
+
+### Table alterations
+
+Phase 3 also alters three existing tables:
+
+**`profiles`** — add `preferred_locale text default 'en'`. Used by middleware and email templates.
+
+**`mentors`** — add `tier mentor_tier default 'community'`. Computed by a trigger after every `mentor_badge_awards` insert/delete. Enum: `mentor_tier as enum ('community', 'verified', 'distinguished', 'elder')`.
+
+**`session_questions`** — add `anonymity_level anonymity_level default 'identified'` and `pseudonym text`. The `profile_id` column stays so moderation is always possible, but API layer strips it for non-admin reads when anonymity is not `'identified'`. Enum: `anonymity_level as enum ('identified', 'pseudonym', 'fully_anonymous')`.
+
+---
+
+### Storage buckets (Phase 3 additions)
+
+| Bucket | Visibility | Notes |
+|---|---|---|
+| `badge-art` | Public read | Organic-shape SVGs for mentor badges. Admin write only. |
+| `pwa-assets` | Public read | Manifest icons, splash screens, offline fallback imagery. |
+
+---
+
 ## Regenerating types
 
 After every migration:

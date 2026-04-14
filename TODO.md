@@ -225,17 +225,205 @@ Goal: surface 3–5 mentor recommendations per student based on onboarding answe
 
 ---
 
-## Phase 3 (parked — do not start)
+## Phase 3
 
-- Mentor verification badges and achievement tiers
-- Mentee → mentor graduation program
-- Multi-language support (Mandarin, Hindi, Vietnamese, Korean)
-- Mobile app shell (React Native or PWA install prompts)
-- University calendar integrations
-- Click-through telemetry feeding back into matching algorithm
-- Anonymous question submission for sensitive topics
-- Mentor analytics dashboard (reach, impact, sentiment)
-- Resource hub with curated external links
+Scope: **Badges & tiers, Mentee→mentor graduation, i18n (UI only), PWA, University calendars, Matching v2, Mentor analytics, Resource hub, Anonymous questions, Admin audit log.** Do not start until Phase 2 is shipped and has two weeks of production telemetry.
+
+### 3.0 Foundations
+
+- [ ] Install dependencies: `next-intl` (i18n routing), `@serwist/next` (PWA + service worker), `ical.js` (calendar feed parsing), `recharts` (analytics charts)
+- [ ] Add `ANALYZE_WINDOW_DAYS`, `PWA_ENABLED`, `DEFAULT_LOCALE` env vars
+- [ ] Set up `lib/i18n/` with locale config and message loaders
+- [ ] Add `messages/` directory at repo root with `en.json`, `zh.json`, `hi.json`, `vi.json`, `ko.json`
+- [ ] Add `public/manifest.webmanifest` and icon set (192, 512, maskable)
+- [ ] Add `app/sw.ts` service worker entry via Serwist
+
+### 3.1 Schema migrations
+
+Full table definitions in `docs/database-schema.md` §"Phase 3 tables".
+
+- [ ] Migration: `mentor_badges` table (id, slug, label, tier, description, icon_slug, criteria jsonb)
+- [ ] Migration: `mentor_badge_awards` table (mentor_id, badge_slug, awarded_at, awarded_by, reason)
+- [ ] Migration: `graduation_applications` table (profile_id, submitted_at, status, milestones_snapshot, mentor_reference_id, decision_note, decided_at, decided_by)
+- [ ] Migration: `university_calendars` table (id, university, term, name, feed_url, last_synced_at)
+- [ ] Migration: `university_events` table (id, calendar_id, title, description, starts_at, ends_at, category, source_uid)
+- [ ] Migration: `user_calendar_subscriptions` table (profile_id, calendar_id, created_at)
+- [ ] Migration: `recommendation_clicks` table (profile_id, mentor_id, recommendation_rank, clicked_at, source)
+- [ ] Migration: `mentor_impact_daily` materialised view (mentor_id, date, content_views, new_followers, forum_replies, session_registrations, questions_received)
+- [ ] Migration: `resources` table (id, title, url, description, category, university, tags, curated_by, added_at, last_verified_at, status)
+- [ ] Migration: `admin_actions` audit log table (id, actor_id, action, target_table, target_id, diff jsonb, reason, created_at)
+- [ ] Update `session_questions` — add `anonymity_level` enum (`'identified'` \| `'pseudonym'` \| `'fully_anonymous'`) and `pseudonym` text column
+- [ ] Update `mentors` — add `tier` enum (`'community'` \| `'verified'` \| `'distinguished'` \| `'elder'`), computed from `mentor_badge_awards`
+- [ ] Update `profiles` — add `preferred_locale` text, default `'en'`
+- [ ] RLS on every new table; admin audit log is append-only (no updates, no deletes)
+- [ ] Regenerate `lib/supabase/database.types.ts`
+
+### 3.2 Mentor verification badges & achievement tiers
+
+- [ ] Define badge catalog in `lib/badges/catalog.ts`:
+  - `founding_mentor` — first 20 verified mentors
+  - `voice_of_experience` — 10+ published content items
+  - `community_pillar` — 50+ helpful forum replies
+  - `signal_in_the_noise` — 90%+ "helpful" reaction rate over 30 days
+  - `session_veteran` — 5+ completed live sessions
+  - `graduation_guide` — mentored a student who became a mentor (links to 3.3)
+  - `culture_keeper` — mentor for 3+ students from their home country
+- [ ] Admin UI at `app/(admin)/badges` — list awards, revoke, award manually
+- [ ] Server function `evaluateBadgeCriteria(mentorId)` — runs on a nightly cron, awards auto-qualifying badges
+- [ ] Mentor tier computation: `community` (any verified) → `verified` (1+ badge) → `distinguished` (3+ badges) → `elder` (5+ badges including `graduation_guide`)
+- [ ] Tier reflected on mentor profile card, mentor directory filter, and in matching score (+5 per tier above community)
+- [ ] Notification: `badge_awarded` — email + in-app when a badge is earned
+- [ ] Public badge explainer page at `app/(marketing)/badges` — editorial layout, each badge gets a story
+
+### 3.3 Mentee → mentor graduation program
+
+- [ ] `app/(app)/graduation` — landing page explaining the program, criteria, and application
+- [ ] Eligibility criteria (checked server-side before allowing application):
+  - onboarded ≥ 6 months ago
+  - published success story in approved state
+  - completed ≥ 3 sessions as attendee or authored ≥ 5 helpful forum replies
+  - has mentor reference from a verified mentor
+- [ ] `app/(app)/graduation/apply` — application form (why you, who'd you mentor, reference mentor picker, short bio)
+- [ ] Server action `submitGraduationApplication` — validates eligibility, stores snapshot of milestones
+- [ ] `app/(admin)/graduation` — review queue with approve/reject actions
+- [ ] Approval flow: on approve, flip `profiles.role = 'mentor'`, create `mentors` row from application data, trigger mentor onboarding wizard, award `founding_mentor` to the referring mentor if applicable, send welcome email
+- [ ] Notifications: `graduation_application_received`, `graduation_application_approved`, `graduation_application_rejected`
+- [ ] Public celebration: approved graduations featured on the landing page "Our Story" section
+
+### 3.4 Multi-language UI support
+
+- [ ] Configure `next-intl` middleware for locale routing (`/en/...`, `/zh/...`, `/hi/...`, `/vi/...`, `/ko/...`)
+- [ ] Extract every hardcoded string from Phase 1 + 2 into `messages/en.json` using `next-intl` namespaces
+- [ ] Seed translations for zh, hi, vi, ko — start with machine translation, flag every string for human review, commit behind a `translations_reviewed_at` metadata key
+- [ ] Locale switcher component in `GlassNav` footer area (flag-free, label only)
+- [ ] Persist preference to `profiles.preferred_locale`; middleware reads from cookie → profile → Accept-Language
+- [ ] Respect locale in email templates (Resend) — same subject lines, translated bodies
+- [ ] Content stays English — articles, forum posts, mentor bios are not translated. Display a small locale-aware badge on content cards reading "English content" so non-English users aren't surprised
+- [ ] `docs/i18n.md` — translation workflow, review process, how to add a locale
+- [ ] Pre-ship check: every route renders correctly in all five locales at 375px width (longest translations are usually the ones that break layouts)
+
+### 3.5 PWA — installable, offline shell, push notifications
+
+- [ ] Configure Serwist with a runtime caching strategy:
+  - static assets: `CacheFirst`
+  - Supabase API reads: `NetworkFirst` with 5s timeout, 24h max age
+  - Supabase mutations: network-only, queue for retry when offline
+- [ ] `public/manifest.webmanifest` — name, short_name, description, icons, theme_color `#1e3a5f`, background_color `#fef8f1`, display `standalone`
+- [ ] Install prompt component — shown once per user after 2 sessions, dismissible, never shown again if declined
+- [ ] Offline fallback page at `app/offline/page.tsx` — on-brand editorial "You're offline" message
+- [ ] Service worker precaches: landing page, dashboard shell, mentor directory shell, offline page
+- [ ] Web Push notifications for notification types that matter when the app is closed: `session_starting_soon`, `forum_reply_to_your_thread`, `mentor_replied_to_your_question`
+- [ ] Push subscription storage in a `push_subscriptions` table (profile_id, endpoint, keys jsonb, created_at, last_used_at)
+- [ ] Server helper: `sendWebPush(recipientId, payload)` — called from `notify()` when user has an active subscription and push is enabled
+- [ ] Permission prompt pattern — never on first load. Ask after the user takes a high-intent action (registers for a session, posts in a forum)
+- [ ] Add `badge` and `shortcuts` to manifest so dashboard/inbox/mentors are one-tap from the home screen
+- [ ] Lighthouse PWA audit passes (installable, offline, fast)
+
+### 3.6 University calendar integrations
+
+- [ ] Admin UI at `app/(admin)/calendars` — add university calendar by ICS feed URL, set name + term
+- [ ] Nightly cron job `syncUniversityCalendars` — fetches each ICS feed, parses with `ical.js`, upserts into `university_events`
+- [ ] Student-facing calendar page at `app/(app)/calendar` — see events from subscribed universities, filter by category (academic, admin, social)
+- [ ] Subscribe/unsubscribe to a university's calendar from profile settings; auto-subscribe on onboarding based on `profiles.university`
+- [ ] Key-date surfacing on dashboard: "Census date for your university is in 8 days" with contextual link
+- [ ] Key-date reminders via notifications: census date, exam period start, enrolment deadline, break start/end
+- [ ] Add to calendar button on event detail: generates per-event ICS file for Apple/Google Calendar
+- [ ] Fallback when an ICS feed is unreachable: show last synced data with a small "last updated X days ago" line, never a hard error
+- [ ] Seed 3 Melbourne universities: Unimelb, Monash, RMIT — feed URLs captured in a separate doc (not committed to repo, stored in Vercel env or admin UI)
+
+### 3.7 Matching algorithm v2 — telemetry-driven
+
+- [ ] Wire `recommendation_clicks` logging in the Phase 2 recommendation card (was parked as "log click-throughs for Phase 3")
+- [ ] Wire post-click engagement tracking: after clicking a recommendation, did the student also (a) view content by that mentor, (b) register for a session, (c) follow the mentor? Store in `recommendation_clicks.downstream_actions jsonb`
+- [ ] Build `lib/matching/v2/score.ts` — weighted score combining:
+  - Phase 2 base weights (country, field, challenges, goals)
+  - mentor tier bonus (§3.2)
+  - collaborative-filter signal: mentors that students-like-you (similar onboarding) engaged with
+  - recency: active mentors (content or session in last 30 days) get +10
+  - freshness guard: cap on how often the same mentor appears in a given student's recommendations (no #1 slot two weeks in a row)
+- [ ] A/B test harness: `lib/matching/experiments.ts` — assigns users to `v1` or `v2` cohort on onboarding, persists in profile
+- [ ] Admin dashboard at `app/(admin)/matching` — cohort comparison: click-through rate, follow-through rate, session registrations per cohort
+- [ ] Promotion criteria: v2 ships as default when it beats v1 on click-through **and** session-registration rate over a 4-week window
+- [ ] Keep v1 available as a fallback via env flag
+
+### 3.8 Mentor analytics dashboard
+
+- [ ] `app/(app)/mentor/analytics` — editorial-layout dashboard, not a grid of metric boxes
+- [ ] Headline metrics, shown as "this month vs last month" narratives:
+  - content views
+  - unique student readers
+  - forum replies and reactions-received ratio
+  - session registrations and attendance rate
+  - questions received (answered vs unanswered)
+  - new followers
+- [ ] Content-level breakdown: which of my articles are landing, which are ignored
+- [ ] Student-origin chart: breakdown of readers by country of origin (informs what to write next)
+- [ ] Reaction sentiment: `helpful` / `thanks` / `heart` ratios across a mentor's content and forum replies
+- [ ] "Your reach" narrative block: "Your advice reached 412 students this month from 14 countries. Here's the post that did the most."
+- [ ] Recharts for the two time-series charts; everything else is typography-led
+- [ ] Data source: `mentor_impact_daily` materialised view, refreshed nightly
+- [ ] Export: "email me a monthly summary" toggle — sent first of each month via Resend
+
+### 3.9 Resource hub — curated external links
+
+- [ ] `app/(app)/resources/page.tsx` — browsable hub, grouped by category (visa, housing, health, transport, finance, academic support, career services)
+- [ ] `app/(app)/resources/[category]/page.tsx` — category detail with all resources
+- [ ] Admin UI at `app/(admin)/resources` — add, edit, retire resources; assign category and university
+- [ ] Link health check: nightly cron pings each resource URL, flips `status` to `'broken'` if 4xx/5xx, notifies admin inbox
+- [ ] Curation metadata: `curated_by` (which admin added it), `last_verified_at`, `notes` (why this is worth linking to)
+- [ ] Student-requested resources: `app/(app)/resources/request` — submit a resource suggestion, lands in admin queue
+- [ ] Resource cards use the same no-border, tonal-layered pattern as content cards — no external-link icons except a small Lucide `arrow-up-right` on hover
+- [ ] Search across resource title, description, and tags via Postgres `tsvector`
+
+### 3.10 Anonymous question submission for sensitive topics
+
+- [ ] Extend `session_questions` to support three anonymity levels (see schema migration in §3.1):
+  - `identified` — question shows user's name
+  - `pseudonym` — question shows a stable per-session pseudonym ("Lotus-7"), generated on first anonymous question in that session
+  - `fully_anonymous` — no identifier at all; backing `profile_id` stored only for moderation, never exposed to the mentor
+- [ ] Submission UI — radio selector for anonymity level with a clear explainer line per option
+- [ ] Pseudonym generator in `lib/anonymity/pseudonyms.ts` — adjective + noun + number, deterministic from `(session_id, profile_id)` so the same user gets the same pseudonym across multiple questions in one session
+- [ ] Update forum posts to support the same pattern for designated sensitive categories (`Mental Health`, `Visa Problems`, `Family`) — off by default, opt-in per category
+- [ ] Moderation tools: admin can reveal the author of an anonymous question only with a logged reason (writes to `admin_actions`)
+- [ ] Auto-detection warning: if an anonymous post contains what looks like personally identifying information (name, phone, email), show a soft warning before submission. Never block.
+- [ ] Crisis-resource footer: anonymous questions in sensitive categories always append a Lifeline Australia / Beyond Blue / university counselling line at the bottom of the submission confirmation. See `docs/sensitive-topics.md` (to be created in this phase)
+- [ ] Create `docs/sensitive-topics.md` — policy for handling mental health, visa issues, abuse disclosures, and safeguarding procedures
+
+### 3.11 Admin audit log
+
+- [ ] `admin_actions` table used as append-only log for every sensitive admin action:
+  - mentor verify / unverify
+  - badge award / revoke
+  - graduation approve / reject
+  - success story approve / reject
+  - forum post admin-delete
+  - anonymous author reveal
+  - resource retire
+- [ ] Server helper `logAdminAction(actorId, action, targetTable, targetId, diff, reason)` — wraps every admin server action
+- [ ] `app/(admin)/audit` — searchable audit log view with filters by actor, action, date range
+- [ ] `reason` field is required for any reveal/delete action; enforced at the helper level
+- [ ] Monthly audit export to CSV for governance records
+- [ ] RLS: admins can read; no updates, no deletes from anyone (the table is append-only at the database level via a policy that denies `update` and `delete`)
+
+### 3.12 Cross-cutting & pre-ship
+
+- [ ] Dashboard updates: surface badges on mentor cards, university events on the student dashboard, tier on mentor profile hero
+- [ ] Update matching algorithm display: show the mentor tier visually in the recommendation card
+- [ ] Mentor profile: dedicated "Badges & recognition" section, editorial-styled
+- [ ] Full responsive audit at 320px, 375px, 768px, 1024px, 1280px, 1920px — PWA standalone mode tested on iOS and Android
+- [ ] Lighthouse scores: PWA ≥ 100, Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 95 on the landing page
+- [ ] Translation review complete for at least the UI strings on landing, auth, onboarding, dashboard in all 5 locales
+- [ ] Calendar sync has been running for 14 days without intervention on a staging environment before production enable
+- [ ] Matching v2 cohort reports show at least directional improvement over v1 before promotion
+- [ ] RLS verified for every new table, including the append-only guarantee on `admin_actions`
+- [ ] Update `docs/architecture.md` with PWA service worker flow and i18n routing
+- [ ] Update `docs/changelog.md` for Phase 3 release (`v0.3.0`)
+
+---
+
+## Phase 4 (not scoped)
+
+Deliberately empty. Phase 3 is large enough that we don't pre-commit to Phase 4 work until Phase 3 telemetry tells us where the platform should go next.
 
 ---
 

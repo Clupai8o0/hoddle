@@ -102,13 +102,17 @@ The post-generation checklist in `todo.md §5b` must always include:
 
 ---
 
-## 5. Build phase — what ships first
+## 5. Build phases
 
-Phase 1 scope (locked): **Landing + Auth + Onboarding + Student Dashboard.** Everything else (mentor profiles, content library, forums, success stories, mentor dashboard) is Phase 2 and should not be started until Phase 1 is shippable.
+**Phase 1 (shipped v0.1.0):** Landing + Auth + Onboarding + Student Dashboard.
+
+**Phase 2 (shipped v0.2.0):** Mentor profiles + dashboard, Content library, Forums, Success stories, Live Q&A, Notifications, Matching algorithm v1.
+
+**Phase 3 (current):** Badges & tiers, Mentee→mentor graduation, i18n (UI only), PWA, University calendars, Matching v2, Mentor analytics, Resource hub, Anonymous questions, Admin audit log. Do not start until Phase 2 has two weeks of production telemetry.
 
 Track work in [`todo.md`](./todo.md). Log shipped work in [`docs/changelog.md`](./docs/changelog.md).
 
-**Out of scope for Phase 1:** mentor dashboards, content publishing, forums, Q&A sessions, badges, notifications, mobile-specific layouts beyond responsive breakpoints.
+**Out of scope until Phase 3 ships:** Phase 4 is deliberately unscoped — telemetry from Phase 3 determines what comes next.
 
 ---
 
@@ -117,7 +121,7 @@ Track work in [`todo.md`](./todo.md). Log shipped work in [`docs/changelog.md`](
 | File | Purpose |
 |---|---|
 | `CLAUDE.md` | This file. Master briefing. |
-| `todo.md` | Active task list. Phase 1 work, in priority order. |
+| `todo.md` | Active task list. Phase 3 work, in priority order. |
 | `docs/product-one-pager.md` | Product context, goals, user stories, personas. |
 | `docs/architecture.md` | System architecture, data flow, routing, auth. |
 | `docs/design.md` | Visual design system. Colours, typography, components. |
