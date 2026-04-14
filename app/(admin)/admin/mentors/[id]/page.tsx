@@ -20,7 +20,7 @@ export default async function AdminMentorDetailPage({ params }: PageProps) {
     .select(
       `profile_id, slug, headline, bio, expertise, hometown,
        current_position, verified_at, created_at,
-       profiles!inner(full_name, avatar_url, role, country_of_origin, university)`,
+       profiles(full_name, avatar_url, role, country_of_origin, university)`,
     )
     .eq("profile_id", id)
     .single();

@@ -21,7 +21,7 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
       .from("mentors")
       .select(
         `profile_id, slug, headline, verified_at, created_at,
-         profiles!inner(full_name, avatar_url, role)`,
+         profiles(full_name, avatar_url, role)`,
       )
       .order("created_at", { ascending: false }),
     admin
@@ -31,6 +31,10 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
       .gt("expires_at", new Date().toISOString())
       .order("created_at", { ascending: false }),
   ]);
+
+  if (mentorsResult.error) {
+    console.error("[admin/mentors] mentors query error:", mentorsResult.error);
+  }
 
   const mentors = mentorsResult.data ?? [];
   const pendingInvites = invitesResult.data ?? [];
