@@ -37,6 +37,9 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
 
   return (
     <Container className="py-16">
+      <pre className="mb-4 p-3 bg-yellow-100 text-yellow-900 text-xs rounded">
+        DEBUG v3 | mentors: {mentors.length} | error: {mentorsResult.error ? JSON.stringify(mentorsResult.error) : "none"}
+      </pre>
       {mentorsResult.error && (
         <pre className="mb-6 p-4 bg-red-50 text-red-800 text-xs rounded overflow-auto">
           {JSON.stringify(mentorsResult.error, null, 2)}
