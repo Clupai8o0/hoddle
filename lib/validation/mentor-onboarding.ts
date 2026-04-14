@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const mentorOnboardingSchema = z.object({
+  full_name: z
+    .string()
+    .min(1, "Full name is required.")
+    .max(100, "Keep it to 100 characters or fewer."),
   headline: z
     .string()
     .min(1, "Headline is required.")

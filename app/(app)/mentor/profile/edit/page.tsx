@@ -10,11 +10,18 @@ export default async function EditMentorProfilePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: mentor } = await supabase
-    .from("mentors")
-    .select("headline, current_position, bio, expertise, hometown")
-    .eq("profile_id", user!.id)
-    .single();
+  const [{ data: mentor }, { data: profile }] = await Promise.all([
+    supabase
+      .from("mentors")
+      .select("headline, current_position, bio, expertise, hometown")
+      .eq("profile_id", user!.id)
+      .single(),
+    supabase
+      .from("profiles")
+      .select("full_name, avatar_url")
+      .eq("id", user!.id)
+      .single(),
+  ]);
 
   if (!mentor) redirect("/mentor");
 
@@ -32,12 +39,14 @@ export default async function EditMentorProfilePage() {
 
       <EditProfileForm
         defaultValues={{
+          full_name: profile?.full_name ?? "",
           headline: mentor.headline ?? "",
           current_position: mentor.current_position ?? "",
           bio: mentor.bio ?? "",
           expertise: mentor.expertise ?? [],
           hometown: mentor.hometown ?? "",
         }}
+        currentAvatarUrl={profile?.avatar_url ?? null}
       />
     </div>
   );

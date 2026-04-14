@@ -13,6 +13,9 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 ### Added
 - `app/(auth)/confirm/page.tsx` — client-side auth confirm page that handles implicit-flow magic link redirects (hash fragment `#access_token=…`); routes mentor invites through `acceptMentorInvite` and students to `/dashboard`
 - `lib/actions/mentor-magic-link.ts` — `sendMentorMagicLink` server action: generates magic link via admin API and sends via nodemailer, bypassing Supabase SMTP entirely
+- Full name field added to mentor onboarding step 1 (input, validation, payload) and persisted to `profiles.full_name`
+- Avatar upload added to mentor edit profile page: uploads to `avatars/{uid}/avatar.{ext}` in Supabase Storage and updates `profiles.avatar_url`
+- Full name field added to mentor edit profile form: fetched from `profiles.full_name`, editable and saved via `updateMentorProfile`
 
 ### Changed
 - `lib/actions/auth.ts` — `sendMagicLink` now generates link server-side via `admin.auth.admin.generateLink` and sends via nodemailer; removes dependency on Supabase SMTP configuration

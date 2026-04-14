@@ -2,7 +2,7 @@ import Link from "next/link";
 import { UserPlus, CheckCircle, Clock } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const metadata = { title: "Mentors — Admin — Hoddle" };
 
@@ -14,17 +14,17 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
   const { filter } = await searchParams;
   const showPending = filter === "pending";
 
-  const supabase = await createClient();
+  const admin = createAdminClient();
 
   const [mentorsResult, invitesResult] = await Promise.all([
-    supabase
+    admin
       .from("mentors")
       .select(
         `profile_id, slug, headline, verified_at, created_at,
          profiles!inner(full_name, avatar_url, role)`,
       )
       .order("created_at", { ascending: false }),
-    supabase
+    admin
       .from("mentor_invites")
       .select("id, email, accepted_at, expires_at, created_at")
       .is("accepted_at", null)

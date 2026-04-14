@@ -35,7 +35,7 @@ export async function submitMentorOnboarding(
     return { ok: false, error: "Only mentors can complete mentor onboarding." };
   }
 
-  const { headline, current_position, bio, expertise, hometown } = parsed.data;
+  const { full_name, headline, current_position, bio, expertise, hometown } = parsed.data;
 
   const { error: mentorError } = await supabase
     .from("mentors")
@@ -46,10 +46,10 @@ export async function submitMentorOnboarding(
     return { ok: false, error: "Failed to save your profile. Please try again." };
   }
 
-  // Mark onboarding complete
+  // Mark onboarding complete and set full_name
   const { error: profileError } = await supabase
     .from("profiles")
-    .update({ onboarded_at: new Date().toISOString() })
+    .update({ full_name, onboarded_at: new Date().toISOString() })
     .eq("id", user.id);
 
   if (profileError) {
@@ -80,14 +80,20 @@ export async function updateMentorProfile(
     return { ok: false, error: "You must be signed in." };
   }
 
-  const { headline, current_position, bio, expertise, hometown } = parsed.data;
+  const { full_name, headline, current_position, bio, expertise, hometown } = parsed.data;
 
-  const { error } = await supabase
-    .from("mentors")
-    .update({ headline, current_position, bio, expertise, hometown })
-    .eq("profile_id", user.id);
+  const [mentorResult, profileResult] = await Promise.all([
+    supabase
+      .from("mentors")
+      .update({ headline, current_position, bio, expertise, hometown })
+      .eq("profile_id", user.id),
+    supabase
+      .from("profiles")
+      .update({ full_name })
+      .eq("id", user.id),
+  ]);
 
-  if (error) {
+  if (mentorResult.error || profileResult.error) {
     return { ok: false, error: "Failed to save your profile. Please try again." };
   }
 

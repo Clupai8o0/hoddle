@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, Clock } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { VerifyMentorButton } from "./verify-mentor-button";
 
 export const metadata = { title: "Mentor Review — Admin — Hoddle" };
@@ -13,9 +13,9 @@ interface PageProps {
 
 export default async function AdminMentorDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const supabase = await createClient();
+  const admin = createAdminClient();
 
-  const { data: mentor } = await supabase
+  const { data: mentor } = await admin
     .from("mentors")
     .select(
       `profile_id, slug, headline, bio, expertise, hometown,

@@ -158,6 +158,7 @@ export default function MentorOnboardingPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Accumulated data
+  const [fullName, setFullName] = useState("");
   const [headline, setHeadline] = useState("");
   const [currentPosition, setCurrentPosition] = useState("");
   const [bio, setBio] = useState("");
@@ -188,6 +189,8 @@ export default function MentorOnboardingPage() {
 
   function validateStep1(): boolean {
     const errs: Record<string, string> = {};
+    if (!fullName.trim()) errs.full_name = "Full name is required.";
+    else if (fullName.trim().length > 100) errs.full_name = "Keep it to 100 characters or fewer.";
     if (!headline.trim()) errs.headline = "Headline is required.";
     else if (headline.trim().length > 120) errs.headline = "Keep it to 120 characters or fewer.";
     if (!currentPosition.trim()) errs.current_position = "Current position is required.";
@@ -233,6 +236,7 @@ export default function MentorOnboardingPage() {
     setErrors({});
 
     const payload: MentorOnboardingData = {
+      full_name: fullName.trim(),
       headline: headline.trim(),
       current_position: currentPosition.trim(),
       bio: bio.trim(),
@@ -281,6 +285,19 @@ export default function MentorOnboardingPage() {
                 <div className="space-y-6">
                   <div>
                     <Input
+                      label="Full name"
+                      placeholder="e.g. Priya Sharma"
+                      value={fullName}
+                      onChange={(e) => {
+                        setFullName(e.target.value);
+                        clearError("full_name");
+                      }}
+                      error={errors.full_name}
+                      autoFocus
+                    />
+                  </div>
+                  <div>
+                    <Input
                       label="Headline"
                       placeholder="e.g. Senior Designer at Canva · Monash grad"
                       value={headline}
@@ -289,7 +306,6 @@ export default function MentorOnboardingPage() {
                         clearError("headline");
                       }}
                       error={errors.headline}
-                      autoFocus
                     />
                     <p className="font-body text-xs text-on-surface-variant mt-1.5 text-right">
                       {headline.length}/120
