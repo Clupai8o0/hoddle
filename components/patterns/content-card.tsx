@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FIELDS_OF_INTEREST } from "@/lib/validation/onboarding";
 
 export interface ContentCardData {
   slug: string;
@@ -33,12 +32,17 @@ export function ContentCard({ item }: { item: ContentCardData }) {
   const mentorSlug = item.mentors?.slug ?? "";
 
   return (
-    <Link
-      href={`/content/${item.slug}`}
-      className="group flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden transition-all duration-200 hover:shadow-ambient hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-    >
+    <div className="group relative flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden transition-all duration-200 hover:shadow-ambient hover:-translate-y-px focus-within:ring-2 focus-within:ring-primary/30 focus-within:ring-offset-2 focus-within:ring-offset-surface">
+      {/* Cover link — spans entire card, sits below the author link */}
+      <Link
+        href={`/content/${item.slug}`}
+        className="absolute inset-0 z-0 focus-visible:outline-none"
+        aria-label={item.title}
+        tabIndex={0}
+      />
+
       {/* Hero image */}
-      <div className="relative aspect-[4/3] bg-primary-container overflow-hidden">
+      <div className="relative aspect-[4/3] bg-primary-container overflow-hidden pointer-events-none">
         {item.hero_image_url ? (
           <Image
             src={item.hero_image_url}
@@ -48,12 +52,13 @@ export function ContentCard({ item }: { item: ContentCardData }) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          /* IMAGE NEEDED
-             Target path: public/images/content-card-placeholder.webp
-             Prompt: Overhead flat-lay of an open notebook, fountain pen, and a flat white on a timber café table in Melbourne. Warm cream highlights, Hoddle Blue shadows. Asymmetric crop: notebook at editorial thirds. Style: film-grain texture, desaturated warm tones.
-             Alt: Content article illustration
-             Export: WebP quality 80, max 80 KB, 4:3 crop */
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-container to-primary/20" />
+          <Image
+            src="/images/content-card-placeholder.webp"
+            alt="Content article illustration"
+            fill
+            className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
         )}
         <span className="absolute top-3 left-3 bg-surface/90 backdrop-blur-sm font-body text-[10px] font-semibold uppercase tracking-wider text-on-surface px-2.5 py-1 rounded-full">
           {readTime(item.type)}
@@ -73,10 +78,11 @@ export function ContentCard({ item }: { item: ContentCardData }) {
 
         {/* Footer: author + views */}
         <div className="flex items-center justify-between mt-auto pt-3">
+          {/* Author link — sits above the cover link via z-10 */}
           <Link
             href={`/mentors/${mentorSlug}`}
-            onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-2 group/author"
+            className="relative z-10 flex items-center gap-2 group/author"
+            tabIndex={0}
           >
             {item.mentors?.profiles?.avatar_url ? (
               <Image
@@ -102,6 +108,6 @@ export function ContentCard({ item }: { item: ContentCardData }) {
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

@@ -65,7 +65,7 @@ export default async function MentorDashboardPage() {
         className="rounded-2xl p-8 lg:p-10"
         style={{
           background:
-            "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-elevated, #002060) 100%)",
+            "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%)",
         }}
       >
         <p className="font-body text-on-primary/60 text-sm mb-1">{getGreeting()}</p>

@@ -46,7 +46,7 @@ export function sessionReminderHtml(data: SessionReminderData): string {
 
         <!-- Body -->
         <tr>
-          <td style="background:#ffffff;padding:36px 36px 28px;border-radius:0 0 16px 16px;box-shadow:0 12px 40px rgba(0,24,66,0.08);">
+          <td style="background:#fef8f1;padding:36px 36px 28px;border-radius:0 0 16px 16px;box-shadow:0 12px 40px rgba(0,24,66,0.08);">
             <p style="margin:0 0 8px;font-family:'Be Vietnam Pro',sans-serif;font-size:12px;color:#2d6a4f;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">Session reminder</p>
             <h1 style="margin:0 0 8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:#2a2620;line-height:1.2;">Your session is tomorrow</h1>
             <p style="margin:0 0 28px;font-family:'Be Vietnam Pro',sans-serif;font-size:16px;color:#6b7280;">Hi ${data.attendeeName}, just a reminder about your upcoming Q&amp;A with ${data.mentorName}.</p>

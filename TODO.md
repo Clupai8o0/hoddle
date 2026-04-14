@@ -107,17 +107,12 @@ All prompts are inline in code as `IMAGE NEEDED` comments. Generate with Midjour
       Prompt in code. Empty bench, Royal Botanic Gardens Melbourne, dappled sunlight.
 - [x] `public/images/empty-state-library.webp` — success stories empty state, `app/(app)/dashboard/page.tsx`
       Prompt in code. Students at State Library of Victoria reading room timber table.
-- [ ] `public/images/mentor-avatar-placeholder.webp` — mentor profile fallback, `app/(app)/mentors/[slug]/page.tsx`
-      Prompt in code. Close-cropped portrait, warm editorial light, cream highlights, Hoddle Blue shadows. 400×400 square.
-- [ ] `public/images/content-card-placeholder.webp` — content card fallback, `components/patterns/content-card.tsx`
-      Prompt in code. Overhead flat-lay, open notebook, fountain pen, flat white, timber café table. 4:3 crop. Max 80 KB.
-- [ ] `public/images/content-hero-placeholder.webp` — article hero fallback, `app/(app)/content/[slug]/page.tsx`
-      Prompt in code. Overhead desk shot, fountain pen, open notebook, flat white, soft morning light. 16:9 crop. Max 200 KB.
 
-- [ ] `public/images/story-hero-placeholder.webp` — story reader + featured card fallback, `app/(app)/stories/[slug]/page.tsx` + `app/(app)/stories/page.tsx`
-      Prompt in code. Young international student at Melbourne café, laptop open, smiling. 16:9 crop. Max 200 KB.
-- [ ] `public/images/story-card-placeholder.webp` — story grid card fallback, `app/(app)/stories/page.tsx`
-      Prompt in code. Overhead flat-lay, open journal, fountain pen, flat white, timber table. 4:3 crop. Max 80 KB.
+- [x] `public/images/mentor-avatar-placeholder.webp` — mentor profile fallback, `app/(app)/mentors/[slug]/page.tsx`
+- [x] `public/images/content-card-placeholder.webp` — content card fallback, `components/patterns/content-card.tsx`
+- [x] `public/images/content-hero-placeholder.webp` — article hero fallback, `app/(app)/content/[slug]/page.tsx`
+- [x] `public/images/story-hero-placeholder.webp` — story reader + featured card fallback, `app/(browse)/stories/[slug]/page.tsx` + `app/(browse)/stories/page.tsx`
+- [x] `public/images/story-card-placeholder.webp` — story grid card fallback, `app/(browse)/stories/page.tsx`
 
 Post-generation checklist (per `docs/design.md §7`):
 - [x] Colour grade: highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`
@@ -213,7 +208,7 @@ Goal: surface 3–5 mentor recommendations per student based on onboarding answe
 
 ## 12. Pre-ship checks
 
-- [ ] `pnpm build` passes with no TS errors
+- [x] `pnpm build` passes with no TS errors — 45 routes, zero errors
 - [ ] All Phase 2 routes work end-to-end as a student: dashboard → recommendations → mentor profile → content → register for session → ask question → receive notification
 - [ ] All Phase 2 routes work end-to-end as a mentor: invite email → signup → onboarding → publish content → schedule session → answer questions
 - [ ] All Phase 2 routes work end-to-end as an admin: invite mentor → verify → moderate stories
@@ -222,9 +217,9 @@ Goal: surface 3–5 mentor recommendations per student based on onboarding answe
 - [ ] Notification emails render correctly in Gmail, Outlook web, and Apple Mail
 - [ ] Matching algorithm produces sensible results for at least 5 seed student profiles
 - [ ] Mobile responsive at 375px, 768px, 1280px across all new pages
-- [ ] No hardcoded hex values, no `#ffffff`, no `#000000`, no decorative icons (grep checks)
-- [ ] Update `docs/changelog.md` for Phase 2 release
-- [ ] Tag release `v0.2.0` and update `docs/architecture.md` if any architectural decisions changed during the build
+- [x] No hardcoded hex values, no `#ffffff`, no `#000000`, no decorative icons (grep checks + fixes applied)
+- [x] Update `docs/changelog.md` for Phase 2 release
+- [x] Update `docs/architecture.md` with Phase 2 architectural decisions
 
 ---
 

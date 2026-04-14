@@ -129,14 +129,13 @@ export default async function MentorProfilePage({ params }: PageProps) {
                   priority
                 />
               ) : (
-                /* IMAGE NEEDED
-                   Target path: public/images/mentor-avatar-placeholder.webp
-                   Prompt: Close-cropped portrait of a confident international student in Melbourne, warm editorial light, cream highlights, Hoddle Blue shadows. Asymmetric crop: subject at editorial thirds. Style: film-grain texture, desaturated warm tones, not stock-photo posed.
-                   Alt: Mentor profile photo
-                   Export: WebP quality 80, max 80 KB, square crop 400×400 */
-                <span className="font-display font-bold text-5xl text-primary/30 select-none">
-                  {initials}
-                </span>
+                <Image
+                  src="/images/mentor-avatar-placeholder.webp"
+                  alt="Mentor profile photo"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 112px, 144px"
+                />
               )}
             </div>
 

@@ -10,7 +10,11 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 
 ## [Unreleased]
 
-_Phase 2 work in progress. See `todo.md`._
+_Nothing pending._
+
+---
+
+## [0.2.0] — 2026-04-14
 
 ### Added
 - `app/(app)/content/page.tsx` — browse content library with type filter chips (article/video/resource)
@@ -121,6 +125,8 @@ _Phase 2 work in progress. See `todo.md`._
 - `app/(app)/dashboard/page.tsx` — mentors redirected to `/mentor` on dashboard load
 
 ### Fixed
+- `lib/email/templates/notification-emails.ts`, `session-reminder.ts` — email body background corrected from `#ffffff` to `#fef8f1` (cream) for brand consistency in email clients
+- `app/(app)/mentor/page.tsx` — removed hardcoded `#002060` CSS var fallback in gradient; uses `--color-primary` throughout
 - `lib/email/index.ts` — lazy-initialize Resend client to prevent build-time failure when `RESEND_API_KEY` is not set
 - `AppNav` updated: Mentors, Library, Forums, Sessions links are now live `NavLink`s (replaced Phase 1 placeholder spans)
 - `supabase/migrations/20260413000003_phase2_schema.sql` — full Phase 2 schema: `mentors`, `mentor_invites`, `content_items`, `content_resources`, `content_tags`, `content_item_tags`, `forum_categories` (seeded), `forum_threads`, `forum_posts`, `forum_reactions`, `success_stories`, `live_sessions`, `session_registrations`, `session_questions`, `notifications`, `notification_preferences`, `mentor_recommendations`, `mentor_follows`; new enums `content_type`, `reaction_type`, `story_status`, `session_status`, `notification_type`; `is_admin()`/`is_mentor()` security-definer helpers; storage buckets `content-media`, `content-resources`, `session-recordings`, `story-images` with full RLS; trigger `bump_thread_activity` on `forum_posts` insert

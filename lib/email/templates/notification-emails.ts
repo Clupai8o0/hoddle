@@ -18,7 +18,7 @@ function emailShell(body: string): string {
           </td>
         </tr>
         <tr>
-          <td style="background:#ffffff;padding:36px 36px 28px;border-radius:0 0 16px 16px;box-shadow:0 12px 40px rgba(0,24,66,0.08);">
+          <td style="background:#fef8f1;padding:36px 36px 28px;border-radius:0 0 16px 16px;box-shadow:0 12px 40px rgba(0,24,66,0.08);">
             ${body}
             <p style="margin:28px 0 0;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;color:#9ca3af;line-height:1.6;">
               You're receiving this from Hoddle Melbourne.

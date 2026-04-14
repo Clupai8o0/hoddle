@@ -2,22 +2,29 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { LogOut, Search } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { NotificationBell } from "@/components/layout/notification-bell";
 import { signOut } from "@/lib/actions/auth";
 
 export interface BrowseNavProps {
-  user: { name: string; avatarUrl?: string | null } | null;
+  user: {
+    name: string;
+    avatarUrl?: string | null;
+    userId: string;
+    unreadCount: number;
+  } | null;
 }
 
 /**
- * Nav for public (browse) pages — forums, stories.
+ * Nav for public (browse) pages — forums, stories, content.
  * Renders the same links as AppNav but gracefully handles unauthenticated visitors.
  */
 export function BrowseNav({ user }: BrowseNavProps) {
   const pathname = usePathname();
+  const firstName = user?.name.split(" ")[0] ?? "";
 
   return (
     <GlassNav
@@ -31,6 +38,11 @@ export function BrowseNav({ user }: BrowseNavProps) {
       }
       links={
         <>
+          {user && (
+            <NavLink href="/dashboard" active={pathname === "/dashboard"}>
+              Dashboard
+            </NavLink>
+          )}
           <NavLink href="/mentors" active={pathname.startsWith("/mentors")}>
             Mentors
           </NavLink>
@@ -51,15 +63,38 @@ export function BrowseNav({ user }: BrowseNavProps) {
       actions={
         user ? (
           <div className="flex items-center gap-4">
+            {/* Search */}
             <Link
-              href="/dashboard"
-              className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+              href="/search"
+              aria-label="Search"
+              className={`flex items-center justify-center w-8 h-8 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm ${
+                pathname.startsWith("/search")
+                  ? "text-primary"
+                  : "text-on-surface-variant hover:text-on-surface"
+              }`}
             >
-              <Avatar name={user.name} src={user.avatarUrl ?? undefined} size="sm" />
-              <span className="font-body text-sm font-medium text-on-surface hidden sm:block">
-                {user.name.split(" ")[0]}
-              </span>
+              <Search size={17} strokeWidth={1.5} />
             </Link>
+
+            {/* Notification bell */}
+            <NotificationBell
+              userId={user.userId}
+              initialUnreadCount={user.unreadCount}
+            />
+
+            {/* User identity */}
+            <div className="flex items-center gap-2.5">
+              <Avatar
+                name={user.name}
+                src={user.avatarUrl ?? undefined}
+                size="sm"
+              />
+              <span className="font-body text-sm font-medium text-on-surface hidden sm:block">
+                {firstName}
+              </span>
+            </div>
+
+            {/* Sign out */}
             <form action={signOut}>
               <button
                 type="submit"

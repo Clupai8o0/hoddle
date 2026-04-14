@@ -215,12 +215,16 @@ export default async function ContentArticlePage({ params }: PageProps) {
               />
             </div>
           ) : (
-            /* IMAGE NEEDED
-               Target path: public/images/content-hero-placeholder.webp
-               Prompt: Overhead shot of a wooden desk with a fountain pen, open notebook with handwritten notes, and a flat white coffee cup, in soft morning light. Cream highlights, Hoddle Blue shadows. Asymmetric crop: notebook at editorial thirds. Style: film-grain texture, desaturated warm tones.
-               Alt: Article hero image
-               Export: WebP quality 80, max 200 KB, 16:9 crop */
-            <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-primary-container to-primary/20 mb-10" />
+            <div className="relative aspect-video w-full rounded-2xl overflow-hidden mb-10">
+              <Image
+                src="/images/content-hero-placeholder.webp"
+                alt="Article hero image"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 67vw"
+                priority
+              />
+            </div>
           )}
 
           {/* Excerpt / standfirst */}

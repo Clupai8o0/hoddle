@@ -155,12 +155,13 @@ function FeaturedStoryCard({ story }: { story: StoryRow }) {
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         ) : (
-          /* IMAGE NEEDED
-             Target path: public/images/story-hero-placeholder.webp
-             Prompt: A young international university student sitting at a sunny Melbourne café table, smiling, with a laptop and flat white coffee. Warm editorial light, soft bokeh background of city streetscape. editorial photography, soft natural light, warm tones, shallow depth of field, shot on 35mm film, slightly desaturated, cream and warm brown palette with cool blue accents, Kinfolk magazine aesthetic, no text overlays, no logos
-             Alt: Story hero image
-             Export: WebP quality 80, max 200 KB, 16:9 crop */
-          <div className="w-full h-full bg-gradient-to-br from-primary-container to-primary/20" />
+          <Image
+            src="/images/story-hero-placeholder.webp"
+            alt="Story hero image"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
         )}
         {/* Blue-tint overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-primary/10 to-transparent" />
@@ -225,12 +226,13 @@ function StoryCard({ story }: { story: StoryRow }) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          /* IMAGE NEEDED
-             Target path: public/images/story-card-placeholder.webp
-             Prompt: Overhead flat-lay of an open journal with handwritten notes, a fountain pen, and a flat white coffee on a timber café table. Warm natural light, cream and warm brown tones, editorial thirds composition. editorial photography, soft natural light, warm tones, shallow depth of field, shot on 35mm film, slightly desaturated, cream and warm brown palette with cool blue accents, Kinfolk magazine aesthetic, no text overlays, no logos
-             Alt: Story card image
-             Export: WebP quality 80, max 80 KB, 4:3 crop */
-          <div className="w-full h-full bg-gradient-to-br from-surface-container to-primary-container/40" />
+          <Image
+            src="/images/story-card-placeholder.webp"
+            alt="Story card image"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
         )}
       </div>
 

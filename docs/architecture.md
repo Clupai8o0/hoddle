@@ -32,7 +32,8 @@ App Router route groups are used to share layouts without affecting the URL:
 - **`app/(marketing)/`** — unauthenticated landing and marketing pages. Public. Uses the glass nav + editorial shell.
 - **`app/(auth)/`** — login, signup, onboarding wizard. Minimal shell, no nav, heavy photography. Middleware redirects away to `/dashboard` if the user already has a session.
 - **`app/(app)/`** — everything behind auth. Layout includes the authenticated nav with user menu. Middleware redirects to `/login` if no session.
-- **`app/api/`** — route handlers. Phase 1 only needs `/api/auth/callback` for the Supabase email link exchange.
+- **`app/(admin)/`** — admin-only tools: mentor invitation, verification, story moderation. Layout enforces `profiles.role = 'admin'`; non-admins are redirected to `/dashboard`.
+- **`app/api/`** — route handlers. Auth callback (`/api/auth/callback`) and Vercel cron endpoints (`/api/cron/*`).
 
 Each group has its own `layout.tsx`, `error.tsx`, `loading.tsx`, and `not-found.tsx`, all styled on-brand (tonal layering for loading skeletons — no shimmer).
 
@@ -53,9 +54,9 @@ Two clients, strictly separated:
 
 **`lib/supabase/server.ts`** — used in Server Components, Server Actions, and route handlers. Binds to request cookies via `@supabase/ssr`'s `createServerClient`. Reads/writes the session cookie so auth state flows through the RSC tree.
 
-**`lib/supabase/browser.ts`** — used in Client Components. Created once per browser session. Safe for client-side subscriptions and real-time if needed.
+**`lib/supabase/browser.ts`** — used in Client Components. Created once per browser session. Powers the Realtime subscription in `notification-bell.tsx` — subscribes to `postgres_changes` on the `notifications` table to keep the bell badge live without polling.
 
-**Service role client** — only inside `scripts/` and server-only admin utilities. Never imported from `app/` or `components/`. The `SUPABASE_SERVICE_ROLE_KEY` env var is never exposed with the `NEXT_PUBLIC_` prefix.
+**`lib/supabase/admin.ts`** — service-role client (`createAdminClient()`). Used only in server-side privileged writes: `notify()`, `computeRecommendationsForProfile()`, and `notifyFollowersOfContent()`. These operations require bypassing RLS because they write rows on behalf of system actors, not the authenticated user. Never imported from `app/` or `components/`. The `SUPABASE_SERVICE_ROLE_KEY` env var is never exposed with the `NEXT_PUBLIC_` prefix.
 
 **Middleware** — `middleware.ts` runs on every request, refreshes the session cookie if needed, and handles the `(app)` group redirect. This is the only place session refresh happens.
 
@@ -140,6 +141,56 @@ All listed in `.env.local.example`. Production secrets live in Vercel's environm
 
 ---
 
-## 11. Out of scope for this document
+## 11. Phase 2 additions
 
-Mentor workflows, content publishing, forum moderation, real-time Q&A, notifications, analytics. These land in Phase 2 and will each extend this document when they arrive.
+### Cron jobs (Vercel)
+
+Scheduled via `vercel.json`. Three jobs ship with Phase 2:
+
+| Route | Schedule | Purpose |
+|---|---|---|
+| `/api/cron/session-reminders` | `0 * * * *` (hourly) | Sends 24h reminder emails to session registrants |
+| `/api/cron/session-starting-soon` | `*/5 * * * *` (every 5 min) | Sends in-app notification 10–20 min before sessions start |
+| `/api/cron/recompute-recommendations` | `0 16 * * *` (02:00 AEST) | Nightly full recompute of mentor recommendations for all onboarded students |
+
+All cron routes validate the `CRON_SECRET` header before executing to prevent unauthorized calls.
+
+### Matching algorithm
+
+Pure-function scoring in `lib/matching/score.ts`. `scoreMentor(student, mentor)` returns a numeric score and human-readable `reasoning` string based on:
+
+- Country of origin match: +30
+- Field of interest overlap: +15 per overlap
+- Challenges / goals overlap with mentor expertise: +10 per overlap
+- Verified mentors only (pre-filter, not scored)
+
+Results persisted to `mentor_recommendations` (top 5 per student, ranked). Triggered: at onboarding completion (fire-and-forget), and nightly for all students.
+
+### Real-time notifications
+
+`NotificationBell` (Client Component) subscribes to Supabase Realtime `postgres_changes` on the `notifications` table filtered by `recipient_id`. `INSERT` increments the badge; `UPDATE` where `read_at` is set decrements it. Initial count is server-rendered and passed as a prop so the badge is never empty on first paint.
+
+### Follow system
+
+Students can follow mentors. `mentor_follows` table stores the relationship. When a mentor publishes content, `notifyFollowersOfContent()` (admin client) fetches all followers and dispatches a `new_content_from_mentor_you_follow` notification to each.
+
+### Rate limiting
+
+`lib/utils/rate-limit.ts` implements DB row-count rate limiting — no external KV required. Counts rows inserted by a user in a rolling time window and returns `{ allowed, retryAfterSeconds }`. Applied to: forum post creation (10/10 min), story submission (3/60 min), session question submission (5/60 min). Fails open on DB error to avoid false positives.
+
+---
+
+## 12. Environments (updated)
+
+| Env var | Where | Notes |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | client + server | Safe to expose |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | client + server | Safe to expose |
+| `SUPABASE_SERVICE_ROLE_KEY` | server only | **Never** `NEXT_PUBLIC_`. Admin client only. |
+| `NEXT_PUBLIC_SITE_URL` | client + server | Magic link redirect base |
+| `RESEND_API_KEY` | server only | Transactional email via Resend |
+| `RESEND_FROM_EMAIL` | server only | From address (e.g. `hello@hoddle.com.au`) |
+| `NEXT_PUBLIC_APP_URL` | client + server | Used in email template CTAs |
+| `CRON_SECRET` | server only | Validates Vercel cron requests |
+
+All listed in `.env.local.example`. Production secrets live in Vercel's environment variables.

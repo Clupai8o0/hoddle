@@ -163,12 +163,16 @@ export default async function StoryPage({ params }: PageProps) {
               />
             </div>
           ) : (
-            /* IMAGE NEEDED
-               Target path: public/images/story-hero-placeholder.webp
-               Prompt: A young international university student sitting at a sunny Melbourne café table, smiling, with a laptop and flat white coffee. Warm editorial light, soft bokeh background of city streetscape. editorial photography, soft natural light, warm tones, shallow depth of field, shot on 35mm film, slightly desaturated, cream and warm brown palette with cool blue accents, Kinfolk magazine aesthetic, no text overlays, no logos
-               Alt: Story hero image
-               Export: WebP quality 80, max 200 KB, 16:9 crop */
-            <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-primary-container to-primary/20 mb-10" />
+            <div className="relative aspect-video w-full rounded-2xl overflow-hidden mb-10">
+              <Image
+                src="/images/story-hero-placeholder.webp"
+                alt="Story hero image"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 67vw"
+                priority
+              />
+            </div>
           )}
 
           {/* Story text */}
