@@ -244,6 +244,7 @@ export default async function ThreadPage({ params }: PageProps) {
         threadId={threadData.id}
         threadPath={threadPath}
         locked={threadData.locked}
+        isAuthenticated={!!user}
       />
     </>
   );

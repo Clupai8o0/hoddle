@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
@@ -8,6 +9,9 @@ export const metadata = { title: "New Discussion — Hoddle Forums" };
 
 export default async function NewThreadPage() {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
   const { data: categories } = await supabase
     .from("forum_categories")
     .select("slug, name")

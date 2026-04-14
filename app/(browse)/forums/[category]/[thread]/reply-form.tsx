@@ -11,9 +11,10 @@ interface ReplyFormProps {
   threadId: string;
   threadPath: string;
   locked: boolean;
+  isAuthenticated: boolean;
 }
 
-export function ReplyForm({ threadId, threadPath, locked }: ReplyFormProps) {
+export function ReplyForm({ threadId, threadPath, locked, isAuthenticated }: ReplyFormProps) {
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -46,6 +47,24 @@ export function ReplyForm({ threadId, threadPath, locked }: ReplyFormProps) {
           <p className="text-sm text-on-surface-variant font-body text-center py-2">
             This thread is locked.
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md border-t border-surface-variant/20 px-6 py-4 z-40">
+        <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
+          <p className="font-body text-sm text-on-surface-variant">
+            Join the discussion — sign in to reply.
+          </p>
+          <a
+            href="/login"
+            className="font-body text-sm font-semibold text-primary hover:underline shrink-0"
+          >
+            Sign in
+          </a>
         </div>
       </div>
     );

@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { StoryForm } from "./story-form";
 
@@ -7,7 +9,11 @@ export const metadata = {
     "Tell your Melbourne journey. Your experience could be exactly what another student needs to hear.",
 };
 
-export default function NewStoryPage() {
+export default async function NewStoryPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
   return (
     <Container className="py-16">
       <div className="max-w-2xl">

@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
-import { NewThreadForm } from "@/app/(app)/forums/new/new-thread-form";
+import { NewThreadForm } from "@/app/(browse)/forums/new/new-thread-form";
 
 interface PageProps {
   params: Promise<{ category: string }>;
@@ -24,6 +24,8 @@ export async function generateMetadata({ params }: PageProps) {
 export default async function CategoryNewThreadPage({ params }: PageProps) {
   const { category } = await params;
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
 
   const [{ data: currentCat }, { data: categories }] = await Promise.all([
     supabase

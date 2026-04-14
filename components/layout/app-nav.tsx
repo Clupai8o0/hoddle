@@ -38,6 +38,9 @@ export function AppNav({ userName, avatarUrl, activePath = "/dashboard" }: AppNa
           <NavLink href="/forums" active={activePath.startsWith("/forums")}>
             Forums
           </NavLink>
+          <NavLink href="/stories" active={activePath.startsWith("/stories")}>
+            Stories
+          </NavLink>
           <NavLink href="/sessions" active={activePath.startsWith("/sessions")}>
             Sessions
           </NavLink>
