@@ -14,8 +14,17 @@ export async function GET(request: Request) {
     );
   }
 
-  if (!code || !token) {
+  // token is required; code may be absent when Supabase uses implicit flow
+  // (access_token arrives in the hash fragment, which servers never see).
+  // In that case, hand off to /auth/confirm which handles the hash client-side.
+  if (!token) {
     return NextResponse.redirect(`${origin}/login?error=missing_params`);
+  }
+
+  if (!code) {
+    return NextResponse.redirect(
+      `${origin}/auth/confirm?token=${encodeURIComponent(token)}`,
+    );
   }
 
   const supabase = await createClient();
@@ -37,6 +46,5 @@ export async function GET(request: Request) {
     );
   }
 
-  // Redirect to dashboard — mentor onboarding wizard will be added in Phase 2 §3
   return NextResponse.redirect(`${origin}/dashboard`);
 }
