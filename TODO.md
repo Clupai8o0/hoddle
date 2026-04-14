@@ -91,12 +91,14 @@ All prompts are inline in code as `IMAGE NEEDED` comments. Generate with Midjour
 
 - [x] `public/images/hero-laneway-cafe.webp` — hero panel, `app/page.tsx`
       Prompt in code. Alt: "A student working at a Melbourne laneway café"
-- [x] `public/images/mentor-portrait-raj.webp` — Raj card, `app/page.tsx`
-      Prompt in code. Male, Indian background, smart-casual, café bokeh.
-- [x] `public/images/mentor-portrait-sarah.webp` — Sarah card, `app/page.tsx`
-      Prompt in code. Female, Chinese background, smart-casual, café bokeh.
-- [x] `public/images/mentor-portrait-minh.webp` — Minh card, `app/page.tsx`
-      Prompt in code. Male, Vietnamese background, smart-casual, café bokeh.
+- [ ] Upload portrait photos for seed mentors via Supabase Studio → Storage → `content-media` bucket, then save the public URL to `profiles.avatar_url` for each:
+  - Raj Patel (`11111111-0000-0000-0000-000000000004`) — male, Indian background, smart-casual, Melbourne café bokeh
+  - Sarah Chen (`11111111-0000-0000-0000-000000000005`) — female, Chinese background, smart-casual, Melbourne café bokeh
+  - Minh Tran (`11111111-0000-0000-0000-000000000006`) — male, Vietnamese background, smart-casual, Melbourne café bokeh
+  - Wei Lin, Priya Sharma, Anh Nguyen (existing seed mentors m1–m3) — same style
+  - URL pattern: `https://{project}.supabase.co/storage/v1/object/public/content-media/{filename}.webp`
+  - SQL to update: `update profiles set avatar_url = '...' where id = '...';`
+  - Homepage and mentor cards fall back to initials until photos are uploaded
 - [x] `public/images/auth-tram-portrait.webp` — auth shell left panel, `components/layout/auth-shell.tsx`
       Prompt in code. Student on Melbourne tram, rain on window.
 - [x] `public/images/onboarding-step-illustration.webp` — onboarding sidebar, `app/(auth)/onboarding/page.tsx`

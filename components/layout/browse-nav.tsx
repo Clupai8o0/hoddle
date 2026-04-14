@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LogOut, Search } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
@@ -31,33 +32,61 @@ export function BrowseNav({ user }: BrowseNavProps) {
       brand={
         <Link
           href={user ? "/dashboard" : "/"}
-          className="font-display font-bold text-xl text-primary tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+          aria-label="Hoddle"
         >
-          Hoddle
+          <Image
+            src="/logo-light.png"
+            alt="Hoddle"
+            width={56}
+            height={56}
+            className="object-contain"
+            priority
+          />
         </Link>
       }
       links={
         <>
-          {user && (
-            <NavLink href="/dashboard" active={pathname === "/dashboard"}>
-              Dashboard
-            </NavLink>
+          {user ? (
+            <>
+              <NavLink href="/dashboard" active={pathname === "/dashboard"}>
+                Dashboard
+              </NavLink>
+              <NavLink href="/mentors" active={pathname.startsWith("/mentors")}>
+                Mentors
+              </NavLink>
+              <NavLink href="/content" active={pathname.startsWith("/content")}>
+                Library
+              </NavLink>
+              <NavLink href="/forums" active={pathname.startsWith("/forums")}>
+                Forums
+              </NavLink>
+              <NavLink href="/stories" active={pathname.startsWith("/stories")}>
+                Stories
+              </NavLink>
+              <NavLink href="/sessions" active={pathname.startsWith("/sessions")}>
+                Sessions
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink href="/about" active={pathname === "/about"}>
+                About
+              </NavLink>
+              <NavLink href="/mentors" active={pathname.startsWith("/mentors")}>
+                Mentors
+              </NavLink>
+              <NavLink href="/forums" active={pathname.startsWith("/forums")}>
+                Forums
+              </NavLink>
+              <NavLink href="/stories" active={pathname.startsWith("/stories")}>
+                Stories
+              </NavLink>
+              <NavLink href="/sessions" active={pathname.startsWith("/sessions")}>
+                Sessions
+              </NavLink>
+            </>
           )}
-          <NavLink href="/mentors" active={pathname.startsWith("/mentors")}>
-            Mentors
-          </NavLink>
-          <NavLink href="/content" active={pathname.startsWith("/content")}>
-            Library
-          </NavLink>
-          <NavLink href="/forums" active={pathname.startsWith("/forums")}>
-            Forums
-          </NavLink>
-          <NavLink href="/stories" active={pathname.startsWith("/stories")}>
-            Stories
-          </NavLink>
-          <NavLink href="/sessions" active={pathname.startsWith("/sessions")}>
-            Sessions
-          </NavLink>
         </>
       }
       actions={

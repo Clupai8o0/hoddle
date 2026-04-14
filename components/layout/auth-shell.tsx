@@ -39,9 +39,13 @@ export function AuthShell({
 
             {/* Wordmark */}
             <div className="relative z-10 p-10">
-              <span className="font-display font-bold text-xl text-on-primary tracking-tight">
-                Hoddle
-              </span>
+              <Image
+                src="/logo-dark.png"
+                alt="Hoddle"
+                width={64}
+                height={64}
+                className="object-contain"
+              />
             </div>
 
             {/* Quote card */}
@@ -61,9 +65,13 @@ export function AuthShell({
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Mobile wordmark */}
         <div className="lg:hidden px-8 pt-8">
-          <span className="font-display font-bold text-xl text-primary tracking-tight">
-            Hoddle
-          </span>
+          <Image
+            src="/logo-light.png"
+            alt="Hoddle"
+            width={56}
+            height={56}
+            className="object-contain"
+          />
         </div>
 
         <div className="flex-1 flex flex-col justify-center px-8 py-12 sm:px-12 lg:px-16 xl:px-24">

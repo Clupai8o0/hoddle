@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/server";
 
 // ─────────────────────────────────────────
 // Shared layout constant
@@ -10,40 +11,37 @@ import { Button } from "@/components/ui/button";
 const C = "max-w-7xl mx-auto px-5 sm:px-10 lg:px-16";
 
 // ─────────────────────────────────────────
-// Placeholder mentor data — replace with live Supabase query in Phase 2
-// ─────────────────────────────────────────
-const MENTORS = [
-  {
-    id: "raj",
-    name: "Raj",
-    origin: "India",
-    university: "Monash University",
-    field: "Engineering",
-    tagline: "I bombed my first essay. Here's exactly how I turned it around.",
-  },
-  {
-    id: "sarah",
-    name: "Sarah",
-    origin: "China",
-    university: "University of Melbourne",
-    field: "Business",
-    tagline:
-      "Time management is the secret weapon nobody tells you about.",
-  },
-  {
-    id: "minh",
-    name: "Minh",
-    origin: "Vietnam",
-    university: "RMIT University",
-    field: "Information Technology",
-    tagline: "Don't wait until graduation to start building your career.",
-  },
-];
-
-// ─────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────
-export default function HomePage() {
+export const revalidate = 3600; // re-fetch mentor data at most once per hour
+
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data: mentors } = await supabase
+    .from("mentors")
+    .select(
+      `slug, headline, expertise,
+       profiles!mentors_profile_id_fkey (
+         full_name, avatar_url, country_of_origin, university
+       )`,
+    )
+    .not("verified_at", "is", null)
+    .order("verified_at", { ascending: false })
+    .limit(3);
+
+  type HomepageMentor = {
+    slug: string;
+    headline: string | null;
+    expertise: string[];
+    profiles: {
+      full_name: string | null;
+      avatar_url: string | null;
+      country_of_origin: string | null;
+      university: string | null;
+    } | null;
+  };
+
+  const typedMentors = (mentors ?? []) as unknown as HomepageMentor[];
   return (
     <div className="bg-surface text-on-surface">
       {/* ── Navigation ───────────────────────────────────── */}
@@ -51,16 +49,26 @@ export default function HomePage() {
         brand={
           <Link
             href="/"
-            className="font-display font-bold text-xl text-primary tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+            aria-label="Hoddle home"
           >
-            Hoddle
+            <Image
+              src="/logo-light.png"
+              alt="Hoddle"
+              width={56}
+              height={56}
+              className="object-contain"
+              priority
+            />
           </Link>
         }
         links={
           <>
             <NavLink href="/about">About</NavLink>
             <NavLink href="/mentors">Mentors</NavLink>
+            <NavLink href="/forums">Forums</NavLink>
             <NavLink href="/stories">Stories</NavLink>
+            <NavLink href="/sessions">Sessions</NavLink>
           </>
         }
         actions={
@@ -303,7 +311,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16">
               <div>
                 <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-3">
-                  Phase 2 — Live mentor profiles
+                  Verified mentors
                 </p>
                 <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight">
                   Meet your future mentors.
@@ -316,61 +324,91 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {MENTORS.map((mentor) => (
-                <article
-                  key={mentor.id}
-                  className="group bg-surface-container-lowest rounded-[var(--radius-md)] overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-ambient)] hover:-translate-y-1"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src={`/images/mentor-portrait-${mentor.id}.webp`}
-                      alt={`${mentor.name}, mentor at ${mentor.university}`}
-                      fill
-                      className="object-cover"
-                    />
-                    {/* Origin tag */}
-                    <div className="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                      <span className="font-body text-xs font-semibold text-primary">
-                        {mentor.origin}
-                      </span>
-                    </div>
-                  </div>
+              {typedMentors.map((mentor) => {
+                const name = mentor.profiles?.full_name ?? "Mentor";
+                const initials = name
+                  .split(" ")
+                  .slice(0, 2)
+                  .map((p) => p[0]?.toUpperCase() ?? "")
+                  .join("");
+                const field = mentor.expertise[0]
+                  ?.replace(/-/g, " ")
+                  .replace(/\b\w/g, (c) => c.toUpperCase()) ?? null;
 
-                  <div className="p-6">
-                    <div className="flex items-start justify-between gap-4 mb-3">
-                      <div>
-                        <h3 className="font-display font-bold text-xl text-on-surface">
-                          {mentor.name}
-                        </h3>
-                        <p className="font-body text-sm text-primary font-medium mt-0.5">
-                          {mentor.university}
-                        </p>
-                      </div>
-                      {/* Verified badge */}
-                      <div className="shrink-0 mt-1 px-2.5 py-1 bg-secondary-container rounded-full">
-                        <span className="font-body text-xs font-semibold text-secondary">
-                          Verified
+                return (
+                  <Link
+                    key={mentor.slug}
+                    href={`/mentors/${mentor.slug}`}
+                    className="group bg-surface-container-lowest rounded-[var(--radius-md)] overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-ambient)] hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary"
+                  >
+                    {/* Portrait */}
+                    <div className="relative aspect-[4/3] overflow-hidden bg-primary-container">
+                      {mentor.profiles?.avatar_url ? (
+                        <Image
+                          src={mentor.profiles.avatar_url}
+                          alt={name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      ) : (
+                        <span className="absolute inset-0 flex items-center justify-center font-display font-bold text-6xl text-primary/20 select-none">
+                          {initials}
                         </span>
-                      </div>
+                      )}
+                      {/* Origin tag */}
+                      {mentor.profiles?.country_of_origin && (
+                        <div className="absolute top-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm px-3 py-1 rounded-full">
+                          <span className="font-body text-xs font-semibold text-primary">
+                            {mentor.profiles.country_of_origin}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
-                    <p className="font-body text-xs text-on-surface-variant uppercase tracking-[0.1em] mb-3">
-                      {mentor.field}
-                    </p>
+                    <div className="p-6">
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <div>
+                          <h3 className="font-display font-bold text-xl text-on-surface group-hover:text-primary transition-colors">
+                            {name}
+                          </h3>
+                          {mentor.profiles?.university && (
+                            <p className="font-body text-sm text-primary font-medium mt-0.5">
+                              {mentor.profiles.university}
+                            </p>
+                          )}
+                        </div>
+                        <div className="shrink-0 mt-1 px-2.5 py-1 bg-secondary-container rounded-full">
+                          <span className="font-body text-xs font-semibold text-secondary">
+                            Verified
+                          </span>
+                        </div>
+                      </div>
 
-                    <p className="font-body text-sm italic text-on-surface leading-relaxed">
-                      &ldquo;{mentor.tagline}&rdquo;
-                    </p>
-                  </div>
-                </article>
-              ))}
+                      {field && (
+                        <p className="font-body text-xs text-on-surface-variant uppercase tracking-[0.1em] mb-3">
+                          {field}
+                        </p>
+                      )}
+
+                      {mentor.headline && (
+                        <p className="font-body text-sm italic text-on-surface leading-relaxed line-clamp-2">
+                          &ldquo;{mentor.headline}&rdquo;
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
 
             <div className="mt-12 text-center">
-              <p className="font-body text-sm text-on-surface-variant">
-                Full mentor profiles, matching, and content arrive in{" "}
-                <span className="font-medium text-on-surface">Phase 2</span>.
-              </p>
+              <Link
+                href="/mentors"
+                className="font-body text-sm font-semibold text-primary hover:underline underline-offset-2"
+              >
+                Browse all mentors →
+              </Link>
             </div>
           </div>
         </section>
@@ -493,6 +531,88 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* ── Members unlock ────────────────────────────────
+            Pre-CTA benefits section — shows what's behind a free account
+        ─────────────────────────────────────────────────── */}
+        <section className="py-28 bg-primary">
+          <div className={C}>
+            <div className="grid lg:grid-cols-12 gap-12 items-start">
+              {/* Left: heading */}
+              <div className="lg:col-span-4">
+                <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-primary/50 mb-5">
+                  Free account
+                </p>
+                <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-primary tracking-tight leading-[1.1] mb-6">
+                  Create an account.
+                  <br />
+                  Unlock everything.
+                </h2>
+                <p className="font-body text-lg text-on-primary/70 leading-relaxed mb-10">
+                  Browsing is free. An account gives you access to the tools
+                  that actually change your trajectory.
+                </p>
+                <Button variant="secondary" size="lg" asChild>
+                  <Link href="/signup" className="gap-3">
+                    Join free
+                    <ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" />
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Right: benefit cards grid */}
+              <div className="lg:col-span-8 grid sm:grid-cols-2 gap-4">
+                {[
+                  {
+                    label: "Content library",
+                    desc: "Guides, deep-dives, and video Q&As written by mentors who've sat exactly where you are. Members-only access.",
+                    accent: "bg-secondary",
+                  },
+                  {
+                    label: "Personalised matching",
+                    desc: "Your top mentor recommendations, ranked by who's overcome your exact challenges — country, field, and goals.",
+                    accent: "bg-tertiary",
+                  },
+                  {
+                    label: "Live session registration",
+                    desc: "Join upcoming Q&As and submit your questions in advance. Free seats reserved for registered members.",
+                    accent: "bg-secondary",
+                  },
+                  {
+                    label: "Forum participation",
+                    desc: "Post threads, reply to peers, and get responses directly from verified mentors in your field.",
+                    accent: "bg-tertiary",
+                  },
+                  {
+                    label: "Progress tracking",
+                    desc: "Set goals when you onboard and track your wins — academic, career, and social — through your Melbourne journey.",
+                    accent: "bg-secondary",
+                  },
+                  {
+                    label: "Your success story",
+                    desc: "When you've found your footing, share it. Your story becomes the guide someone else desperately needs.",
+                    accent: "bg-tertiary",
+                  },
+                ].map(({ label, desc, accent }) => (
+                  <div
+                    key={label}
+                    className="rounded-2xl bg-on-primary/5 border border-on-primary/10 p-6 flex flex-col gap-3"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className={`w-2 h-2 rounded-full ${accent} shrink-0`} aria-hidden="true" />
+                      <h3 className="font-display font-bold text-on-primary text-base">
+                        {label}
+                      </h3>
+                    </div>
+                    <p className="font-body text-sm text-on-primary/60 leading-relaxed">
+                      {desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── Final CTA ─────────────────────────────────────
             Signature hero gradient — the emotional full stop
         ─────────────────────────────────────────────────── */}
@@ -545,9 +665,14 @@ export default function HomePage() {
         <div className={`${C} py-16 grid grid-cols-1 md:grid-cols-4 gap-10`}>
           {/* Brand column */}
           <div className="md:col-span-1">
-            <span className="font-display font-bold text-lg text-on-surface block mb-3">
-              Hoddle
-            </span>
+            <Image
+              src="/logo-light.png"
+              alt="Hoddle"
+              width={64}
+              height={64}
+              className="object-contain mb-3"
+            />
+
             <p className="font-body text-sm text-on-surface-variant leading-relaxed max-w-[220px]">
               Connecting Melbourne&apos;s international student community with
               the guidance that changes everything.

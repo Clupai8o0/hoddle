@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LogOut, Search } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
@@ -29,9 +30,17 @@ export function AppNav({
       brand={
         <Link
           href="/dashboard"
-          className="font-display font-bold text-xl text-primary tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+          aria-label="Hoddle dashboard"
         >
-          Hoddle
+          <Image
+            src="/logo-light.png"
+            alt="Hoddle"
+            width={56}
+            height={56}
+            className="object-contain"
+            priority
+          />
         </Link>
       }
       links={

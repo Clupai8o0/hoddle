@@ -556,3 +556,87 @@ insert into public.mentor_follows (follower_id, mentor_id) values
 on conflict do nothing;
 
 end $$;
+
+-- ─────────────────────────────────────────────────────────────────
+-- Homepage placeholder mentors: Raj, Sarah, Minh
+-- These match the static cards that were on the landing page.
+-- ─────────────────────────────────────────────────────────────────
+
+do $$
+declare
+  m4 uuid := '11111111-0000-0000-0000-000000000004';
+  m5 uuid := '11111111-0000-0000-0000-000000000005';
+  m6 uuid := '11111111-0000-0000-0000-000000000006';
+begin
+
+insert into auth.users (
+  id, email, encrypted_password, email_confirmed_at,
+  raw_app_meta_data, raw_user_meta_data,
+  created_at, updated_at, aud, role
+) values
+  (m4, 'raj.patel@hoddle.dev',   '', now(), '{"provider":"email"}', '{}', now(), now(), 'authenticated', 'authenticated'),
+  (m5, 'sarah.chen@hoddle.dev',  '', now(), '{"provider":"email"}', '{}', now(), now(), 'authenticated', 'authenticated'),
+  (m6, 'minh.tran@hoddle.dev',   '', now(), '{"provider":"email"}', '{}', now(), now(), 'authenticated', 'authenticated')
+on conflict (id) do nothing;
+
+update public.profiles set
+  full_name         = 'Raj Patel',
+  country_of_origin = 'India',
+  university        = 'Monash University',
+  year_of_study     = 4,
+  role              = 'mentor',
+  onboarded_at      = now() - interval '20 months'
+where id = m4;
+
+update public.profiles set
+  full_name         = 'Sarah Chen',
+  country_of_origin = 'China',
+  university        = 'University of Melbourne',
+  year_of_study     = 3,
+  role              = 'mentor',
+  onboarded_at      = now() - interval '15 months'
+where id = m5;
+
+update public.profiles set
+  full_name         = 'Minh Tran',
+  country_of_origin = 'Vietnam',
+  university        = 'RMIT University',
+  year_of_study     = 4,
+  role              = 'mentor',
+  onboarded_at      = now() - interval '11 months'
+where id = m6;
+
+insert into public.mentors (profile_id, slug, headline, bio, expertise, hometown, current_position, verified_at, accepting_questions) values
+(
+  m4, 'raj-patel',
+  'I bombed my first essay. Here''s exactly how I turned it around.',
+  'Landed in Clayton from Mumbai expecting my Distinction streak to follow me. It did not. My first essay was a Pass — the lowest mark I''d ever received. What I learned in the next six months about academic writing, asking for help, and understanding Australian grading standards completely changed how I approach my studies. Now in my final year of engineering with a 78 WAM and two internship offers. Happy to share everything I know.',
+  array['academic-writing', 'engineering', 'internships', 'mental-health'],
+  'Mumbai, India',
+  'Engineering Student (Year 4), Monash University',
+  now() - interval '19 months',
+  true
+),
+(
+  m5, 'sarah-chen',
+  'Time management is the secret weapon nobody tells you about.',
+  'I arrived from Shanghai thinking Australian uni would be easier than my gaokao preparation. I was wrong in ways I did not expect. The volume of self-directed study, the lack of daily structure, the expectation that you manage your own time completely — it took me a full semester to build systems that actually worked. Now I have a part-time role at a Big Four firm, a 3.8 GPA, and a time management framework I''ve shared with over 200 students.',
+  array['finance', 'career', 'networking', 'academic-writing'],
+  'Shanghai, China',
+  'Business Student (Year 3), University of Melbourne',
+  now() - interval '14 months',
+  true
+),
+(
+  m6, 'minh-tran',
+  'Don''t wait until graduation to start building your career.',
+  'I spent my first year at RMIT just surviving — assignments, rent, homesickness. I told myself I''d focus on my career after I graduated. That was the worst plan I could have made. By the time I started building projects, going to meetups, and doing open-source work in second year, I was already a year behind the students who''d been doing it since week one. Here''s what I''d do differently — and what you can start today.',
+  array['software-engineering', 'internships', 'career', 'networking'],
+  'Hanoi, Vietnam',
+  'IT Student (Year 4), RMIT University',
+  now() - interval '10 months',
+  true
+)
+on conflict (profile_id) do nothing;
+
+end $$;

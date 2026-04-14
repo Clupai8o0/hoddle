@@ -284,7 +284,16 @@ export default async function MentorProfilePage({ params }: PageProps) {
                   <p className="font-body text-sm font-medium text-on-surface mb-3">
                     Submit a question for this session
                   </p>
-                  <QuestionForm sessionId={nextSession.id} />
+                  {user ? (
+                    <QuestionForm sessionId={nextSession.id} />
+                  ) : (
+                    <Link
+                      href="/login"
+                      className="block w-full text-center font-body text-sm font-semibold text-primary border border-primary/30 rounded-xl py-3 hover:bg-primary-container transition-colors"
+                    >
+                      Sign in to ask a question
+                    </Link>
+                  )}
                 </div>
               )}
             </div>

@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
@@ -42,12 +42,16 @@ export async function generateMetadata({ params }: PageProps) {
   return {
     title: `${data.title} — Hoddle`,
     description: data.excerpt ?? undefined,
+    robots: { index: false, follow: false },
   };
 }
 
 export default async function ContentArticlePage({ params }: PageProps) {
   const { slug } = await params;
   const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
 
   const { data: item } = await supabase
     .from("content_items")

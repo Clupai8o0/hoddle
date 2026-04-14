@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { Tag } from "@/components/ui/tag";
 import { RegisterButton } from "./register-button";
-import { QuestionForm } from "@/app/(app)/mentors/[slug]/question-form";
+import { QuestionForm } from "@/app/(browse)/mentors/[slug]/question-form";
 
 interface PageProps {
   params: Promise<{ id: string }>;

@@ -1,10 +1,14 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { ContentCard, type ContentCardData } from "@/components/patterns/content-card";
 import { Pagination } from "@/components/ui/pagination";
 import Link from "next/link";
 
-export const metadata = { title: "Content Library — Hoddle" };
+export const metadata = {
+  title: "Content Library — Hoddle",
+  robots: { index: false, follow: false },
+};
 
 const TYPE_FILTERS = [
   { value: "article", label: "Articles" },
@@ -24,6 +28,9 @@ export default async function ContentPage({ searchParams }: PageProps) {
   const offset = (page - 1) * PAGE_SIZE;
 
   const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
 
   let query = supabase
     .from("content_items")
