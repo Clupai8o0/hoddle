@@ -33,7 +33,7 @@ Full product context: [`docs/product-one-pager.md`](./docs/product-one-pager.md)
 
 ```
 /app
-  /(marketing)          # public: landing, about
+  /(marketing)          # public: landing, about, apply
   /(auth)               # login, signup, onboarding flow
   /(app)                # authenticated: dashboard, mentors, forums, profile
   /api                  # route handlers (webhooks, server actions fallback)
@@ -60,16 +60,17 @@ Full product context: [`docs/product-one-pager.md`](./docs/product-one-pager.md)
 
 The full spec is in [`docs/design.md`](./docs/design.md). Before writing any UI code, read it. The rules below are the ones that are most often violated and must never be broken:
 
-1. **Never use `#ffffff` for backgrounds.** The foundation is cream `#fef8f1` (`surface`).
-2. **Never use `#000000` for text.** Use `on-surface` `#2a2620`.
-3. **No 1px solid borders for sectioning.** Use background tonal shifts or 48–64px whitespace.
-4. **Icons are functional, never decorative.** Use `lucide-react` at `strokeWidth={1.5}` for nav, form controls, and menu toggles. Hero visuals, empty states, and mentor context use cropped photography.
-5. **Primary is Hoddle Blue `#001842`** — deep, desaturated, editorial. Never bright/electric blue.
-6. **Botanical green `#2d6a4f` is reserved** for verified-mentor, success, and progress signals. Do not use it decoratively.
-7. **Shadows are blue-tinted and diffused:** `0 12px 40px rgba(0, 24, 66, 0.10)`. Default CSS drop shadows are banned.
-8. **Asymmetric layouts are encouraged** — Hoddle is an editorial journal, not a dashboard template.
+1. **Never use `#ffffff` for page backgrounds.** The foundation is cool gray `#f5f7fa` (`surface`). Pure white (`#ffffff`) is only permitted as `surface-container-lowest` — top-layer cards.
+2. **Never use `#000000` for text.** Use `on-surface` `#1a2035`.
+3. **No warm or orange-tinted colors anywhere.** The entire palette lives on the blue-gray axis. Warm tones fight the Hoddle Blue brand color.
+4. **No 1px solid borders for sectioning.** Use background tonal shifts or 48–64px whitespace.
+5. **Icons are functional, never decorative.** Use `lucide-react` at `strokeWidth={1.5}` for nav, form controls, and menu toggles. Hero visuals, empty states, and mentor context use cropped photography.
+6. **Primary is Hoddle Blue `#001842`** — deep, desaturated, editorial. Never bright/electric blue.
+7. **Botanical green `#2d6a4f` is reserved** for verified-mentor, success, and progress signals. Do not use it decoratively.
+8. **Shadows are blue-tinted and diffused:** `0 12px 40px rgba(0, 24, 66, 0.10)`. Default CSS drop shadows are banned.
+9. **Asymmetric layouts are encouraged** — Hoddle is an editorial journal, not a dashboard template.
 
-All design tokens must be wired through Tailwind's `theme.extend` in `tailwind.config.ts` and exposed as CSS custom properties in `globals.css`. Never hardcode hex values in components.
+All design tokens are defined in the `@theme` block in `app/globals.css` (Tailwind CSS v4 — there is no `tailwind.config.ts`). They are referenced as Tailwind utility classes (`bg-surface`, `text-on-surface`, etc.). Never hardcode hex values in components.
 
 ### Photography placeholders
 
@@ -84,7 +85,7 @@ Whenever a component needs a photo that doesn't exist yet, **do both of the foll
 2. **Add a checklist item to `todo.md §5b`** (create the section if it doesn't exist) with the filename, source component, and a reference to the inline prompt.
 
 The post-generation checklist in `todo.md §5b` must always include:
-- Colour grade (highlights → cream `#fef8f1`, shadows → Hoddle Blue `#001842`)
+- Colour grade (highlights → cool off-white `#f5f7fa`, shadows → Hoddle Blue `#001842`)
 - Asymmetric crop (subjects on editorial thirds)
 - Export at WebP quality 80 — hero images max 200 KB, card images max 80 KB
 - Replace gradient `<div>` placeholder with `<Image>` (next/image) and correct alt text
@@ -93,10 +94,13 @@ The post-generation checklist in `todo.md §5b` must always include:
 
 ## 4. Supabase conventions
 
-- Two clients: `lib/supabase/server.ts` (RSC + server actions, uses cookies) and `lib/supabase/browser.ts` (client components only).
+- Three clients — use the right one:
+  - `lib/supabase/server.ts` — RSC and server actions (uses cookies, respects RLS). Default choice.
+  - `lib/supabase/browser.ts` — client components only.
+  - `lib/supabase/admin.ts` — service role, **bypasses RLS**. Only for system tasks (cron jobs, notifications, post-auth setup). Never import in client components or expose to the browser.
 - **Row Level Security is on for every table.** No exceptions. Policies live in `/supabase/migrations/`.
-- Auth flows use Supabase Auth with email magic links for students. Mentors are invite-only (admin creates them, see `docs/architecture.md`).
-- Never expose `SUPABASE_SERVICE_ROLE_KEY` to the client. It is used only in server-side admin scripts.
+- Auth flows use Supabase Auth with email magic links for students. Mentors are invite-only (admin sends invite → mentor accepts → admin verifies). Prospective mentors can express interest via `/apply`.
+- Never expose `SUPABASE_SERVICE_ROLE_KEY` to the client. It is used only in server-side code via the admin client.
 - Database types are generated: `npx supabase gen types typescript --local > lib/supabase/database.types.ts`. Regenerate after every migration.
 - Schema reference: [`docs/database-schema.md`](./docs/database-schema.md).
 
@@ -108,11 +112,13 @@ The post-generation checklist in `todo.md §5b` must always include:
 
 **Phase 2 (shipped v0.2.0):** Mentor profiles + dashboard, Content library, Forums, Success stories, Live Q&A, Notifications, Matching algorithm v1.
 
-**Phase 3 (current):** Badges & tiers, Mentee→mentor graduation, i18n (UI only), PWA, University calendars, Matching v2, Mentor analytics, Resource hub, Anonymous questions, Admin audit log. Do not start until Phase 2 has two weeks of production telemetry.
+**v1.0 (current release):** All Phase 1 + Phase 2 features, plus: mentor application form (`/apply`), updated marketing pages (homepage, about with team section), cool blue-gray design palette, operator guide and README. This is the version being deployed to production.
+
+**Phase 3 (not started — future):** Badges & tiers, Mentee→mentor graduation, i18n (UI only), PWA, University calendars, Matching v2, Mentor analytics, Resource hub, Anonymous questions, Admin audit log. Do not start Phase 3 until v1.0 has two weeks of production telemetry.
 
 Track work in [`todo.md`](./todo.md). Log shipped work in [`docs/changelog.md`](./docs/changelog.md).
 
-**Out of scope until Phase 3 ships:** Phase 4 is deliberately unscoped — telemetry from Phase 3 determines what comes next.
+**Out of scope:** Phase 4 is deliberately unscoped — telemetry from Phase 3 determines what comes next.
 
 ---
 
@@ -143,7 +149,7 @@ Any new doc lives in `/docs` and is linked here.
 - **Error handling:** server actions return `{ ok: true, data } | { ok: false, error }` — never throw to the client.
 - **File naming:** `kebab-case.tsx` for files, `PascalCase` for components, `camelCase` for functions.
 - **Imports:** absolute from `@/` root. No deep relative paths.
-- **Accessibility:** every interactive element is keyboard-reachable and has an accessible name. Colour contrast must meet WCAG AA against the cream surface.
+- **Accessibility:** every interactive element is keyboard-reachable and has an accessible name. Colour contrast must meet WCAG AA against the cool-gray surface (`#f5f7fa`).
 
 ---
 

@@ -226,7 +226,26 @@ All pending success stories submitted by students. See [§12](#12-success-storie
 
 ---
 
-## 6. Inviting and verifying mentors
+## 6. Mentor applications and invites
+
+### Mentor application form (`/apply`)
+
+Prospective mentors can express interest via the public application form at `/apply`. The form collects:
+- Name, email, university, field of study
+- Country of origin (used for matching)
+- Time in Melbourne
+- Motivation statement (80–1000 characters)
+- LinkedIn or personal website (optional)
+
+On submission, a formatted email is sent to the address in `ADMIN_EMAIL` (falls back to `RESEND_FROM_EMAIL`). The admin reviews the application and decides whether to send an invite. Applications are **not stored in the database** — they exist only in the admin's inbox.
+
+To add `ADMIN_EMAIL` to your Vercel env vars:
+
+```
+ADMIN_EMAIL=admin@hoddle.com.au
+```
+
+### Inviting and verifying mentors
 
 Mentors are **invite-only**. Students cannot self-select as mentors. The flow is:
 
@@ -241,7 +260,7 @@ Mentors are **invite-only**. Students cannot self-select as mentors. The flow is
 3. Optionally add a personal note (included in the invite email)
 4. Submit
 
-Hoddle sends a magic-link email with a unique token valid for **14 days**. The invite record is stored in the `mentor_invites` table.
+Hoddle sends a magic-link email with a unique token valid for **7 days**. The invite record is stored in the `mentor_invites` table.
 
 ### Step 2 — Mentor accepts
 
@@ -346,7 +365,7 @@ Mentors publish three content types: **articles**, **videos**, and **resources**
 
 Students register via the session detail page. On registration, they can submit questions (optionally anonymous). The mentor sees all questions at `/mentor/sessions/[id]` — they can mark questions answered to keep track of what they've covered.
 
-Registered students receive a `session_reminder_24h` email 24 hours before and a `session_starting_soon` notification 10–20 minutes before (via cron — see [§14](#14-cron-jobs)).
+Registered students receive a `session_reminder_24h` email 24 hours before and a `session_starting_soon` in-app notification approximately 1 hour before (both fired by the daily cron — see [§14](#14-cron-jobs)).
 
 ### During and after the session
 
@@ -469,7 +488,7 @@ The notification bell in the app nav shows a live unread count using Supabase Re
 
 ### Email
 
-Emails are sent via Resend. Templates use the Hoddle Blue header and cream body. Each notification type has its own email:
+Emails are sent via Resend. Templates use the Hoddle Blue header and cool gray body. Each notification type has its own email:
 
 | Type | Trigger |
 |---|---|
@@ -477,7 +496,7 @@ Emails are sent via Resend. Templates use the Hoddle Blue header and cream body.
 | `new_content_from_mentor_you_follow` | Mentor publishes new content |
 | `forum_reply_to_your_thread` | Someone replies in a thread you started |
 | `session_reminder_24h` | 24 hours before a session you registered for |
-| `session_starting_soon` | 10–20 minutes before a session you registered for |
+| `session_starting_soon` | ~1 hour before a session you registered for (fired by the daily cron) |
 | `success_story_approved` | Admin approves your submitted story |
 
 ### Preferences
@@ -493,37 +512,28 @@ The `notification_preferences` table stores these preferences. Defaults are: all
 
 ## 14. Cron jobs
 
-Three cron jobs are configured in `vercel.json`. They require the **Vercel Pro plan** to run automatically.
+Two cron jobs are configured in `vercel.json`. Both are compatible with the **Vercel Hobby plan** (daily schedule). Set `CRON_SECRET` in your Vercel environment variables — the routes will return 401 if it is not set.
 
 ### Session reminders (`/api/cron/session-reminders`)
 
-**Schedule:** every hour (`0 * * * *`)
+**Schedule:** daily at 08:00 UTC (`0 8 * * *`)
 
-Finds all sessions scheduled 23–25 hours from now that have registered attendees. Sends each attendee a `session_reminder_24h` notification and email. Skips attendees who have muted that type.
-
-### Session starting soon (`/api/cron/session-starting-soon`)
-
-**Schedule:** every 5 minutes (`*/5 * * * *`)
-
-Finds sessions starting 10–20 minutes from now. Sends each registered attendee a `session_starting_soon` notification. Designed to fire within the 5-minute window without double-sending.
+Two tasks in one run:
+1. **24-hour reminder emails** — finds sessions scheduled 23–25 hours from now and sends each registered attendee a reminder email.
+2. **Starting-soon in-app notifications** — finds sessions starting 50–70 minutes from now and sends each registrant a `session_starting_soon` in-app notification. The 20-minute window is non-overlapping across daily runs.
 
 ### Recompute recommendations (`/api/cron/recompute-recommendations`)
 
-**Schedule:** daily at 4 PM UTC (`0 16 * * *`)
+**Schedule:** daily at 16:00 UTC (`0 16 * * *`)
 
-Runs the matching algorithm for every student profile and upserts the top 5 recommendations into `mentor_recommendations`. Also triggers when a student updates their onboarding answers.
+Runs the matching algorithm for every student profile and upserts the top 5 recommendations into `mentor_recommendations`. Also triggers automatically when a student updates their onboarding answers.
 
 ### Triggering manually
 
-To trigger any cron route manually for testing:
+All cron routes require the `CRON_SECRET` header. To trigger manually:
 
 ```bash
-curl -X GET https://hoddle.com.au/api/cron/recompute-recommendations
-```
-
-No auth is required for cron routes in the current implementation (they are not publicly documented). If you add a `CRON_SECRET` env var and check it in route handlers, trigger with:
-
-```bash
+curl -H "Authorization: Bearer $CRON_SECRET" https://hoddle.com.au/api/cron/session-reminders
 curl -H "Authorization: Bearer $CRON_SECRET" https://hoddle.com.au/api/cron/recompute-recommendations
 ```
 
