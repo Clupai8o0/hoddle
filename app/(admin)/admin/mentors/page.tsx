@@ -21,7 +21,7 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
       .from("mentors")
       .select(
         `profile_id, slug, headline, verified_at, created_at,
-         profiles(full_name, avatar_url, role)`,
+         profiles!mentors_profile_id_fkey(full_name, avatar_url, role)`,
       )
       .order("created_at", { ascending: false }),
     admin
@@ -37,14 +37,6 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
 
   return (
     <Container className="py-16">
-      <pre className="mb-4 p-3 bg-yellow-100 text-yellow-900 text-xs rounded">
-        DEBUG v3 | mentors: {mentors.length} | error: {mentorsResult.error ? JSON.stringify(mentorsResult.error) : "none"}
-      </pre>
-      {mentorsResult.error && (
-        <pre className="mb-6 p-4 bg-red-50 text-red-800 text-xs rounded overflow-auto">
-          {JSON.stringify(mentorsResult.error, null, 2)}
-        </pre>
-      )}
       <header className="flex items-start justify-between mb-10">
         <div>
           <nav className="font-body text-sm text-on-surface-variant mb-3">
