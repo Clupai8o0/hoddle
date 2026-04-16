@@ -48,7 +48,8 @@ export interface NotificationEmailContent {
 }
 
 export function buildNotificationEmail(
-  type: NotificationType,
+  // `new_chat_message` is not yet in the DB enum — widened to string until migration ships
+  type: NotificationType | (string & Record<never, never>),
   payload: Record<string, unknown>,
   recipientName: string,
 ): NotificationEmailContent | null {
@@ -154,6 +155,26 @@ export function buildNotificationEmail(
           <h1 style="margin:0 0 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:#1a2035;line-height:1.2;">Your session starts soon</h1>
           <p style="margin:0;font-family:'Be Vietnam Pro',sans-serif;font-size:16px;color:#6b7280;line-height:1.6;">Hi ${firstName}, <strong style="color:#1a2035;">"${sessionTitle}"</strong> starts in about 15 minutes.</p>
           ${joinSection}
+        `),
+      };
+    }
+
+    case "new_chat_message": {
+      const senderName = String(payload.sender_name ?? "Someone");
+      const preview = String(payload.message_preview ?? "");
+      const conversationUrl = payload.conversation_id
+        ? `${BASE_URL}/messages/${String(payload.conversation_id)}`
+        : `${BASE_URL}/messages`;
+      return {
+        subject: `${senderName} sent you a message on Hoddle`,
+        html: emailShell(`
+          <p style="margin:0 0 8px;font-family:'Be Vietnam Pro',sans-serif;font-size:12px;color:#2d6a4f;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">New message</p>
+          <h1 style="margin:0 0 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:#1a2035;line-height:1.2;">You have a new message</h1>
+          <p style="margin:0 0 0;font-family:'Be Vietnam Pro',sans-serif;font-size:16px;color:#6b7280;line-height:1.6;">Hi ${firstName}, <strong style="color:#1a2035;">${senderName}</strong> sent you a message:</p>
+          <div style="background:#eef1f6;border-radius:12px;padding:16px 20px;margin:16px 0;">
+            <p style="margin:0;font-family:'Be Vietnam Pro',sans-serif;font-size:15px;color:#1a2035;line-height:1.6;font-style:italic;">&ldquo;${preview}${preview.length >= 120 ? "..." : ""}&rdquo;</p>
+          </div>
+          ${ctaButton(conversationUrl, "Reply now")}
         `),
       };
     }

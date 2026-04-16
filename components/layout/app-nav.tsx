@@ -14,6 +14,7 @@ export interface AppNavProps {
   avatarUrl?: string | null;
   userId: string;
   initialUnreadCount?: number;
+  initialUnreadMessageCount?: number;
 }
 
 export function AppNav({
@@ -21,6 +22,7 @@ export function AppNav({
   avatarUrl,
   userId,
   initialUnreadCount = 0,
+  initialUnreadMessageCount = 0,
 }: AppNavProps) {
   const activePath = usePathname();
   const firstName = userName.split(" ")[0] ?? userName;
@@ -62,6 +64,14 @@ export function AppNav({
           </NavLink>
           <NavLink href="/sessions" active={activePath.startsWith("/sessions")}>
             Sessions
+          </NavLink>
+          <NavLink href="/messages" active={activePath.startsWith("/messages")}>
+            Messages
+            {initialUnreadMessageCount > 0 && (
+              <span className="ml-1.5 inline-flex items-center justify-center bg-primary text-on-primary text-[10px] font-bold rounded-full px-1.5 py-0.5 leading-none">
+                {initialUnreadMessageCount > 99 ? "99+" : initialUnreadMessageCount}
+              </span>
+            )}
           </NavLink>
         </>
       }
