@@ -6,7 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contentItemSchema, type ContentItemInput } from "@/lib/validation/content-item";
 import { createContentItem, updateContentItem, publishContentItem, unpublishContentItem } from "@/lib/actions/content-items";
-import { TiptapEditor } from "@/components/patterns/tiptap-editor";
+import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import { Button } from "@/components/ui/button";
 const TYPE_OPTIONS = [
   { value: "article", label: "Article" },
@@ -45,7 +45,7 @@ export function ContentForm({ existing }: ContentFormProps) {
       type: (existing?.type as ContentItemInput["type"]) ?? "article",
       title: existing?.title ?? "",
       excerpt: existing?.excerpt ?? "",
-      body: (existing?.body as string | undefined) ?? undefined,
+      body: (existing?.body as string) ?? "",
       video_url: existing?.video_url ?? "",
       hero_image_url: existing?.hero_image_url ?? "",
     },
@@ -183,8 +183,8 @@ export function ContentForm({ existing }: ContentFormProps) {
             name="body"
             control={control}
             render={({ field }) => (
-              <TiptapEditor
-                value={(field.value as unknown as import("@tiptap/core").JSONContent) ?? null}
+              <MarkdownEditor
+                value={(field.value as string) ?? ""}
                 onChange={field.onChange}
               />
             )}
