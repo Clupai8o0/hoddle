@@ -242,7 +242,7 @@ export default async function ContentArticlePage({ params }: PageProps) {
           {item.body && (
             <div className="prose-hoddle">
               <TiptapRenderer
-                content={item.body as JSONContent}
+                content={item.body as unknown as JSONContent}
                 className="[&_.tiptap]:font-body [&_.tiptap]:text-base [&_.tiptap]:leading-relaxed [&_.tiptap]:text-on-surface [&_.tiptap_h2]:font-display [&_.tiptap_h2]:text-3xl [&_.tiptap_h2]:font-bold [&_.tiptap_h2]:text-on-surface [&_.tiptap_h2]:mt-12 [&_.tiptap_h2]:mb-6 [&_.tiptap_h3]:font-display [&_.tiptap_h3]:text-xl [&_.tiptap_h3]:font-bold [&_.tiptap_h3]:text-on-surface [&_.tiptap_h3]:mt-8 [&_.tiptap_h3]:mb-4 [&_.tiptap_p]:mb-5 [&_.tiptap_blockquote]:border-l-4 [&_.tiptap_blockquote]:border-primary [&_.tiptap_blockquote]:bg-surface-container-low [&_.tiptap_blockquote]:rounded-r-xl [&_.tiptap_blockquote]:px-6 [&_.tiptap_blockquote]:py-3 [&_.tiptap_blockquote]:my-10 [&_.tiptap_blockquote]:italic [&_.tiptap_blockquote]:font-display [&_.tiptap_blockquote]:text-xl [&_.tiptap_blockquote]:text-primary [&_.tiptap_ul]:list-disc [&_.tiptap_ul]:pl-6 [&_.tiptap_ul]:mb-5 [&_.tiptap_ol]:list-decimal [&_.tiptap_ol]:pl-6 [&_.tiptap_ol]:mb-5 [&_.tiptap_li]:mb-2 [&_.tiptap_strong]:font-semibold [&_.tiptap_em]:italic [&_.tiptap_hr]:border-outline-variant/20 [&_.tiptap_hr]:my-8"
               />
             </div>

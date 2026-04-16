@@ -46,7 +46,7 @@ export type Database = {
       }
       content_items: {
         Row: {
-          body: Json | null
+          body: string | null
           created_at: string
           excerpt: string | null
           hero_image_url: string | null
@@ -61,7 +61,7 @@ export type Database = {
           view_count: number
         }
         Insert: {
-          body?: Json | null
+          body?: string | null
           created_at?: string
           excerpt?: string | null
           hero_image_url?: string | null
@@ -76,7 +76,7 @@ export type Database = {
           view_count?: number
         }
         Update: {
-          body?: Json | null
+          body?: string | null
           created_at?: string
           excerpt?: string | null
           hero_image_url?: string | null

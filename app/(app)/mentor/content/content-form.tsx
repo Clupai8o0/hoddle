@@ -47,7 +47,7 @@ export function ContentForm({ existing }: ContentFormProps) {
       type: (existing?.type as ContentItemInput["type"]) ?? "article",
       title: existing?.title ?? "",
       excerpt: existing?.excerpt ?? "",
-      body: (existing?.body as JSONContent) ?? undefined,
+      body: (existing?.body as string | undefined) ?? undefined,
       video_url: existing?.video_url ?? "",
       hero_image_url: existing?.hero_image_url ?? "",
     },
@@ -186,7 +186,7 @@ export function ContentForm({ existing }: ContentFormProps) {
             control={control}
             render={({ field }) => (
               <TiptapEditor
-                value={(field.value as JSONContent) ?? null}
+                value={(field.value as unknown as JSONContent) ?? null}
                 onChange={field.onChange}
               />
             )}
