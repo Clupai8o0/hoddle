@@ -8,8 +8,6 @@ import { contentItemSchema, type ContentItemInput } from "@/lib/validation/conte
 import { createContentItem, updateContentItem, publishContentItem, unpublishContentItem } from "@/lib/actions/content-items";
 import { TiptapEditor } from "@/components/patterns/tiptap-editor";
 import { Button } from "@/components/ui/button";
-import type { JSONContent } from "@tiptap/core";
-
 const TYPE_OPTIONS = [
   { value: "article", label: "Article" },
   { value: "video", label: "Video" },
@@ -41,7 +39,7 @@ export function ContentForm({ existing }: ContentFormProps) {
     control,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<ContentItemInput>({
+  } = useForm({
     resolver: zodResolver(contentItemSchema),
     defaultValues: {
       type: (existing?.type as ContentItemInput["type"]) ?? "article",
@@ -186,7 +184,7 @@ export function ContentForm({ existing }: ContentFormProps) {
             control={control}
             render={({ field }) => (
               <TiptapEditor
-                value={(field.value as unknown as JSONContent) ?? null}
+                value={(field.value as unknown as import("@tiptap/core").JSONContent) ?? null}
                 onChange={field.onChange}
               />
             )}
