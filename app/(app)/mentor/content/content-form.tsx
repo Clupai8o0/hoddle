@@ -21,7 +21,7 @@ interface ContentFormProps {
     type: string;
     title: string;
     excerpt: string | null;
-    body: unknown;
+    body: string | null;
     video_url: string | null;
     hero_image_url: string | null;
     published_at: string | null;
@@ -45,7 +45,7 @@ export function ContentForm({ existing }: ContentFormProps) {
       type: (existing?.type as ContentItemInput["type"]) ?? "article",
       title: existing?.title ?? "",
       excerpt: existing?.excerpt ?? "",
-      body: (existing?.body as string) ?? "",
+      body: existing?.body ?? "",
       video_url: existing?.video_url ?? "",
       hero_image_url: existing?.hero_image_url ?? "",
     },
@@ -146,10 +146,7 @@ export function ContentForm({ existing }: ContentFormProps) {
           className="w-full rounded-lg border border-outline/20 bg-surface px-4 py-3 font-body text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
           {...register("hero_image_url")}
         />
-        <p className="font-body text-xs text-on-surface-variant">
-          Image upload via Supabase Storage is coming in a future sprint.
-        </p>
-        {errors.hero_image_url && (
+{errors.hero_image_url && (
           <p className="font-body text-xs text-error">{errors.hero_image_url.message}</p>
         )}
       </div>

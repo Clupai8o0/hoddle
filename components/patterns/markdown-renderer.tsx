@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeSanitize from "rehype-sanitize";
 import Image from "next/image";
 import Link from "next/link";
 import { getVideoEmbedUrl } from "@/lib/utils/video-embed";
@@ -15,6 +16,7 @@ function EmbedFrame({ src }: { src: string }) {
     <span className="block relative w-full aspect-video my-6 rounded-xl overflow-hidden bg-surface-container-high not-prose">
       <iframe
         src={src}
+        sandbox="allow-scripts allow-same-origin allow-popups"
         className="absolute inset-0 w-full h-full"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
@@ -80,7 +82,7 @@ const components: Components = {
 export function MarkdownRenderer({ content, className }: MarkdownRendererProps) {
   return (
     <div className={className}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]} components={components}>
         {content}
       </ReactMarkdown>
     </div>
