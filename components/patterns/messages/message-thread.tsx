@@ -1,21 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
-import { createClient } from "@/lib/supabase/browser";
-import { markConversationRead } from "@/lib/actions/messages";
-import type {
-  ChatParticipant,
-  Message,
-  MessageWithSender,
-} from "@/lib/types/messages";
+import { useEffect, useRef, useTransition } from "react";
+import type { ChatParticipant, MessageWithSender } from "@/lib/types/messages";
 import { MessageBubble } from "./message-bubble";
 
 export interface MessageThreadProps {
+  messages: MessageWithSender[];
+  hasMore: boolean;
+  onHasMoreChange: (hasMore: boolean) => void;
+  onMessagesLoaded: (older: MessageWithSender[]) => void;
   conversationId: string;
-  initialMessages: MessageWithSender[];
   currentUserId: string;
   otherParticipant: ChatParticipant;
-  hasMore: boolean;
 }
 
 function getInitials(name: string | null): string {
@@ -36,73 +32,21 @@ function isSameGroup(a: MessageWithSender, b: MessageWithSender): boolean {
 }
 
 export function MessageThread({
+  messages,
+  hasMore,
+  onHasMoreChange,
+  onMessagesLoaded,
   conversationId,
-  initialMessages,
   currentUserId,
   otherParticipant,
-  hasMore: initialHasMore,
 }: MessageThreadProps) {
-  const [messages, setMessages] = useState<MessageWithSender[]>(initialMessages);
-  const [hasMore, setHasMore] = useState(initialHasMore);
   const [isLoadingMore, startLoadMore] = useTransition();
   const bottomRef = useRef<HTMLDivElement>(null);
-  const supabase = useRef(createClient()).current;
-
-  // Mark read on mount
-  useEffect(() => {
-    markConversationRead({ conversationId });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [conversationId]);
 
   // Scroll to bottom whenever messages change
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  // Realtime subscription
-  useEffect(() => {
-    const channel = supabase
-      .channel(`messages:${conversationId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "messages",
-          filter: `conversation_id=eq.${conversationId}`,
-        },
-        async (payload) => {
-          const raw = payload.new as Message;
-
-          setMessages((prev) => {
-            if (prev.some((m) => m.id === raw.id)) return prev;
-            // Determine sender — if it's the current user we already know their profile,
-            // otherwise use otherParticipant (in a 1:1 conversation these are the only two).
-            const sender: ChatParticipant =
-              raw.sender_id === currentUserId
-                ? {
-                    id: currentUserId,
-                    full_name: null, // not needed for own messages in bubble
-                    avatar_url: null,
-                    role: "student",
-                  }
-                : otherParticipant;
-
-            const newMsg: MessageWithSender = { ...raw, sender };
-            return [...prev, newMsg];
-          });
-
-          if (raw.sender_id !== currentUserId) {
-            await markConversationRead({ conversationId });
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase, conversationId, currentUserId, otherParticipant]);
 
   function handleLoadMore() {
     if (messages.length === 0) return;
@@ -112,8 +56,8 @@ export function MessageThread({
       const { getMessages } = await import("@/lib/actions/messages");
       const result = await getMessages({ conversationId, cursor });
       if (!result.ok) return;
-      setMessages((prev) => [...result.data.messages, ...prev]);
-      setHasMore(result.data.hasMore);
+      onMessagesLoaded(result.data.messages);
+      onHasMoreChange(result.data.hasMore);
     });
   }
 
@@ -139,8 +83,10 @@ export function MessageThread({
           const isGroupStart = !prev || !isSameGroup(prev, message);
 
           return (
-            <div key={message.id} className={`flex flex-col ${isOwn ? "items-end" : "items-start"} ${isGroupStart ? "mt-4" : "mt-0.5"}`}>
-              {/* Group header: sender name + avatar for other user */}
+            <div
+              key={message.id}
+              className={`flex flex-col ${isOwn ? "items-end" : "items-start"} ${isGroupStart ? "mt-4" : "mt-0.5"}`}
+            >
               {isGroupStart && !isOwn && (
                 <div className="flex items-center gap-2 mb-1 ml-1">
                   <div className="w-7 h-7 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden shrink-0">

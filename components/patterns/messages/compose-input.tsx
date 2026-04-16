@@ -3,15 +3,22 @@
 import { useRef, useState, useTransition, useCallback } from "react";
 import { ArrowUp } from "lucide-react";
 import { sendMessage } from "@/lib/actions/messages";
+import type { ChatParticipant, MessageWithSender } from "@/lib/types/messages";
 
 const MAX_CHARS = 4000;
 const WARN_THRESHOLD = 3800;
 
 export interface ComposeInputProps {
   conversationId: string;
+  currentUserProfile: ChatParticipant;
+  onMessageSent: (msg: MessageWithSender) => void;
 }
 
-export function ComposeInput({ conversationId }: ComposeInputProps) {
+export function ComposeInput({
+  conversationId,
+  currentUserProfile,
+  onMessageSent,
+}: ComposeInputProps) {
   const [body, setBody] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -21,7 +28,6 @@ export function ComposeInput({ conversationId }: ComposeInputProps) {
     const el = textareaRef.current;
     if (!el) return;
     el.style.height = "auto";
-    // Cap at roughly 4 lines (~96px) then scroll
     el.style.height = `${Math.min(el.scrollHeight, 96)}px`;
   }, []);
 
@@ -46,6 +52,8 @@ export function ComposeInput({ conversationId }: ComposeInputProps) {
     startTransition(async () => {
       const result = await sendMessage({ conversationId, body: trimmed });
       if (result.ok) {
+        // Optimistically append the message immediately — no waiting for Realtime
+        onMessageSent({ ...result.data, sender: currentUserProfile });
         setBody("");
         setError(null);
         if (textareaRef.current) {
@@ -82,9 +90,7 @@ export function ComposeInput({ conversationId }: ComposeInputProps) {
         />
         {showCount && (
           <span
-            className={`font-body text-xs shrink-0 tabular-nums ${
-              remaining < 0 ? "text-on-surface-variant" : "text-on-surface-variant"
-            }`}
+            className="font-body text-xs shrink-0 tabular-nums text-on-surface-variant"
             aria-live="polite"
           >
             {body.length} / {MAX_CHARS}

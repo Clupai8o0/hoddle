@@ -51,6 +51,8 @@ function notificationLabel(type: NotificationType): string {
       return "Session tomorrow";
     case "session_starting_soon":
       return "Starting soon";
+    case "new_chat_message":
+      return "New message";
     default:
       return "Notification";
   }
@@ -71,6 +73,8 @@ function notificationMessage(n: Notification): string {
       return `"${String(p.session_title ?? "Your session")}" is tomorrow.`;
     case "session_starting_soon":
       return `"${String(p.session_title ?? "Your session")}" starts in 15 minutes.`;
+    case "new_chat_message":
+      return `${String(p.sender_name ?? "Someone")} sent you a message: "${String(p.message_preview ?? "").slice(0, 80)}"`;
     default:
       return "You have a new notification.";
   }
@@ -92,6 +96,8 @@ function notificationHref(n: Notification): string {
     case "session_reminder_24h":
     case "session_starting_soon":
       return p.session_id ? `/sessions/${String(p.session_id)}` : "/sessions";
+    case "new_chat_message":
+      return p.conversation_id ? `/messages/${String(p.conversation_id)}` : "/messages";
     default:
       return "/inbox";
   }

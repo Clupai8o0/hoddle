@@ -836,6 +836,7 @@ export type Database = {
         | "session_reminder_24h"
         | "session_starting_soon"
         | "success_story_approved"
+        | "new_chat_message"
       reaction_type: "heart" | "thanks" | "helpful"
       session_status: "scheduled" | "live" | "completed" | "cancelled"
       story_status: "draft" | "pending" | "published" | "rejected"
@@ -975,6 +976,7 @@ export const Constants = {
         "session_reminder_24h",
         "session_starting_soon",
         "success_story_approved",
+        "new_chat_message",
       ],
       reaction_type: ["heart", "thanks", "helpful"],
       session_status: ["scheduled", "live", "completed", "cancelled"],

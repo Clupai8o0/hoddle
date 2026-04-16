@@ -2,14 +2,9 @@ import { redirect, notFound } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { getMessages } from "@/lib/actions/messages";
-import { MessageThread } from "@/components/patterns/messages/message-thread";
-import { ComposeInput } from "@/components/patterns/messages/compose-input";
+import { ConversationClient } from "@/components/patterns/messages/conversation-client";
 import type { ChatParticipant } from "@/lib/types/messages";
 
-/**
- * Escape hatch for tables not yet reflected in database.types.ts.
- * Remove once types are regenerated after migration.
- */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function untyped(client: unknown): SupabaseClient<any> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,7 +23,6 @@ export default async function ConversationPage({ params }: Props) {
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  // conversations table is not yet in generated types — use untyped helper as in lib/actions/messages.ts
   const { data: convoRaw } = await untyped(supabase)
     .from("conversations")
     .select("id, participant_one, participant_two")
@@ -48,11 +42,19 @@ export default async function ConversationPage({ params }: Props) {
       ? convo.participant_two
       : convo.participant_one;
 
-  const { data: otherProfile } = await supabase
-    .from("profiles")
-    .select("id, full_name, avatar_url, role")
-    .eq("id", otherParticipantId)
-    .single();
+  // Fetch both participants' profiles in parallel
+  const [{ data: currentProfile }, { data: otherProfile }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("id, full_name, avatar_url, role")
+      .eq("id", user.id)
+      .single(),
+    supabase
+      .from("profiles")
+      .select("id, full_name, avatar_url, role")
+      .eq("id", otherParticipantId)
+      .single(),
+  ]);
 
   if (!otherProfile) notFound();
 
@@ -60,6 +62,13 @@ export default async function ConversationPage({ params }: Props) {
   const { messages: initialMessages, hasMore } = messagesResult.ok
     ? messagesResult.data
     : { messages: [], hasMore: false };
+
+  const currentUserProfile: ChatParticipant = {
+    id: user.id,
+    full_name: currentProfile?.full_name ?? null,
+    avatar_url: currentProfile?.avatar_url ?? null,
+    role: (currentProfile?.role ?? "student") as "student" | "mentor" | "admin",
+  };
 
   const otherParticipant: ChatParticipant = {
     id: otherProfile.id,
@@ -85,17 +94,15 @@ export default async function ConversationPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Messages */}
-      <MessageThread
+      {/* Shared state: realtime + optimistic updates live here */}
+      <ConversationClient
         conversationId={conversationId}
         initialMessages={initialMessages}
+        initialHasMore={hasMore}
         currentUserId={user.id}
+        currentUserProfile={currentUserProfile}
         otherParticipant={otherParticipant}
-        hasMore={hasMore}
       />
-
-      {/* Compose */}
-      <ComposeInput conversationId={conversationId} />
     </div>
   );
 }
