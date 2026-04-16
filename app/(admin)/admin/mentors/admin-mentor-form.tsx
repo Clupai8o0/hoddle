@@ -89,6 +89,8 @@ export function AdminMentorForm({
     });
   }
 
+  const alreadyVerified = mode === "edit" && (defaultValues?.verified ?? false);
+
   function toggleExpertise(value: string) {
     clearError("expertise");
     setSaved(false);
@@ -170,17 +172,23 @@ export function AdminMentorForm({
           return;
         }
 
-        // Upload avatar if one was selected
+        // Upload avatar if one was selected (mentor is already created at this point)
         if (pendingAvatarFile) {
           const formData = new FormData();
           formData.append("file", pendingAvatarFile);
-          await uploadMentorAvatarFromAdmin(result.profileId, formData);
-          // Non-blocking — if avatar upload fails, the mentor is still created
+          const avatarResult = await uploadMentorAvatarFromAdmin(result.profileId, formData);
+          if (!avatarResult.ok) {
+            setAvatarError(`Mentor created but photo upload failed: ${avatarResult.error}`);
+          }
         }
 
         router.push(`/admin/mentors/${result.profileId}`);
       } else {
-        const result = await updateMentorFromAdmin(profileId!, payload);
+        if (!profileId) {
+          setServerError("Missing profile ID.");
+          return;
+        }
+        const result = await updateMentorFromAdmin(profileId, payload);
         if (!result.ok) {
           setServerError(result.error);
           return;
@@ -433,22 +441,25 @@ export function AdminMentorForm({
 
       {/* Verify checkbox */}
       <div className="bg-surface-container rounded-xl p-6 lg:p-8">
-        <label className="flex items-start gap-4 cursor-pointer">
+        <label className={cn("flex items-start gap-4", alreadyVerified ? "cursor-default" : "cursor-pointer")}>
           <input
             type="checkbox"
             checked={verifyImmediately}
+            disabled={alreadyVerified}
             onChange={(e) => {
               setVerifyImmediately(e.target.checked);
               setSaved(false);
             }}
-            className="mt-1 w-5 h-5 rounded accent-primary cursor-pointer"
+            className={cn("mt-1 w-5 h-5 rounded accent-primary", alreadyVerified ? "opacity-60" : "cursor-pointer")}
           />
           <div>
             <p className="font-body font-medium text-on-surface">
               {mode === "create" ? "Verify immediately" : "Mark as verified"}
             </p>
             <p className="font-body text-sm text-on-surface-variant">
-              Verified mentors are visible to students in the directory.
+              {alreadyVerified
+                ? "Already verified. Use the detail page to revoke verification."
+                : "Verified mentors are visible to students in the directory."}
             </p>
           </div>
         </label>

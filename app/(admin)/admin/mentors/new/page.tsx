@@ -1,6 +1,3 @@
-// app/(admin)/admin/mentors/new/page.tsx
-"use client";
-
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { AdminMentorForm } from "../admin-mentor-form";

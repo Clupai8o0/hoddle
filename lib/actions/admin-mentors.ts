@@ -1,12 +1,14 @@
-// lib/actions/admin-mentors.ts
 "use server";
 
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   adminMentorCreateSchema,
   adminMentorEditSchema,
 } from "@/lib/validation/admin-mentor";
+
+const uuidSchema = z.string().uuid("Invalid profile ID.");
 
 // ---------------------------------------------------------------------------
 // Helper: verify caller is admin
@@ -129,6 +131,9 @@ export async function updateMentorFromAdmin(
   profileId: string,
   input: unknown,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
+  const idResult = uuidSchema.safeParse(profileId);
+  if (!idResult.success) return { ok: false, error: "Invalid profile ID." };
+
   const auth = await requireAdmin();
   if (!auth.ok) return auth;
 
@@ -207,6 +212,9 @@ export async function uploadMentorAvatarFromAdmin(
   profileId: string,
   formData: FormData,
 ): Promise<{ ok: true; avatarUrl: string } | { ok: false; error: string }> {
+  const idResult = uuidSchema.safeParse(profileId);
+  if (!idResult.success) return { ok: false, error: "Invalid profile ID." };
+
   const auth = await requireAdmin();
   if (!auth.ok) return auth;
 
