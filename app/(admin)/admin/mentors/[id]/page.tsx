@@ -193,6 +193,12 @@ export default async function AdminMentorDetailPage({ params }: PageProps) {
               </div>
             )}
           </div>
+          <Link
+            href={`/admin/mentors/${mentor.profile_id}/edit`}
+            className="block mt-4 bg-surface-container rounded-xl p-6 text-center font-body font-medium text-primary hover:bg-primary-container transition-colors"
+          >
+            Edit profile
+          </Link>
         </aside>
       </div>
     </Container>

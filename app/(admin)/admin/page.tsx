@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, UserPlus, Clock, BookOpen } from "lucide-react";
+import { Users, UserPlus, UserRoundPlus, Clock, BookOpen } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { createClient } from "@/lib/supabase/server";
 
@@ -42,6 +42,14 @@ export default async function AdminHomePage() {
       icon: UserPlus,
       label: "Invite a mentor",
       description: "Send a token-gated signup link to a prospective mentor.",
+      badge: null,
+      badgeLabel: null,
+    },
+    {
+      href: "/admin/mentors/new",
+      icon: UserRoundPlus,
+      label: "Create a mentor",
+      description: "Set up a full mentor account with all profile details — they can log in later.",
       badge: null,
       badgeLabel: null,
     },

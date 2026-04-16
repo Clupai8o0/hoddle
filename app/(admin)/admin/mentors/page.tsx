@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { UserPlus, CheckCircle, Clock } from "lucide-react";
+import { UserPlus, Mail, CheckCircle, Clock } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -50,12 +50,20 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
             Mentors
           </h1>
         </div>
-        <Button variant="primary" size="default" asChild>
-          <Link href="/admin/mentors/invite">
-            <UserPlus size={16} strokeWidth={1.5} aria-hidden="true" />
-            Invite mentor
-          </Link>
-        </Button>
+        <div className="flex gap-3">
+          <Button variant="primary" size="default" asChild>
+            <Link href="/admin/mentors/new">
+              <UserPlus size={16} strokeWidth={1.5} aria-hidden="true" />
+              Create mentor
+            </Link>
+          </Button>
+          <Button variant="secondary" size="default" asChild>
+            <Link href="/admin/mentors/invite">
+              <Mail size={16} strokeWidth={1.5} aria-hidden="true" />
+              Invite mentor
+            </Link>
+          </Button>
+        </div>
       </header>
 
       {/* Tab strip */}
