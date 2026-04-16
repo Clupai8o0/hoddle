@@ -1,7 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
-import Image from "next/image";
 import Link from "next/link";
 import { getVideoEmbedUrl } from "@/lib/utils/video-embed";
 import type { Components } from "react-markdown";
@@ -31,15 +30,12 @@ const components: Components = {
   img({ src, alt }) {
     if (!src || typeof src !== "string") return null;
     return (
-      <span className="block relative w-full aspect-video my-6 rounded-xl overflow-hidden bg-surface-container-high">
-        <Image
-          src={src}
-          alt={alt ?? ""}
-          fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, 700px"
-        />
-      </span>
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={alt ?? ""}
+        className="w-full rounded-xl my-6"
+      />
     );
   },
 
