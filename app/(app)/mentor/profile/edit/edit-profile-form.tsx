@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
 import { updateMentorProfile } from "@/lib/actions/mentor-onboarding";
 import { FIELDS_OF_INTEREST } from "@/lib/validation/onboarding";
-import type { MentorOnboardingData } from "@/lib/validation/mentor-onboarding";
+import type { MentorOnboardingData, SocialLinks } from "@/lib/validation/mentor-onboarding";
 import { createClient } from "@/lib/supabase/browser";
 
 interface EditProfileFormProps {
@@ -46,6 +46,12 @@ export function EditProfileForm({ defaultValues, currentAvatarUrl }: EditProfile
   const [bio, setBio] = useState(defaultValues.bio);
   const [expertise, setExpertise] = useState<string[]>(defaultValues.expertise);
   const [hometown, setHometown] = useState(defaultValues.hometown);
+  const [socials, setSocials] = useState<SocialLinks>({
+    linkedin: defaultValues.social_links?.linkedin ?? "",
+    twitter: defaultValues.social_links?.twitter ?? "",
+    instagram: defaultValues.social_links?.instagram ?? "",
+    website: defaultValues.social_links?.website ?? "",
+  });
 
   function clearError(field: string) {
     setErrors((prev) => { const next = { ...prev }; delete next[field]; return next; });
@@ -137,6 +143,7 @@ export function EditProfileForm({ defaultValues, currentAvatarUrl }: EditProfile
       bio: bio.trim(),
       expertise,
       hometown: hometown.trim(),
+      social_links: socials,
     };
 
     startTransition(async () => {
@@ -295,6 +302,43 @@ export function EditProfileForm({ defaultValues, currentAvatarUrl }: EditProfile
         </div>
         <FieldError message={errors.expertise} />
         <p className="font-body text-xs text-on-surface-variant">{expertise.length}/5 selected</p>
+      </div>
+
+      <div className="bg-surface-container rounded-xl p-6 lg:p-8 space-y-5">
+        <div>
+          <h2 className="font-display font-semibold text-lg text-on-surface">Social links</h2>
+          <p className="font-body text-sm text-on-surface-variant mt-1">
+            Optional. Full URLs only (e.g. https://linkedin.com/in/yourname).
+          </p>
+        </div>
+
+        {(["linkedin", "twitter", "instagram", "website"] as const).map((key) => {
+          const labels: Record<string, string> = {
+            linkedin: "LinkedIn",
+            twitter: "X / Twitter",
+            instagram: "Instagram",
+            website: "Personal website",
+          };
+          const placeholders: Record<string, string> = {
+            linkedin: "https://linkedin.com/in/yourname",
+            twitter: "https://x.com/yourhandle",
+            instagram: "https://instagram.com/yourhandle",
+            website: "https://yoursite.com",
+          };
+          return (
+            <Input
+              key={key}
+              label={labels[key]}
+              placeholder={placeholders[key]}
+              value={socials[key] ?? ""}
+              onChange={(e) => {
+                setSocials((prev) => ({ ...prev, [key]: e.target.value }));
+                setSaved(false);
+              }}
+              type="url"
+            />
+          );
+        })}
       </div>
 
       {serverError && (

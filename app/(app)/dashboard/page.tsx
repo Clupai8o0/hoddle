@@ -6,6 +6,7 @@ import { Tag } from "@/components/ui/tag";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ProgressPill } from "@/components/ui/progress-pill";
 import { MentorCard } from "@/components/patterns/mentor-card";
+import { FollowButton } from "@/components/patterns/follow-button";
 import { computeRecommendationsForProfile } from "@/lib/matching/compute";
 import type { MentorCardData } from "@/components/patterns/mentor-card";
 
@@ -55,6 +56,9 @@ export default async function DashboardPage() {
     { data: latestContent },
     { data: rawRegistrations },
     { data: recentThreads },
+    { count: mentorFollowCount },
+    { count: forumPostCount },
+    { count: storyCount },
   ] = await Promise.all([
     supabase
       .from("profiles")
@@ -80,7 +84,7 @@ export default async function DashboardPage() {
     supabase
       .from("mentor_recommendations")
       .select(
-        `rank, reasoning,
+        `rank, reasoning, mentor_id,
          mentors!mentor_recommendations_mentor_id_fkey(
            slug, headline, expertise, verified_at,
            profiles!mentors_profile_id_fkey(full_name, avatar_url, university, country_of_origin)
@@ -118,6 +122,22 @@ export default async function DashboardPage() {
       .is("deleted_at", null)
       .order("last_activity_at", { ascending: false })
       .limit(4),
+    // Journey: first mentor connection
+    supabase
+      .from("mentor_follows")
+      .select("mentor_id", { count: "exact", head: true })
+      .eq("follower_id", user!.id),
+    // Journey: community post
+    supabase
+      .from("forum_threads")
+      .select("id", { count: "exact", head: true })
+      .eq("author_id", user!.id),
+    // Journey: shared story
+    supabase
+      .from("success_stories")
+      .select("id", { count: "exact", head: true })
+      .eq("author_id", user!.id)
+      .eq("status", "published"),
   ]);
 
   // If no pre-computed recommendations exist, compute now (first login)
@@ -127,7 +147,7 @@ export default async function DashboardPage() {
     const { data: freshRecs } = await supabase
       .from("mentor_recommendations")
       .select(
-        `rank, reasoning,
+        `rank, reasoning, mentor_id,
          mentors!mentor_recommendations_mentor_id_fkey(
            slug, headline, expertise, verified_at,
            profiles!mentors_profile_id_fkey(full_name, avatar_url, university, country_of_origin)
@@ -138,6 +158,20 @@ export default async function DashboardPage() {
       .limit(5);
     recommendations = freshRecs ?? [];
   }
+
+  // Which of the recommended mentors does this user already follow?
+  const recommendedMentorIds = recommendations
+    .map((r) => r.mentor_id as string)
+    .filter(Boolean);
+  const { data: followedRecs } =
+    recommendedMentorIds.length > 0
+      ? await supabase
+          .from("mentor_follows")
+          .select("mentor_id")
+          .eq("follower_id", user!.id)
+          .in("mentor_id", recommendedMentorIds)
+      : { data: [] };
+  const followedSet = new Set((followedRecs ?? []).map((f) => f.mentor_id));
 
   // Filter upcoming registered sessions in JS
   const now = new Date().toISOString();
@@ -166,7 +200,7 @@ export default async function DashboardPage() {
 
   // Shape into MentorCardData
   type RecRow = (typeof recommendations)[number];
-  const mentorRecs: Array<{ mentor: MentorCardData; reasoning: string }> =
+  const mentorRecs: Array<{ mentor: MentorCardData; reasoning: string; mentorId: string }> =
     recommendations
       .map((rec: RecRow) => {
         const m = Array.isArray(rec.mentors)
@@ -195,9 +229,12 @@ export default async function DashboardPage() {
               : (m.profiles as MentorCardData["profiles"]),
           } satisfies MentorCardData,
           reasoning: rec.reasoning as string,
+          mentorId: rec.mentor_id as string,
         };
       })
-      .filter((r): r is { mentor: MentorCardData; reasoning: string } => r !== null);
+      .filter(
+        (r): r is { mentor: MentorCardData; reasoning: string; mentorId: string } => r !== null,
+      );
 
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
   const greeting = getGreeting();
@@ -206,6 +243,20 @@ export default async function DashboardPage() {
   const hasChallenges = (onboarding?.challenges?.length ?? 0) > 0;
   const hasFields = (onboarding?.fields_of_interest?.length ?? 0) > 0;
   const hasAnyOnboarding = hasGoals || hasChallenges || hasFields;
+
+  // Journey milestones
+  const hasFirstMentorConnection = (mentorFollowCount ?? 0) > 0;
+  const hasCommunityPost = (forumPostCount ?? 0) > 0;
+  const hasSharedStory = (storyCount ?? 0) > 0;
+
+  const completedMilestones = [
+    true,
+    hasAnyOnboarding,
+    hasFirstMentorConnection,
+    hasCommunityPost,
+    hasSharedStory,
+  ].filter(Boolean).length;
+  const overallProgress = completedMilestones * 20;
 
   return (
     <main className="min-h-screen bg-surface pb-24">
@@ -266,6 +317,17 @@ export default async function DashboardPage() {
 
         {/* ── Left: Onboarding summary ────────────────── */}
         <div className="lg:col-span-8 flex flex-col gap-6">
+          <div className="flex items-center justify-between">
+            <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant">
+              Your profile
+            </p>
+            <Link
+              href="/profile/edit"
+              className="font-body text-xs text-on-surface-variant hover:text-primary transition-colors underline underline-offset-2"
+            >
+              Edit profile
+            </Link>
+          </div>
 
           {hasGoals && (
             <Card>
@@ -347,9 +409,18 @@ export default async function DashboardPage() {
             <CardContent className="pt-5 flex flex-col gap-5">
               <ProgressPill value={100} label="Profile set up" />
               <ProgressPill value={hasAnyOnboarding ? 100 : 0} label="Goals defined" />
-              <ProgressPill value={0} label="First mentor connection" />
-              <ProgressPill value={0} label="Community post" />
-              <ProgressPill value={0} label="Share your story" />
+              <ProgressPill
+                value={hasFirstMentorConnection ? 100 : 0}
+                label="First mentor connection"
+              />
+              <ProgressPill
+                value={hasCommunityPost ? 100 : 0}
+                label="Community post"
+              />
+              <ProgressPill
+                value={hasSharedStory ? 100 : 0}
+                label="Share your story"
+              />
             </CardContent>
           </Card>
 
@@ -359,8 +430,8 @@ export default async function DashboardPage() {
               Overall progress
             </p>
             <ProgressPill
-              value={hasAnyOnboarding ? 40 : 20}
-              label={hasAnyOnboarding ? "2 of 5 milestones" : "1 of 5 milestones"}
+              value={overallProgress}
+              label={`${completedMilestones} of 5 milestones`}
             />
             <p className="font-body text-xs text-on-surface-variant mt-4 leading-relaxed">
               Connect with a mentor, post in the forums, and share your story to
@@ -396,12 +467,22 @@ export default async function DashboardPage() {
 
         {mentorRecs.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-6">
-            {mentorRecs.slice(0, 3).map(({ mentor, reasoning }) => (
+            {mentorRecs.slice(0, 3).map(({ mentor, reasoning, mentorId }) => (
               <div key={mentor.slug} className="flex flex-col gap-2">
                 <MentorCard mentor={mentor} />
-                <p className="font-body text-xs text-on-surface-variant px-1 italic leading-snug">
-                  {reasoning}
-                </p>
+                <div className="px-1 flex items-start justify-between gap-2">
+                  <p className="font-body text-xs text-on-surface-variant italic leading-snug">
+                    {reasoning}
+                  </p>
+                  {mentorId && (
+                    <div className="shrink-0 mt-0.5">
+                      <FollowButton
+                        mentorProfileId={mentorId}
+                        initialFollowing={followedSet.has(mentorId)}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>

@@ -499,6 +499,7 @@ export type Database = {
           hometown: string | null
           profile_id: string
           slug: string
+          social_links: Record<string, string>
           updated_at: string
           verified_at: string | null
         }
@@ -512,6 +513,7 @@ export type Database = {
           hometown?: string | null
           profile_id: string
           slug: string
+          social_links?: Record<string, string>
           updated_at?: string
           verified_at?: string | null
         }
@@ -525,6 +527,7 @@ export type Database = {
           hometown?: string | null
           profile_id?: string
           slug?: string
+          social_links?: Record<string, string>
           updated_at?: string
           verified_at?: string | null
         }

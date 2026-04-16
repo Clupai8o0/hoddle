@@ -13,7 +13,7 @@ export default async function EditMentorProfilePage() {
   const [{ data: mentor }, { data: profile }] = await Promise.all([
     supabase
       .from("mentors")
-      .select("headline, current_position, bio, expertise, hometown")
+      .select("headline, current_position, bio, expertise, hometown, social_links")
       .eq("profile_id", user!.id)
       .single(),
     supabase
@@ -45,6 +45,12 @@ export default async function EditMentorProfilePage() {
           bio: mentor.bio ?? "",
           expertise: mentor.expertise ?? [],
           hometown: mentor.hometown ?? "",
+          social_links: {
+            linkedin: mentor.social_links?.linkedin ?? "",
+            twitter: mentor.social_links?.twitter ?? "",
+            instagram: mentor.social_links?.instagram ?? "",
+            website: mentor.social_links?.website ?? "",
+          },
         }}
         currentAvatarUrl={profile?.avatar_url ?? null}
       />

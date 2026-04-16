@@ -1,5 +1,22 @@
 import { z } from "zod";
 
+const urlOrEmpty = z
+  .string()
+  .max(500)
+  .refine(
+    (v) => v === "" || /^https?:\/\/.+/.test(v),
+    "Enter a full URL starting with https://",
+  );
+
+export const socialLinksSchema = z.object({
+  linkedin: urlOrEmpty.optional().default(""),
+  twitter: urlOrEmpty.optional().default(""),
+  instagram: urlOrEmpty.optional().default(""),
+  website: urlOrEmpty.optional().default(""),
+});
+
+export type SocialLinks = z.infer<typeof socialLinksSchema>;
+
 export const mentorOnboardingSchema = z.object({
   full_name: z
     .string()
@@ -25,6 +42,7 @@ export const mentorOnboardingSchema = z.object({
     .string()
     .min(1, "Hometown is required.")
     .max(100, "Keep it to 100 characters or fewer."),
+  social_links: socialLinksSchema.optional(),
 });
 
 export type MentorOnboardingData = z.infer<typeof mentorOnboardingSchema>;

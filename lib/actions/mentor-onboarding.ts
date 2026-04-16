@@ -35,11 +35,11 @@ export async function submitMentorOnboarding(
     return { ok: false, error: "Only mentors can complete mentor onboarding." };
   }
 
-  const { full_name, headline, current_position, bio, expertise, hometown } = parsed.data;
+  const { full_name, headline, current_position, bio, expertise, hometown, social_links } = parsed.data;
 
   const { error: mentorError } = await supabase
     .from("mentors")
-    .update({ headline, current_position, bio, expertise, hometown })
+    .update({ headline, current_position, bio, expertise, hometown, social_links })
     .eq("profile_id", user.id);
 
   if (mentorError) {
@@ -80,12 +80,12 @@ export async function updateMentorProfile(
     return { ok: false, error: "You must be signed in." };
   }
 
-  const { full_name, headline, current_position, bio, expertise, hometown } = parsed.data;
+  const { full_name, headline, current_position, bio, expertise, hometown, social_links } = parsed.data;
 
   const [mentorResult, profileResult] = await Promise.all([
     supabase
       .from("mentors")
-      .update({ headline, current_position, bio, expertise, hometown })
+      .update({ headline, current_position, bio, expertise, hometown, social_links })
       .eq("profile_id", user.id),
     supabase
       .from("profiles")

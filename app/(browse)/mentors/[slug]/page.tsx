@@ -9,7 +9,7 @@ import { MessageMentorButton } from "@/components/patterns/messages/message-ment
 import { QuestionForm } from "./question-form";
 import { FIELDS_OF_INTEREST } from "@/lib/validation/onboarding";
 import { getFollowStatus } from "@/lib/actions/mentor-follows";
-import { CheckCircle, MapPin, Briefcase, Calendar } from "lucide-react";
+import { CheckCircle, MapPin, Briefcase, Calendar, Globe, ExternalLink } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -57,7 +57,7 @@ export default async function MentorProfilePage({ params }: PageProps) {
     .from("mentors")
     .select(
       `profile_id, slug, headline, bio, expertise, hometown, current_position,
-       verified_at, accepting_questions,
+       verified_at, accepting_questions, social_links,
        profiles!mentors_profile_id_fkey (
          full_name, avatar_url, university, country_of_origin
        )`
@@ -211,7 +211,7 @@ export default async function MentorProfilePage({ params }: PageProps) {
 
           {/* Bio */}
           {mentor.bio && (
-            <div className="mb-12">
+            <div className="mb-10">
               <h2 className="font-display text-xl font-bold text-primary mb-4">
                 My story
               </h2>
@@ -220,6 +220,36 @@ export default async function MentorProfilePage({ params }: PageProps) {
               </div>
             </div>
           )}
+
+          {/* Social links */}
+          {(() => {
+            const links = mentor.social_links as Record<string, string> | null;
+            if (!links) return null;
+            const socials = [
+              { key: "linkedin", label: "LinkedIn", Icon: ExternalLink, href: links.linkedin },
+              { key: "twitter", label: "X / Twitter", Icon: ExternalLink, href: links.twitter },
+              { key: "instagram", label: "Instagram", Icon: ExternalLink, href: links.instagram },
+              { key: "website", label: "Website", Icon: Globe, href: links.website },
+            ].filter((s) => s.href);
+            if (socials.length === 0) return null;
+            return (
+              <div className="mb-12 flex flex-wrap gap-3">
+                {socials.map(({ key, label, Icon, href }) => (
+                  <a
+                    key={key}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-body text-sm text-on-surface-variant bg-surface-container hover:bg-surface-container-high hover:text-on-surface transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+                  >
+                    <Icon size={14} strokeWidth={1.5} aria-hidden="true" />
+                    {label}
+                  </a>
+                ))}
+              </div>
+            );
+          })()}
 
           {/* Published content */}
           {contentItems && contentItems.length > 0 && (

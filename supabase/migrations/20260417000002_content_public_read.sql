@@ -25,7 +25,7 @@ alter policy "content_resources: select via parent"
   );
 
 -- content_item_tags: tags on published items are visible to everyone
-alter policy "content_item_tags: select published"
+alter policy "content_item_tags: select authenticated"
   on public.content_item_tags
   using (
     exists (
