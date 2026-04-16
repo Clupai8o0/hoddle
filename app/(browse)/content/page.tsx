@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { ContentCard, type ContentCardData } from "@/components/patterns/content-card";
@@ -7,7 +6,11 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Content Library — Hoddle",
-  robots: { index: false, follow: false },
+  description: "Advice, guides, and stories from mentors who've navigated life in Melbourne as an international student.",
+  openGraph: {
+    title: "Content Library — Hoddle",
+    description: "Advice, guides, and stories from mentors who've navigated life in Melbourne as an international student.",
+  },
 };
 
 const TYPE_FILTERS = [
@@ -28,9 +31,6 @@ export default async function ContentPage({ searchParams }: PageProps) {
   const offset = (page - 1) * PAGE_SIZE;
 
   const supabase = await createClient();
-
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
   let query = supabase
     .from("content_items")

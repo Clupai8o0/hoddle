@@ -67,6 +67,9 @@ export function BrowseNav({ user }: BrowseNavProps) {
               <NavLink href="/sessions" active={pathname.startsWith("/sessions")}>
                 Sessions
               </NavLink>
+              <NavLink href="/messages" active={pathname.startsWith("/messages")}>
+                Messages
+              </NavLink>
             </>
           ) : (
             <>

@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { Tag } from "@/components/ui/tag";
 import { FollowButton } from "@/components/patterns/follow-button";
+import { MessageMentorButton } from "@/components/patterns/messages/message-mentor-button";
 import { QuestionForm } from "./question-form";
 import { FIELDS_OF_INTEREST } from "@/lib/validation/onboarding";
 import { getFollowStatus } from "@/lib/actions/mentor-follows";
@@ -153,10 +154,14 @@ export default async function MentorProfilePage({ params }: PageProps) {
                 )}
               </div>
               {user && (
-                <div className="mt-1">
+                <div className="mt-1 flex items-center gap-2 flex-wrap">
                   <FollowButton
                     mentorProfileId={mentor.profile_id}
                     initialFollowing={isFollowing}
+                  />
+                  <MessageMentorButton
+                    mentorProfileId={mentor.profile_id}
+                    mentorName={name}
                   />
                 </div>
               )}
