@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, Clock } from "lucide-react";
@@ -60,10 +61,19 @@ export default async function AdminMentorDetailPage({ params }: PageProps) {
         {/* Left column — profile */}
         <div className="lg:col-span-2 space-y-8">
           <div className="flex items-start gap-5">
-            <div className="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-              <span className="font-display font-semibold text-xl text-primary">
-                {(profile.full_name ?? "?")[0]?.toUpperCase()}
-              </span>
+            <div className="relative w-16 h-16 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {profile.avatar_url ? (
+                <Image
+                  src={profile.avatar_url}
+                  alt={profile.full_name ?? "Mentor"}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <span className="font-display font-semibold text-xl text-primary">
+                  {(profile.full_name ?? "?")[0]?.toUpperCase()}
+                </span>
+              )}
             </div>
             <div>
               <h1 className="font-display text-3xl font-bold text-primary leading-tight">

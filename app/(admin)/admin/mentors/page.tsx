@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { UserPlus, Mail, CheckCircle, Clock } from "lucide-react";
 import { Container } from "@/components/ui/container";
@@ -128,10 +129,19 @@ function MentorsTable({ mentors }: { mentors: MentorRow[] }) {
           className="group flex items-center justify-between bg-surface-container rounded-xl px-6 py-5 transition-all duration-200 hover:shadow-ambient hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
         >
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-              <span className="font-display font-semibold text-sm text-primary">
-                {(mentor.profiles?.full_name ?? "?")[0]?.toUpperCase()}
-              </span>
+            <div className="relative w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {mentor.profiles?.avatar_url ? (
+                <Image
+                  src={mentor.profiles.avatar_url}
+                  alt={mentor.profiles.full_name ?? "Mentor"}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <span className="font-display font-semibold text-sm text-primary">
+                  {(mentor.profiles?.full_name ?? "?")[0]?.toUpperCase()}
+                </span>
+              )}
             </div>
             <div>
               <p className="font-body font-medium text-on-surface group-hover:text-primary transition-colors">

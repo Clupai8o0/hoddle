@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -24,9 +25,10 @@ interface MentorSidebarProps {
   name: string;
   headline: string | null;
   isVerified: boolean;
+  avatarUrl?: string | null;
 }
 
-export function MentorSidebar({ name, headline, isVerified }: MentorSidebarProps) {
+export function MentorSidebar({ name, headline, isVerified, avatarUrl }: MentorSidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -34,10 +36,19 @@ export function MentorSidebar({ name, headline, isVerified }: MentorSidebarProps
       {/* Identity */}
       <div className="bg-surface-container rounded-xl p-5 mb-2">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-            <span className="font-display font-semibold text-sm text-primary">
-              {name[0]?.toUpperCase()}
-            </span>
+          <div className="relative w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 overflow-hidden">
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt={name}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <span className="font-display font-semibold text-sm text-primary">
+                {name[0]?.toUpperCase()}
+              </span>
+            )}
           </div>
           <div className="min-w-0">
             <p className="font-body font-semibold text-sm text-on-surface truncate">

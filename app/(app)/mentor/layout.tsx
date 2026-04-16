@@ -40,6 +40,7 @@ export default async function MentorLayout({
               name={profile.full_name ?? "Mentor"}
               headline={mentor?.headline ?? null}
               isVerified={!!mentor?.verified_at}
+              avatarUrl={profile.avatar_url}
             />
           </aside>
 
