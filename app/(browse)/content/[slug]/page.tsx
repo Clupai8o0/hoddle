@@ -241,14 +241,12 @@ export default async function ContentArticlePage({ params }: PageProps) {
               />
             </div>
           ) : item.hero_image_url ? (
-            <div className="relative aspect-video w-full rounded-2xl overflow-hidden mb-10">
-              <Image
+            <div className="aspect-video w-full rounded-2xl overflow-hidden mb-10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={item.hero_image_url}
                 alt={item.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 67vw"
-                priority
+                className="w-full h-full object-cover"
               />
             </div>
           ) : (

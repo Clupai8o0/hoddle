@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "next/image"; // used only for local placeholder
 
 export interface ContentCardData {
   slug: string;
@@ -44,12 +44,11 @@ export function ContentCard({ item }: { item: ContentCardData }) {
       {/* Hero image */}
       <div className="relative aspect-[4/3] bg-primary-container overflow-hidden pointer-events-none">
         {item.hero_image_url ? (
-          <Image
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
             src={item.hero_image_url}
             alt={item.title}
-            fill
-            className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
           />
         ) : (
           <Image
