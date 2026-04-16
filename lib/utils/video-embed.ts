@@ -1,6 +1,6 @@
 /**
- * Parse a YouTube or Vimeo URL and return a safe embed URL.
- * Returns null if the URL is not a recognised video URL.
+ * Parse a YouTube, Vimeo, or Google Maps embed URL and return a safe embed URL.
+ * Returns null if the URL is not a recognised embeddable URL.
  */
 export function getVideoEmbedUrl(url: string): string | null {
   try {
@@ -24,6 +24,14 @@ export function getVideoEmbedUrl(url: string): string | null {
       const videoId = parsed.pathname.replace(/^\//, "");
       if (/^\d+$/.test(videoId))
         return `https://player.vimeo.com/video/${videoId}`;
+    }
+
+    // Google Maps — only accept the /maps/embed path (the embed URL from "Share → Embed a map")
+    if (
+      (parsed.hostname === "www.google.com" || parsed.hostname === "google.com") &&
+      parsed.pathname.startsWith("/maps/embed")
+    ) {
+      return url;
     }
 
     return null;
