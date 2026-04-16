@@ -4,7 +4,6 @@ import { createClient } from "@/lib/supabase/server";
 import { contentItemSchema, publishSchema } from "@/lib/validation/content-item";
 import { notifyFollowersOfContent } from "@/lib/actions/mentor-follows";
 import { revalidatePath } from "next/cache";
-import type { Json } from "@/lib/supabase/database.types";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -53,7 +52,7 @@ export async function createContentItem(
       title: parsed.data.title,
       slug,
       excerpt: parsed.data.excerpt ?? null,
-      body: (parsed.data.body as Json | undefined) ?? null,
+      body: parsed.data.body ?? null,
       video_url: parsed.data.video_url || null,
       hero_image_url: parsed.data.hero_image_url || null,
     })
@@ -85,7 +84,7 @@ export async function updateContentItem(
     .update({
       title: parsed.data.title,
       excerpt: parsed.data.excerpt ?? null,
-      body: (parsed.data.body as Json | undefined) ?? null,
+      body: parsed.data.body ?? null,
       video_url: parsed.data.video_url || null,
       hero_image_url: parsed.data.hero_image_url || null,
       updated_at: new Date().toISOString(),

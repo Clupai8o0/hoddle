@@ -4,12 +4,11 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { Tag } from "@/components/ui/tag";
-import { TiptapRenderer } from "@/components/patterns/tiptap-renderer";
+import { MarkdownRenderer } from "@/components/patterns/markdown-renderer";
 import { ViewTracker } from "./view-tracker";
 import { ContentCard, type ContentCardData } from "@/components/patterns/content-card";
 import { getVideoEmbedUrl } from "@/lib/utils/video-embed";
 import { CheckCircle, Download, FileText, ExternalLink } from "lucide-react";
-import type { JSONContent } from "@tiptap/core";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -34,15 +33,32 @@ export async function generateMetadata({ params }: PageProps) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("content_items")
-    .select("title, excerpt")
+    .select("title, excerpt, hero_image_url")
     .eq("slug", slug)
     .not("published_at", "is", null)
     .maybeSingle();
   if (!data) return { title: "Content — Hoddle" };
+
+  const title = `${data.title} — Hoddle`;
+  const description = data.excerpt ?? "Advice and stories from a Hoddle mentor.";
+
   return {
-    title: `${data.title} — Hoddle`,
-    description: data.excerpt ?? undefined,
-    robots: { index: false, follow: false },
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      ...(data.hero_image_url
+        ? { images: [{ url: data.hero_image_url, width: 1200, height: 630 }] }
+        : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(data.hero_image_url ? { images: [data.hero_image_url] } : {}),
+    },
   };
 }
 
@@ -136,6 +152,23 @@ export default async function ContentArticlePage({ params }: PageProps) {
   return (
     <Container className="py-12 lg:py-16">
       <ViewTracker contentId={item.id} />
+
+      {/* Article structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: item.title,
+            description: item.excerpt ?? undefined,
+            image: item.hero_image_url ?? undefined,
+            datePublished: item.published_at,
+            author: { "@type": "Person", name: mentorName },
+            publisher: { "@type": "Organization", name: "Hoddle Melbourne" },
+          }).replace(/</g, "\\u003c").replace(/>/g, "\\u003e"),
+        }}
+      />
 
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-2 font-body text-xs text-on-surface-variant mb-8 uppercase tracking-wider">
@@ -238,13 +271,10 @@ export default async function ContentArticlePage({ params }: PageProps) {
             </p>
           )}
 
-          {/* Rich-text body (Tiptap JSON) */}
+          {/* Article body — Markdown */}
           {item.body && (
             <div className="prose-hoddle">
-              <TiptapRenderer
-                content={item.body as JSONContent}
-                className="[&_.tiptap]:font-body [&_.tiptap]:text-base [&_.tiptap]:leading-relaxed [&_.tiptap]:text-on-surface [&_.tiptap_h2]:font-display [&_.tiptap_h2]:text-3xl [&_.tiptap_h2]:font-bold [&_.tiptap_h2]:text-on-surface [&_.tiptap_h2]:mt-12 [&_.tiptap_h2]:mb-6 [&_.tiptap_h3]:font-display [&_.tiptap_h3]:text-xl [&_.tiptap_h3]:font-bold [&_.tiptap_h3]:text-on-surface [&_.tiptap_h3]:mt-8 [&_.tiptap_h3]:mb-4 [&_.tiptap_p]:mb-5 [&_.tiptap_blockquote]:border-l-4 [&_.tiptap_blockquote]:border-primary [&_.tiptap_blockquote]:bg-surface-container-low [&_.tiptap_blockquote]:rounded-r-xl [&_.tiptap_blockquote]:px-6 [&_.tiptap_blockquote]:py-3 [&_.tiptap_blockquote]:my-10 [&_.tiptap_blockquote]:italic [&_.tiptap_blockquote]:font-display [&_.tiptap_blockquote]:text-xl [&_.tiptap_blockquote]:text-primary [&_.tiptap_ul]:list-disc [&_.tiptap_ul]:pl-6 [&_.tiptap_ul]:mb-5 [&_.tiptap_ol]:list-decimal [&_.tiptap_ol]:pl-6 [&_.tiptap_ol]:mb-5 [&_.tiptap_li]:mb-2 [&_.tiptap_strong]:font-semibold [&_.tiptap_em]:italic [&_.tiptap_hr]:border-outline-variant/20 [&_.tiptap_hr]:my-8"
-              />
+              <MarkdownRenderer content={item.body} />
             </div>
           )}
         </article>

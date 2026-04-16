@@ -1,7 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ContentForm } from "@/app/(app)/mentor/content/content-form";
-import type { JSONContent } from "@tiptap/core";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -31,7 +30,7 @@ export default async function EditContentPage({ params }: PageProps) {
     type: item.type,
     title: item.title,
     excerpt: item.excerpt,
-    body: item.body as JSONContent | null,
+    body: item.body as string | null,
     video_url: item.video_url,
     hero_image_url: item.hero_image_url,
     published_at: item.published_at,

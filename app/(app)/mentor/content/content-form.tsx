@@ -6,10 +6,8 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contentItemSchema, type ContentItemInput } from "@/lib/validation/content-item";
 import { createContentItem, updateContentItem, publishContentItem, unpublishContentItem } from "@/lib/actions/content-items";
-import { TiptapEditor } from "@/components/patterns/tiptap-editor";
+import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import { Button } from "@/components/ui/button";
-import type { JSONContent } from "@tiptap/core";
-
 const TYPE_OPTIONS = [
   { value: "article", label: "Article" },
   { value: "video", label: "Video" },
@@ -23,7 +21,7 @@ interface ContentFormProps {
     type: string;
     title: string;
     excerpt: string | null;
-    body: unknown;
+    body: string | null;
     video_url: string | null;
     hero_image_url: string | null;
     published_at: string | null;
@@ -41,13 +39,13 @@ export function ContentForm({ existing }: ContentFormProps) {
     control,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<ContentItemInput>({
+  } = useForm({
     resolver: zodResolver(contentItemSchema),
     defaultValues: {
       type: (existing?.type as ContentItemInput["type"]) ?? "article",
       title: existing?.title ?? "",
       excerpt: existing?.excerpt ?? "",
-      body: (existing?.body as JSONContent) ?? undefined,
+      body: existing?.body ?? "",
       video_url: existing?.video_url ?? "",
       hero_image_url: existing?.hero_image_url ?? "",
     },
@@ -148,10 +146,7 @@ export function ContentForm({ existing }: ContentFormProps) {
           className="w-full rounded-lg border border-outline/20 bg-surface px-4 py-3 font-body text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
           {...register("hero_image_url")}
         />
-        <p className="font-body text-xs text-on-surface-variant">
-          Image upload via Supabase Storage is coming in a future sprint.
-        </p>
-        {errors.hero_image_url && (
+{errors.hero_image_url && (
           <p className="font-body text-xs text-error">{errors.hero_image_url.message}</p>
         )}
       </div>
@@ -185,8 +180,8 @@ export function ContentForm({ existing }: ContentFormProps) {
             name="body"
             control={control}
             render={({ field }) => (
-              <TiptapEditor
-                value={(field.value as JSONContent) ?? null}
+              <MarkdownEditor
+                value={(field.value as string) ?? ""}
                 onChange={field.onChange}
               />
             )}
