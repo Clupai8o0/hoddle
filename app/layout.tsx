@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -55,7 +56,22 @@ export default function RootLayout({
       lang="en"
       className={`${plusJakartaSans.variable} ${beVietnamPro.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: "var(--color-surface-container)",
+              color: "var(--color-on-surface)",
+              border: "none",
+              boxShadow: "0 12px 40px rgba(0, 24, 66, 0.10)",
+              fontFamily: "var(--font-be-vietnam-pro), sans-serif",
+              fontSize: "0.875rem",
+            },
+          }}
+        />
+      </body>
     </html>
   );
 }

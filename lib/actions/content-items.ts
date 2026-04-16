@@ -101,7 +101,7 @@ export async function updateContentItem(
 
 export async function publishContentItem(
   input: unknown,
-): Promise<{ ok: true } | { ok: false; error: string }> {
+): Promise<{ ok: true; title: string; slug: string } | { ok: false; error: string }> {
   const parsed = publishSchema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input." };
@@ -137,7 +137,7 @@ export async function publishContentItem(
 
   revalidatePath("/mentor/content");
   revalidatePath("/content");
-  return { ok: true };
+  return { ok: true, title: item.title, slug: item.slug };
 }
 
 export async function unpublishContentItem(
