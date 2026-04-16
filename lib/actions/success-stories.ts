@@ -101,11 +101,11 @@ export async function moderateStory(
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("is_admin")
     .eq("id", userId)
     .single();
 
-  if (profile?.role !== "admin") {
+  if (!profile?.is_admin) {
     return { ok: false, error: "Not authorised." };
   }
 
