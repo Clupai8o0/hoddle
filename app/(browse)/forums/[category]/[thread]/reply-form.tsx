@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Send } from "lucide-react";
 import { newPostSchema, type NewPostFormInput } from "@/lib/validation/forum";
 import { createPost } from "@/lib/actions/forums";
+import {
+  QUOTE_REPLY_EVENT,
+  type QuoteReplyDetail,
+} from "./quote-reply-button";
 
 interface ReplyFormProps {
   threadId: string;
@@ -17,12 +21,15 @@ interface ReplyFormProps {
 
 export function ReplyForm({ threadId, threadPath, locked, isAuthenticated, isMentor }: ReplyFormProps) {
   const [serverError, setServerError] = useState<string | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const {
     register,
     handleSubmit,
     reset,
     watch,
+    setValue,
+    getValues,
     formState: { isSubmitting },
   } = useForm<NewPostFormInput>({
     resolver: zodResolver(newPostSchema),
@@ -30,6 +37,48 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated, isMen
   });
 
   const bodyValue = watch("body");
+
+  const { ref: bodyRegisterRef, ...bodyRegister } = register("body");
+
+  // Listen for quote/mention dispatches from posts in the thread.
+  useEffect(() => {
+    function onQuoteReply(event: Event) {
+      const ce = event as CustomEvent<QuoteReplyDetail>;
+      const { body, authorName, mode } = ce.detail;
+      const existing = getValues("body") ?? "";
+
+      let insertion = "";
+      if (mode === "quote") {
+        const quoted = body
+          .split("\n")
+          .slice(0, 8)
+          .map((line) => `> ${line}`)
+          .join("\n");
+        const attribution = authorName ? `@${toHandle(authorName)} wrote:\n` : "";
+        insertion = `${attribution}${quoted}\n\n`;
+      } else {
+        insertion = authorName ? `@${toHandle(authorName)} ` : "";
+      }
+
+      const next = existing.length > 0 ? `${existing.trimEnd()}\n\n${insertion}` : insertion;
+      setValue("body", next, { shouldDirty: true, shouldValidate: true });
+
+      // Focus + place caret at end, and bring the form into view.
+      const ta = textareaRef.current;
+      if (ta) {
+        ta.focus();
+        ta.setSelectionRange(next.length, next.length);
+        ta.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+
+    window.addEventListener(QUOTE_REPLY_EVENT, onQuoteReply as EventListener);
+    return () =>
+      window.removeEventListener(
+        QUOTE_REPLY_EVENT,
+        onQuoteReply as EventListener,
+      );
+  }, [getValues, setValue]);
 
   async function onSubmit(data: NewPostFormInput) {
     setServerError(null);
@@ -83,9 +132,13 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated, isMen
             <div className="flex-1 space-y-2">
               <div className="relative">
                 <textarea
-                  {...register("body")}
+                  {...bodyRegister}
+                  ref={(el) => {
+                    bodyRegisterRef(el);
+                    textareaRef.current = el;
+                  }}
                   rows={1}
-                  placeholder="Share your experience or ask a follow-up…"
+                  placeholder="Share your experience, quote a reply, or tag someone with @…"
                   className="w-full bg-surface-container-high rounded-2xl px-6 py-4 font-body text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none min-h-[56px] border-0"
                 />
                 {bodyValue.length > 4000 && (
@@ -130,4 +183,13 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated, isMen
       </div>
     </div>
   );
+}
+
+/** Convert a display name like "Samridh Limbu" to a mention handle "samridh.limbu". */
+function toHandle(name: string): string {
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s.-]/g, "")
+    .replace(/\s+/g, ".");
 }

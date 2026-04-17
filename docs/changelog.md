@@ -11,6 +11,10 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 ## [Unreleased]
 
 ### Added
+- Forum flexible interactions: `insightful` reaction type for standout mentor answers; emoji+label reaction buttons (Helpful ❤️, Thanks 👍, Hugs 👋, Insightful ⭐) with a `+` picker that shows only reactions already in use
+- Forum thread view counter: `forum_threads.view_count` column, `bump_thread_view(slug)` RPC (SECURITY DEFINER) to atomically increment on every thread load; view count rendered in thread header and listing rows
+- Forum post body rendering (`lib/utils/post-body.tsx`): `> quoted line` → styled blockquote, `@Mention` tokens → highlighted span
+- `quote-reply-button.tsx` — per-post "Quote reply" and "Tag @author" shortcuts that prefill the sticky reply form via a `hoddle:quote-reply` custom event, focusing the textarea and scrolling it into view
 - Anonymous posting option for forum threads and replies (students only; mentors always post as identified)
 - `app/(auth)/confirm/page.tsx` — client-side auth confirm page that handles implicit-flow magic link redirects (hash fragment `#access_token=…`); routes mentor invites through `acceptMentorInvite` and students to `/dashboard`
 - `lib/actions/mentor-magic-link.ts` — `sendMentorMagicLink` server action: generates magic link via admin API and sends via nodemailer, bypassing Supabase SMTP entirely

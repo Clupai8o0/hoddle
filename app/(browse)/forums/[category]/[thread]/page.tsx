@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Lock, CheckCircle } from "lucide-react";
+import { ChevronLeft, Lock, CheckCircle, Eye } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { Container } from "@/components/ui/container";
 import { formatRelativeTime } from "@/lib/utils/format-time";
+import { renderPostBody } from "@/lib/utils/post-body";
 import { ReplyForm } from "./reply-form";
 import { ReactionButtons } from "./reaction-buttons";
 import { EditPostControls } from "./edit-post-form";
 import { EditThreadControls } from "./edit-thread-form";
+import { QuoteReplyButton } from "./quote-reply-button";
+import type { ReactionType } from "@/lib/validation/forum";
 
 interface PageProps {
   params: Promise<{ category: string; thread: string }>;
@@ -22,9 +25,15 @@ type PostRow = {
   author_id: string;
   is_anonymous: boolean;
   profiles: { full_name: string | null; avatar_url: string | null } | null;
-  forum_reactions: { reaction: "heart" | "thanks" | "helpful"; profile_id: string }[];
+  forum_reactions: { reaction: ReactionType; profile_id: string }[];
   // Set by masking logic — not from DB
   isAnonymous?: boolean;
+};
+
+type ReactionCount = {
+  reaction: ReactionType;
+  count: number;
+  userReacted: boolean;
 };
 
 export async function generateMetadata({ params }: PageProps) {
@@ -57,7 +66,7 @@ export default async function ThreadPage({ params }: PageProps) {
     supabase
       .from("forum_threads")
       .select(
-        `id, slug, title, body, category_slug, pinned, locked, is_anonymous, created_at, last_activity_at,
+        `id, slug, title, body, category_slug, pinned, locked, is_anonymous, created_at, last_activity_at, view_count,
          author_id,
          profiles!forum_threads_author_id_fkey(full_name, avatar_url)`,
       )
@@ -73,6 +82,13 @@ export default async function ThreadPage({ params }: PageProps) {
   ]);
 
   if (!threadData || !categoryData) notFound();
+
+  // Bump the view counter (atomic server-side increment). Awaited so
+  // Supabase actually dispatches the RPC — errors are swallowed so a
+  // counter failure can never break the reader's thread view.
+  await supabase
+    .rpc("bump_thread_view", { thread_slug: threadSlug })
+    .then(() => undefined, () => undefined);
 
   // Fetch posts (top-level + replies)
   const { data: posts } = await supabase
@@ -121,6 +137,7 @@ export default async function ThreadPage({ params }: PageProps) {
           avatar_url: string | null;
         } | null);
   const isAnonymousThread = !!threadData.is_anonymous;
+  const viewCount = threadData.view_count ?? 0;
 
   // Separate top-level posts from replies (max 2 levels)
   const topLevel = typedPosts.filter((p) => !p.parent_post_id);
@@ -162,6 +179,10 @@ export default async function ThreadPage({ params }: PageProps) {
             <span className="text-on-surface-variant text-sm font-body">
               {formatRelativeTime(threadData.created_at)}
             </span>
+            <span className="flex items-center gap-1 text-xs text-on-surface-variant font-body">
+              <Eye strokeWidth={1.5} className="w-3.5 h-3.5" />
+              {viewCount.toLocaleString()} {viewCount === 1 ? "view" : "views"}
+            </span>
             {threadData.locked && (
               <span className="flex items-center gap-1 text-xs text-on-surface-variant font-body">
                 <Lock strokeWidth={1.5} className="w-3.5 h-3.5" />
@@ -182,18 +203,9 @@ export default async function ThreadPage({ params }: PageProps) {
         {/* Original post body */}
         <article className="bg-surface-container-lowest rounded-3xl p-5 sm:p-8 md:p-10 mb-8 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full bg-primary/20" />
-          <div className="prose prose-stone max-w-none font-body text-on-surface leading-relaxed text-lg whitespace-pre-wrap">
-            {threadData.body}
+          <div className="font-body text-on-surface leading-relaxed text-lg">
+            {renderPostBody(threadData.body)}
           </div>
-
-          {/* Reactions on the original post */}
-          {topLevel.length > 0 ? null : (
-            <OriginalPostReactions
-              threadId={threadData.id}
-              currentUserId={user?.id}
-              threadPath={threadPath}
-            />
-          )}
 
           {/* Edit/delete controls for thread author */}
           {viewerIsThreadAuthor && (
@@ -293,20 +305,21 @@ export default async function ThreadPage({ params }: PageProps) {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function aggregateReactions(
-  reactions: { reaction: "heart" | "thanks" | "helpful"; profile_id: string }[],
+  reactions: { reaction: ReactionType; profile_id: string }[],
   currentUserId: string | undefined,
-): { reaction: "heart" | "thanks" | "helpful"; count: number; userReacted: boolean }[] {
-  const map: Record<string, { count: number; userReacted: boolean }> = {
-    helpful: { count: 0, userReacted: false },
+): ReactionCount[] {
+  const map: Record<ReactionType, { count: number; userReacted: boolean }> = {
     heart: { count: 0, userReacted: false },
+    helpful: { count: 0, userReacted: false },
     thanks: { count: 0, userReacted: false },
+    insightful: { count: 0, userReacted: false },
   };
   for (const r of reactions) {
     if (!map[r.reaction]) continue;
     map[r.reaction].count++;
     if (r.profile_id === currentUserId) map[r.reaction].userReacted = true;
   }
-  return (["helpful", "heart", "thanks"] as const).map((r) => ({
+  return (["heart", "helpful", "insightful", "thanks"] as const).map((r) => ({
     reaction: r,
     count: map[r].count,
     userReacted: map[r].userReacted,
@@ -371,7 +384,7 @@ function AuthorByline({
 
 type PostProps = {
   post: PostRow;
-  reactionCounts: { reaction: "heart" | "thanks" | "helpful"; count: number; userReacted: boolean }[];
+  reactionCounts: ReactionCount[];
   currentUserId: string | undefined;
   threadPath: string;
   isOwn: boolean;
@@ -438,16 +451,22 @@ function RegularPost({
             )}
           </span>
         </div>
-        <p className="text-on-surface-variant leading-relaxed font-body whitespace-pre-wrap">
-          {post.body}
-        </p>
+        <div className="text-on-surface-variant leading-relaxed font-body">
+          {renderPostBody(post.body)}
+        </div>
 
-        {/* Reactions — only show if not compact */}
+        <ReactionButtons
+          postId={post.id}
+          reactions={reactionCounts}
+          threadPath={threadPath}
+          readOnly={!currentUserId}
+        />
+
+        {/* Quote / mention shortcuts — not shown in compact (nested) view */}
         {!compact && currentUserId && (
-          <ReactionButtons
-            postId={post.id}
-            reactions={reactionCounts}
-            threadPath={threadPath}
+          <QuoteReplyButton
+            body={post.body}
+            authorName={isAnonymous ? null : (profile?.full_name ?? null)}
           />
         )}
 
@@ -518,9 +537,9 @@ function MentorPost({
           </div>
         </div>
 
-        <p className="text-on-surface leading-relaxed font-body text-lg whitespace-pre-wrap mb-6">
-          {post.body}
-        </p>
+        <div className="text-on-surface leading-relaxed font-body text-lg mb-6">
+          {renderPostBody(post.body)}
+        </div>
 
         {post.edited_at && (
           <p className="text-xs text-on-surface-variant font-body italic mb-4">
@@ -528,11 +547,17 @@ function MentorPost({
           </p>
         )}
 
+        <ReactionButtons
+          postId={post.id}
+          reactions={reactionCounts}
+          threadPath={threadPath}
+          readOnly={!currentUserId}
+        />
+
         {currentUserId && (
-          <ReactionButtons
-            postId={post.id}
-            reactions={reactionCounts}
-            threadPath={threadPath}
+          <QuoteReplyButton
+            body={post.body}
+            authorName={profile?.full_name ?? null}
           />
         )}
 
@@ -546,19 +571,4 @@ function MentorPost({
       </div>
     </section>
   );
-}
-
-// Placeholder — original post has no DB post row; reactions are on forum_posts only
-function OriginalPostReactions({
-  threadId: _threadId,
-  currentUserId: _userId,
-  threadPath: _path,
-}: {
-  threadId: string;
-  currentUserId: string | undefined;
-  threadPath: string;
-}) {
-  // Original thread body is stored in forum_threads.body (no reactions).
-  // Reactions only apply to forum_posts. This component is intentionally empty.
-  return null;
 }

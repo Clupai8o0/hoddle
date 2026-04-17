@@ -432,6 +432,7 @@ Deliberately empty. Phase 3 is large enough that we don't pre-commit to Phase 4 
 ### Unreleased
 
 - [x] Anonymous forum posts — shipped 2026-04-17
+- [x] Forum flexible interactions — `insightful` reaction, emoji+label display with "+" picker, view counter, quote-reply + @mention shortcuts, markdown blockquote rendering — shipped 2026-04-17
 
 ### Phase 1 — v0.1.0
 
