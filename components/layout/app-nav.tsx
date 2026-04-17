@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { LogOut, MessageSquare } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Avatar } from "@/components/ui/avatar";
 import { NotificationBell } from "@/components/layout/notification-bell";
@@ -65,18 +65,28 @@ export function AppNav({
           <NavLink href="/sessions" active={activePath.startsWith("/sessions")}>
             Sessions
           </NavLink>
-          <NavLink href="/messages" active={activePath.startsWith("/messages")}>
-            Messages
-            {initialUnreadMessageCount > 0 && (
-              <span className="ml-1.5 inline-flex items-center justify-center bg-primary text-on-primary text-[10px] font-bold rounded-full px-1.5 py-0.5 leading-none">
-                {initialUnreadMessageCount > 99 ? "99+" : initialUnreadMessageCount}
-              </span>
-            )}
-          </NavLink>
         </>
       }
       actions={
         <div className="flex items-center gap-3 sm:gap-4">
+          {/* Messages icon */}
+          <Link
+            href="/messages"
+            className="relative flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
+            aria-label={initialUnreadMessageCount > 0 ? `Messages — ${initialUnreadMessageCount} unread` : "Messages"}
+          >
+            <MessageSquare
+              size={20}
+              strokeWidth={1.5}
+              className={activePath.startsWith("/messages") ? "text-primary" : "text-on-surface-variant hover:text-on-surface transition-colors duration-150"}
+            />
+            {initialUnreadMessageCount > 0 && (
+              <span className="absolute -top-1 -right-1 inline-flex items-center justify-center bg-primary text-on-primary text-[9px] font-bold rounded-full min-w-[14px] h-[14px] px-[3px] leading-none">
+                {initialUnreadMessageCount > 99 ? "99+" : initialUnreadMessageCount}
+              </span>
+            )}
+          </Link>
+
           {/* Notification bell */}
           <NotificationBell userId={userId} initialUnreadCount={initialUnreadCount} />
 
