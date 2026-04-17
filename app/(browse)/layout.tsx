@@ -52,6 +52,8 @@ export default async function BrowseLayout({
     <>
       <BrowseNav user={navUser} />
       {children}
+      {/* Widget checks user (not navUser) — safe even if profile row is missing,
+          since the server action derives identity directly from the session. */}
       {user && <FeedbackWidget />}
     </>
   );

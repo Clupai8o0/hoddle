@@ -63,6 +63,7 @@ export function FeedbackWidget() {
       {/* Popover panel */}
       {open && (
         <div
+          id="feedback-panel"
           className="w-80 rounded-xl p-5 bg-surface-container shadow-ambient"
         >
           <div className="flex items-center justify-between mb-4">
@@ -90,6 +91,7 @@ export function FeedbackWidget() {
                   aria-pressed={category === cat}
                   className={cn(
                     "px-3 py-1.5 rounded-full text-xs font-medium font-body transition-colors",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container",
                     category === cat
                       ? "bg-primary text-on-primary"
                       : "bg-surface-container-high text-on-surface hover:bg-surface-container-highest",
@@ -118,6 +120,7 @@ export function FeedbackWidget() {
               size="sm"
               disabled={!canSubmit}
               className="self-end"
+              aria-label={loading ? "Sending feedback" : "Send feedback"}
             >
               {loading ? (
                 <Loader2 size={14} strokeWidth={1.5} className="animate-spin" />
@@ -134,6 +137,7 @@ export function FeedbackWidget() {
         onClick={handleOpen}
         aria-label="Open feedback panel"
         aria-expanded={open}
+        aria-controls="feedback-panel"
         className={cn(
           "flex items-center gap-2 px-4 py-2.5 rounded-full",
           "bg-primary text-on-primary",

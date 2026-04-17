@@ -9,4 +9,6 @@ export const feedbackSchema = z.object({
   pageUrl: z.string().url("Invalid page URL."),
 });
 
+// Note: userId and userEmail are intentionally excluded — the server action
+// derives identity from the Supabase session to prevent client-side spoofing.
 export type FeedbackInput = z.infer<typeof feedbackSchema>;
