@@ -113,7 +113,7 @@ export default async function MentorSessionDetailPage({ params }: PageProps) {
   };
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       {/* Header */}
       <div>
         <Link
@@ -138,7 +138,7 @@ export default async function MentorSessionDetailPage({ params }: PageProps) {
                 {statusLabel[session.status] ?? session.status}
               </Tag>
             </div>
-            <h1 className="font-display font-bold text-3xl text-primary leading-tight">
+            <h1 className="font-display font-bold text-2xl sm:text-3xl text-primary leading-tight">
               {session.title}
             </h1>
             <div className="flex flex-wrap gap-4 mt-3 font-body text-sm text-on-surface-variant">
@@ -166,7 +166,7 @@ export default async function MentorSessionDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10">
         {/* ── Questions ── */}
         <div className="lg:col-span-7 space-y-8">
           <section>

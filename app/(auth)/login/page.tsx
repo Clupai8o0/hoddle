@@ -104,10 +104,10 @@ export default function LoginPage() {
               aria-hidden="true"
             />
           </div>
-          <h1 className="font-display font-bold text-3xl text-primary mb-3">
+          <h1 className="font-display font-bold text-2xl sm:text-3xl text-primary mb-3">
             Check your inbox.
           </h1>
-          <p className="font-body text-on-surface-variant text-lg leading-relaxed">
+          <p className="font-body text-on-surface-variant text-base sm:text-lg leading-relaxed">
             We sent a secure link to{" "}
             <span className="text-on-surface font-medium">{email}</span>. Click
             it to sign in — no password needed.
@@ -128,10 +128,10 @@ export default function LoginPage() {
         </div>
       ) : (
         <div className="max-w-md w-full">
-          <h1 className="font-display font-bold text-4xl text-primary mb-2">
+          <h1 className="font-display font-bold text-3xl sm:text-4xl text-primary mb-2">
             Welcome back.
           </h1>
-          <p className="font-body text-on-surface-variant text-lg mb-10">
+          <p className="font-body text-on-surface-variant text-base sm:text-lg mb-8 sm:mb-10">
             Enter your email and we&apos;ll send you a secure sign-in link.
           </p>
 

@@ -32,8 +32,8 @@ export default async function MentorLayout({
 
   return (
     <div className="min-h-screen bg-surface">
-      <div className="max-w-7xl mx-auto px-5 sm:px-10 lg:px-16 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-10 lg:px-16 py-6 sm:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           {/* Sidebar */}
           <aside className="lg:col-span-3">
             <MentorSidebar
@@ -45,7 +45,7 @@ export default async function MentorLayout({
           </aside>
 
           {/* Main content */}
-          <main className="lg:col-span-9">{children}</main>
+          <main className="lg:col-span-9 min-w-0">{children}</main>
         </div>
       </div>
     </div>

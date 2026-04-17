@@ -92,15 +92,15 @@ export default async function SessionsPage() {
   const typedPast = (past ?? []) as unknown as SessionRow[];
 
   return (
-    <Container className="py-16">
-      <header className="mb-12">
+    <Container className="py-10 sm:py-16">
+      <header className="mb-8 sm:mb-12">
         <p className="font-body text-xs font-bold uppercase tracking-[0.14em] text-secondary mb-3">
           Live Q&amp;As
         </p>
-        <h1 className="font-display text-5xl font-extrabold tracking-tight text-on-surface mb-4 leading-[1.05]">
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface mb-4 leading-[1.05]">
           Sessions
         </h1>
-        <p className="font-body text-xl text-on-surface-variant max-w-lg leading-relaxed">
+        <p className="font-body text-base sm:text-xl text-on-surface-variant max-w-lg leading-relaxed">
           Live Q&amp;A sessions with verified mentors. Register to attend and
           submit your questions in advance.
         </p>
@@ -137,7 +137,7 @@ export default async function SessionsPage() {
                 <Link
                   key={session.id}
                   href={`/sessions/${session.id}`}
-                  className="group block rounded-2xl bg-surface-container-lowest p-7 shadow-ambient hover:shadow-ambient-lg transition-all hover:-translate-y-0.5"
+                  className="group block rounded-2xl bg-surface-container-lowest p-5 sm:p-7 shadow-ambient hover:shadow-ambient-lg transition-all hover:-translate-y-0.5"
                 >
                   <div className="flex items-start gap-4 mb-5">
                     {/* Date block */}

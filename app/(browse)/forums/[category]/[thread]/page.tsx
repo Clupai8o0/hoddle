@@ -113,7 +113,7 @@ export default async function ThreadPage({ params }: PageProps) {
 
   return (
     <>
-      <Container className="py-16 max-w-3xl pb-32">
+      <Container className="py-10 sm:py-16 max-w-3xl pb-24 sm:pb-32">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-8 text-sm font-body text-on-surface-variant">
           <Link href="/forums" className="hover:text-primary transition-colors">
@@ -132,8 +132,8 @@ export default async function ThreadPage({ params }: PageProps) {
         </div>
 
         {/* Thread header */}
-        <header className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
+        <header className="mb-8 sm:mb-12">
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
             <span className="px-3 py-1 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-surface-container-high text-on-surface-variant">
               {categoryData.name}
             </span>
@@ -154,7 +154,7 @@ export default async function ThreadPage({ params }: PageProps) {
         </header>
 
         {/* Original post body */}
-        <article className="bg-surface-container-lowest rounded-3xl p-8 md:p-10 mb-8 relative overflow-hidden">
+        <article className="bg-surface-container-lowest rounded-3xl p-5 sm:p-8 md:p-10 mb-8 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full bg-primary/20" />
           <div className="prose prose-stone max-w-none font-body text-on-surface leading-relaxed text-lg whitespace-pre-wrap">
             {threadData.body}

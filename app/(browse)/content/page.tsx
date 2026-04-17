@@ -73,10 +73,10 @@ export default async function ContentPage({ searchParams }: PageProps) {
   const basePath = `/content${filterParts.length ? `?${filterParts.join("&")}` : ""}`;
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       {/* Header */}
-      <div className="mb-10">
-        <h1 className="font-display text-4xl font-bold text-primary mb-3">
+      <div className="mb-8 sm:mb-10">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-primary mb-3">
           Content library
         </h1>
         <p className="font-body text-on-surface-variant max-w-xl">
@@ -86,7 +86,7 @@ export default async function ContentPage({ searchParams }: PageProps) {
       </div>
 
       {/* Type filter tabs */}
-      <div className="flex flex-wrap gap-2 mb-10">
+      <div className="flex flex-wrap gap-2 mb-8 sm:mb-10">
         <Link
           href="/content"
           className={`font-body text-sm px-4 py-1.5 rounded-full transition-colors ${

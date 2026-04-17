@@ -42,7 +42,7 @@ export default async function EditContentPage({ params }: PageProps) {
         <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-1">
           Content
         </p>
-        <h1 className="font-display font-bold text-3xl text-primary">
+        <h1 className="font-display font-bold text-2xl sm:text-3xl text-primary break-words">
           Edit: {item.title}
         </h1>
         <p className="font-body text-sm text-on-surface-variant mt-2">

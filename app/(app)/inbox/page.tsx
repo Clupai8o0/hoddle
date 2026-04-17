@@ -134,9 +134,9 @@ export default async function InboxPage() {
   const read = items.filter((n) => n.read_at);
 
   return (
-    <Container className="py-16 max-w-2xl">
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="font-display text-3xl font-bold text-primary">Inbox</h1>
+    <Container className="py-10 sm:py-16 max-w-2xl">
+      <div className="flex items-center justify-between mb-8 sm:mb-10 gap-4">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-primary">Inbox</h1>
         {unread.length > 0 && (
           <form action={handleMarkAllRead}>
             <button

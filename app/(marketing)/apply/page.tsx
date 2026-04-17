@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-const C = "max-w-7xl mx-auto px-5 sm:px-10 lg:px-16";
+const C = "max-w-7xl mx-auto px-4 sm:px-10 lg:px-16";
 
 const WHAT_MENTORS_DO = [
   {
@@ -82,16 +82,16 @@ export default function ApplyPage() {
       />
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
-      <section className="pt-40 pb-24 bg-primary">
+      <section className="pt-28 sm:pt-40 pb-16 sm:pb-24 bg-primary">
         <div className={C}>
           <div className="max-w-2xl">
             <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-secondary mb-5">
               Become a mentor
             </p>
-            <h1 className="font-display font-extrabold text-5xl lg:text-6xl text-on-primary leading-[1.05] tracking-tight mb-6">
+            <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-on-primary leading-[1.05] tracking-tight mb-6">
               Give back the way you wish someone gave back to you.
             </h1>
-            <p className="font-body text-lg text-on-primary/70 leading-relaxed max-w-xl">
+            <p className="font-body text-base sm:text-lg text-on-primary/70 leading-relaxed max-w-xl">
               You navigated Melbourne as a first-year international student. You
               figured it out. Now there are hundreds of students starting that
               same journey — and they need someone like you.
@@ -101,25 +101,25 @@ export default function ApplyPage() {
       </section>
 
       {/* ── What mentors do ──────────────────────────────────────────────────── */}
-      <section className="py-24 bg-surface-container-low">
+      <section className="py-16 sm:py-24 bg-surface-container-low">
         <div className={C}>
-          <div className="max-w-xl mb-14">
+          <div className="max-w-xl mb-10 sm:mb-14">
             <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
               The commitment
             </p>
-            <h2 className="font-display font-extrabold text-4xl text-on-surface tracking-tight leading-[1.1]">
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-on-surface tracking-tight leading-[1.1]">
               What mentors actually do.
             </h2>
-            <p className="font-body text-on-surface-variant text-lg leading-relaxed mt-3">
+            <p className="font-body text-on-surface-variant text-base sm:text-lg leading-relaxed mt-3">
               Hoddle is one-to-many mentorship — no private tutoring, no
               scheduling pressure. You publish advice that scales.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
             {WHAT_MENTORS_DO.map(({ heading, body }) => (
               <div
                 key={heading}
-                className="bg-surface-container-lowest rounded-2xl p-7"
+                className="bg-surface-container-lowest rounded-2xl p-5 sm:p-7"
               >
                 <h3 className="font-display font-bold text-on-surface text-lg mb-2 leading-snug">
                   {heading}
@@ -134,16 +134,16 @@ export default function ApplyPage() {
       </section>
 
       {/* ── Application form ─────────────────────────────────────────────────── */}
-      <section className="py-24 bg-surface">
+      <section className="py-16 sm:py-24 bg-surface">
         <div className={C}>
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-16 lg:gap-24">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-10 sm:gap-16 lg:gap-24">
 
             {/* Left — context */}
             <div className="lg:pt-2">
               <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
                 Apply now
               </p>
-              <h2 className="font-display font-extrabold text-4xl text-on-surface tracking-tight leading-[1.1] mb-5">
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-on-surface tracking-tight leading-[1.1] mb-5">
                 Tell us about yourself.
               </h2>
               <p className="font-body text-on-surface-variant text-base leading-relaxed mb-8">

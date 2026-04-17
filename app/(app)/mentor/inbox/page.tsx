@@ -25,12 +25,12 @@ export default async function MentorInboxPage() {
   const answered = allQuestions.filter((q) => q.answered);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       <header>
         <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-1">
           Student questions
         </p>
-        <h1 className="font-display font-bold text-3xl text-primary">Inbox</h1>
+        <h1 className="font-display font-bold text-2xl sm:text-3xl text-primary">Inbox</h1>
         {unanswered.length > 0 && (
           <p className="font-body text-on-surface-variant mt-2">
             {unanswered.length} question{unanswered.length !== 1 ? "s" : ""} awaiting your response.
@@ -101,7 +101,7 @@ function QuestionCard({ question }: { question: Question }) {
     : question.live_sessions;
 
   return (
-    <div className="bg-surface-container rounded-xl px-5 py-5">
+    <div className="bg-surface-container rounded-xl px-4 sm:px-5 py-4 sm:py-5">
       <div className="flex items-start gap-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">

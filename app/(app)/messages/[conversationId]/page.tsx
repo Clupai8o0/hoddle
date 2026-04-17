@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { getMessages } from "@/lib/actions/messages";
@@ -80,12 +82,19 @@ export default async function ConversationPage({ params }: Props) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-surface-container flex items-center gap-3 bg-surface">
-        <div className="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center font-display text-sm font-bold text-on-surface-variant">
+      <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-surface-container flex items-center gap-3 bg-surface">
+        <Link
+          href="/messages"
+          className="md:hidden flex items-center justify-center w-9 h-9 -ml-1 rounded-sm text-on-surface-variant hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary"
+          aria-label="Back to conversations"
+        >
+          <ArrowLeft size={18} strokeWidth={1.5} />
+        </Link>
+        <div className="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center font-display text-sm font-bold text-on-surface-variant shrink-0">
           {otherProfile.full_name?.[0]?.toUpperCase() ?? "?"}
         </div>
-        <div>
-          <p className="font-body text-sm font-semibold text-on-surface">
+        <div className="min-w-0">
+          <p className="font-body text-sm font-semibold text-on-surface truncate">
             {otherProfile.full_name ?? "Unknown"}
           </p>
           <p className="font-body text-xs text-on-surface-variant capitalize">

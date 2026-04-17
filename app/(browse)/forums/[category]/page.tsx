@@ -68,9 +68,9 @@ export default async function CategoryPage({ params }: PageProps) {
   const typedThreads = (threads ?? []) as unknown as ThreadRow[];
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       {/* Page header */}
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-6 mb-8 sm:mb-12">
         <div>
           <Link
             href="/forums"
@@ -78,11 +78,11 @@ export default async function CategoryPage({ params }: PageProps) {
           >
             ← All Forums
           </Link>
-          <h1 className="font-display text-5xl font-extrabold tracking-tight text-on-surface mb-3">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface mb-3">
             {currentCat.name}
           </h1>
           {currentCat.description && (
-            <p className="font-body text-xl text-on-surface-variant max-w-lg">
+            <p className="font-body text-base sm:text-xl text-on-surface-variant max-w-lg">
               {currentCat.description}
             </p>
           )}

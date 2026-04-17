@@ -31,7 +31,7 @@ export default async function EditMentorProfilePage() {
         <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-1">
           Your profile
         </p>
-        <h1 className="font-display font-bold text-3xl text-primary">Edit Profile</h1>
+        <h1 className="font-display font-bold text-2xl sm:text-3xl text-primary">Edit Profile</h1>
         <p className="font-body text-on-surface-variant mt-2">
           This information appears on your public mentor profile.
         </p>

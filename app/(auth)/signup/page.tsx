@@ -58,10 +58,10 @@ export default function SignupPage() {
               aria-hidden="true"
             />
           </div>
-          <h1 className="font-display font-bold text-3xl text-primary mb-3">
+          <h1 className="font-display font-bold text-2xl sm:text-3xl text-primary mb-3">
             Check your inbox.
           </h1>
-          <p className="font-body text-on-surface-variant text-lg leading-relaxed">
+          <p className="font-body text-on-surface-variant text-base sm:text-lg leading-relaxed">
             We sent a secure link to{" "}
             <span className="text-on-surface font-medium">{email}</span>. Click
             it to finish creating your account.
@@ -82,10 +82,10 @@ export default function SignupPage() {
         </div>
       ) : (
         <div className="max-w-md w-full">
-          <h1 className="font-display font-bold text-4xl text-primary mb-2">
+          <h1 className="font-display font-bold text-3xl sm:text-4xl text-primary mb-2">
             Your Melbourne story starts here.
           </h1>
-          <p className="font-body text-on-surface-variant text-lg mb-10 leading-relaxed">
+          <p className="font-body text-on-surface-variant text-base sm:text-lg mb-8 sm:mb-10 leading-relaxed">
             Connect with mentors who&apos;ve walked the same path — the same
             trams, laneways, and lecture halls.
           </p>

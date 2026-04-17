@@ -47,17 +47,17 @@ export default async function StoriesPage() {
   const hasStories = typedStories.length > 0;
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       {/* Page header */}
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8 mb-10 sm:mb-16">
         <div className="max-w-xl">
           <p className="font-body text-xs font-bold uppercase tracking-[0.14em] text-secondary mb-4">
             Community
           </p>
-          <h1 className="font-display text-5xl font-extrabold tracking-tight text-on-surface mb-4 leading-[1.05]">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface mb-4 leading-[1.05]">
             Stories from our community
           </h1>
-          <p className="font-body text-xl text-on-surface-variant leading-relaxed">
+          <p className="font-body text-base sm:text-xl text-on-surface-variant leading-relaxed">
             Real accounts from international students who found their footing in
             Melbourne — and the moments that made the difference.
           </p>
@@ -109,9 +109,9 @@ export default async function StoriesPage() {
       )}
 
       {/* Submit CTA */}
-      <section className="mt-24 rounded-2xl bg-primary px-10 py-14 flex flex-col md:flex-row md:items-center justify-between gap-8">
+      <section className="mt-16 sm:mt-24 rounded-2xl bg-primary px-6 sm:px-10 py-10 sm:py-14 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
         <div>
-          <h2 className="font-display text-3xl font-bold text-on-primary mb-3">
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-on-primary mb-3">
             Ready to share your own success story?
           </h2>
           <p className="font-body text-on-primary/70 max-w-md leading-relaxed">

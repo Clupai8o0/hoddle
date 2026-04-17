@@ -21,9 +21,9 @@ export function Container({
         "w-full mx-auto max-w-[1280px]",
         layout === "editorial"
           ? // Asymmetric: intentionally more breathing room on the right
-            "px-5 sm:pl-10 sm:pr-14 lg:pl-16 lg:pr-24 xl:pl-20 xl:pr-32"
+            "px-4 sm:pl-10 sm:pr-14 lg:pl-16 lg:pr-24 xl:pl-20 xl:pr-32"
           : // Balanced: symmetric horizontal padding
-            "px-5 sm:px-10 lg:px-16 xl:px-20",
+            "px-4 sm:px-10 lg:px-16 xl:px-20",
         className,
       )}
       {...props}

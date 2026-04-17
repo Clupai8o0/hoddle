@@ -79,7 +79,7 @@ export default async function StoryPage({ params }: PageProps) {
     .limit(3);
 
   return (
-    <Container className="py-12 lg:py-16">
+    <Container className="py-8 sm:py-12 lg:py-16">
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"

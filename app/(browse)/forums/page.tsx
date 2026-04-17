@@ -65,14 +65,14 @@ export default async function ForumsPage() {
   const typedSessions = (sessions ?? []) as unknown as SessionRow[];
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       {/* Page header */}
-      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-5 sm:gap-6 mb-8 sm:mb-12">
         <div>
-          <h1 className="font-display text-5xl font-extrabold tracking-tight text-on-surface mb-3">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface mb-3">
             Community Forums
           </h1>
-          <p className="font-body text-xl text-on-surface-variant max-w-lg">
+          <p className="font-body text-base sm:text-xl text-on-surface-variant max-w-lg">
             Ask questions, share experiences, and support each other in your
             Melbourne journey.
           </p>
@@ -86,22 +86,22 @@ export default async function ForumsPage() {
       </header>
 
       {/* Category filter chips */}
-      <div className="flex flex-wrap gap-2 mb-10">
-        <span className="px-6 py-2.5 rounded-full bg-primary text-on-primary font-body font-medium text-sm">
+      <div className="flex flex-wrap gap-2 mb-6 sm:mb-10">
+        <span className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-primary text-on-primary font-body font-medium text-sm">
           All
         </span>
         {(categories ?? []).map((cat) => (
           <Link
             key={cat.slug}
             href={`/forums/${cat.slug}`}
-            className="px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors font-body text-sm"
+            className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors font-body text-sm"
           >
             {cat.name}
           </Link>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         {/* Thread list */}
         <div className="lg:col-span-8 space-y-1">
           {typedThreads.length === 0 ? (
@@ -152,8 +152,8 @@ function ThreadRow({
       href={`/forums/${thread.category_slug}/${thread.slug}`}
       className={[
         "block bg-surface-container-lowest hover:bg-surface-container-low",
-        "transition-colors rounded-2xl p-6",
-        "flex flex-col md:flex-row gap-6 items-start group",
+        "transition-colors rounded-2xl p-4 sm:p-6",
+        "flex flex-col md:flex-row gap-4 sm:gap-6 items-start group",
         thread.pinned ? "border-l-4 border-primary" : "",
       ].join(" ")}
     >

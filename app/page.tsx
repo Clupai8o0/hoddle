@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 // ─────────────────────────────────────────
 // Shared layout constant
 // ─────────────────────────────────────────
-const C = "max-w-7xl mx-auto px-5 sm:px-10 lg:px-16";
+const C = "max-w-7xl mx-auto px-4 sm:px-10 lg:px-16";
 
 // ─────────────────────────────────────────
 // Page
@@ -144,14 +144,14 @@ export default async function HomePage() {
               "linear-gradient(160deg, var(--color-surface) 0%, var(--color-primary-container) 100%)",
           }}
         >
-          <div className={`${C} grid lg:grid-cols-12 gap-12 items-center`}>
+          <div className={`${C} grid lg:grid-cols-12 gap-8 lg:gap-12 items-center`}>
             {/* Text column */}
             <div className="lg:col-span-7 relative z-10">
-              <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-primary mb-6 block">
+              <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-primary mb-5 sm:mb-6 block">
                 Mentorship for first-year international students in Melbourne
               </span>
 
-              <h1 className="font-display font-extrabold text-5xl lg:text-[4.25rem] text-on-surface leading-[1.05] tracking-tight mb-6">
+              <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-[4.25rem] text-on-surface leading-[1.05] tracking-tight mb-5 sm:mb-6">
                 Navigate Melbourne
                 <br />
                 with a mentor who&apos;s{" "}
@@ -160,7 +160,7 @@ export default async function HomePage() {
                 </em>
               </h1>
 
-              <p className="font-body text-lg lg:text-xl text-on-surface-variant leading-relaxed max-w-xl mb-10">
+              <p className="font-body text-base sm:text-lg lg:text-xl text-on-surface-variant leading-relaxed max-w-xl mb-8 sm:mb-10">
                 Free, peer-to-peer mentorship. Connect with high-achievers who
                 understand the grading system, the job market, and the feeling
                 of being 6,000 miles from home.
@@ -252,13 +252,13 @@ export default async function HomePage() {
             Asymmetric magazine layout — the emotional heart of the page
         ─────────────────────────────────────────────────── */}
         <section className="py-28 bg-surface">
-          <div className={`${C} grid lg:grid-cols-12 gap-16 items-start`}>
+          <div className={`${C} grid lg:grid-cols-12 gap-10 sm:gap-16 items-start`}>
             {/* Pull quote — sits offset on the left */}
             <div className="lg:col-span-5 lg:sticky lg:top-24">
-              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-secondary mb-6">
+              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-secondary mb-5 sm:mb-6">
                 Why Hoddle exists
               </p>
-              <blockquote className="font-display font-bold text-4xl lg:text-5xl text-primary leading-[1.1] tracking-tight mb-8">
+              <blockquote className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-primary leading-[1.1] tracking-tight mb-6 sm:mb-8">
                 &ldquo;For the first time since arriving in Melbourne, she felt
                 like she had a roadmap.&rdquo;
               </blockquote>
@@ -355,14 +355,14 @@ export default async function HomePage() {
         {/* ── Mentor preview strip ─────────────────────────
             3 placeholder cards — real data from Supabase in Phase 2
         ─────────────────────────────────────────────────── */}
-        <section className="py-28 bg-surface-container-low">
+        <section className="py-16 sm:py-28 bg-surface-container-low">
           <div className={C}>
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16">
               <div>
                 <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-3">
                   Verified mentors
                 </p>
-                <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight">
+                <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface tracking-tight">
                   Meet your future mentors.
                 </h2>
               </div>
@@ -465,16 +465,16 @@ export default async function HomePage() {
         {/* ── Value propositions / How it works ────────────
             3 tonal cards — no borders, photography-led backdrop
         ─────────────────────────────────────────────────── */}
-        <section id="how-it-works" className="py-28 bg-surface">
+        <section id="how-it-works" className="py-16 sm:py-28 bg-surface">
           <div className={C}>
-            <div className="text-center mb-20 max-w-2xl mx-auto">
+            <div className="text-center mb-12 sm:mb-20 max-w-2xl mx-auto">
               <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
                 How Hoddle works
               </p>
-              <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight mb-6">
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface tracking-tight mb-5 sm:mb-6">
                 Your journey to excellence.
               </h2>
-              <p className="font-body text-lg text-on-surface-variant leading-relaxed">
+              <p className="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed">
                 Three simple steps to unlock everything Melbourne has to offer.
               </p>
             </div>
@@ -482,7 +482,7 @@ export default async function HomePage() {
             {/* Bento grid */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
               {/* Card 1 — surface-container */}
-              <div className="md:col-span-4 bg-surface-container rounded-[var(--radius-md)] p-8 lg:p-10 flex flex-col justify-between min-h-[320px] hover:bg-surface-container-high transition-colors duration-200">
+              <div className="md:col-span-4 bg-surface-container rounded-[var(--radius-md)] p-6 sm:p-8 lg:p-10 flex flex-col justify-between min-h-[320px] hover:bg-surface-container-high transition-colors duration-200">
                 <div>
                   <div className="w-11 h-11 bg-primary text-on-primary rounded-full flex items-center justify-center font-display font-bold text-lg mb-8 shadow-[0_4px_12px_rgba(0,24,66,0.25)]">
                     1
@@ -505,15 +505,15 @@ export default async function HomePage() {
               </div>
 
               {/* Card 2 — secondary-container (wide) */}
-              <div className="md:col-span-8 bg-secondary-container rounded-[var(--radius-md)] p-8 lg:p-12 relative overflow-hidden min-h-[320px] flex flex-col justify-between">
+              <div className="md:col-span-8 bg-secondary-container rounded-[var(--radius-md)] p-6 sm:p-8 lg:p-12 relative overflow-hidden min-h-[320px] flex flex-col justify-between">
                 <div className="relative z-10 max-w-md">
                   <div className="w-11 h-11 bg-secondary text-on-secondary rounded-full flex items-center justify-center font-display font-bold text-lg mb-8 shadow-[0_4px_12px_rgba(45,106,79,0.30)]">
                     2
                   </div>
-                  <h3 className="font-display font-bold text-3xl text-on-secondary-container mb-4 leading-tight">
+                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-on-secondary-container mb-4 leading-tight">
                     Get matched with the right mentor.
                   </h3>
-                  <p className="font-body text-on-secondary-container/80 text-lg leading-relaxed">
+                  <p className="font-body text-on-secondary-container/80 text-base sm:text-lg leading-relaxed">
                     Our matching pairs you with mentors who share your field of
                     study, cultural background, and the exact challenges
                     you&apos;re facing.
@@ -527,15 +527,15 @@ export default async function HomePage() {
               </div>
 
               {/* Card 3 — primary-container (full width) */}
-              <div className="md:col-span-12 bg-surface-container-highest rounded-[var(--radius-md)] p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="md:col-span-12 bg-surface-container-highest rounded-[var(--radius-md)] p-6 sm:p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                 <div>
-                  <div className="w-11 h-11 bg-on-surface text-surface rounded-full flex items-center justify-center font-display font-bold text-lg mb-8 shadow-[0_4px_12px_rgba(42,38,32,0.20)]">
+                  <div className="w-11 h-11 bg-on-surface text-surface rounded-full flex items-center justify-center font-display font-bold text-lg mb-6 sm:mb-8 shadow-[0_4px_12px_rgba(42,38,32,0.20)]">
                     3
                   </div>
-                  <h3 className="font-display font-bold text-3xl text-on-surface mb-4 leading-tight">
+                  <h3 className="font-display font-bold text-2xl sm:text-3xl text-on-surface mb-4 leading-tight">
                     Learn, grow, and give back.
                   </h3>
-                  <p className="font-body text-on-surface-variant text-lg leading-relaxed">
+                  <p className="font-body text-on-surface-variant text-base sm:text-lg leading-relaxed">
                     Access exclusive content, live Q&amp;As, and a community of
                     high-achievers. When you&apos;ve found your feet, share
                     your own story.
@@ -583,20 +583,20 @@ export default async function HomePage() {
         {/* ── Members unlock ────────────────────────────────
             Pre-CTA benefits section — shows what's behind a free account
         ─────────────────────────────────────────────────── */}
-        <section className="py-28 bg-primary">
+        <section className="py-16 sm:py-28 bg-primary">
           <div className={C}>
-            <div className="grid lg:grid-cols-12 gap-12 items-start">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               {/* Left: heading */}
               <div className="lg:col-span-4">
                 <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-primary/50 mb-5">
                   Free account
                 </p>
-                <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-primary tracking-tight leading-[1.1] mb-6">
+                <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-primary tracking-tight leading-[1.1] mb-5 sm:mb-6">
                   Create an account.
                   <br />
                   Unlock everything.
                 </h2>
-                <p className="font-body text-lg text-on-primary/70 leading-relaxed mb-10">
+                <p className="font-body text-base sm:text-lg text-on-primary/70 leading-relaxed mb-8 sm:mb-10">
                   Browsing is free. An account gives you access to the tools
                   that actually change your trajectory.
                 </p>
@@ -666,20 +666,20 @@ export default async function HomePage() {
             Signature hero gradient — the emotional full stop
         ─────────────────────────────────────────────────── */}
         <section
-          className="py-28"
+          className="py-16 sm:py-28"
           style={{
             background:
               "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-elevated) 100%)",
           }}
         >
           <div className={`${C} text-center max-w-3xl mx-auto`}>
-            <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-primary/60 mb-6">
+            <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-primary/60 mb-5 sm:mb-6">
               Ready to begin?
             </p>
-            <h2 className="font-display font-extrabold text-4xl lg:text-6xl text-on-primary leading-[1.05] tracking-tight mb-6">
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-6xl text-on-primary leading-[1.05] tracking-tight mb-5 sm:mb-6">
               Your Melbourne story is waiting.
             </h2>
-            <p className="font-body text-lg text-on-primary/80 leading-relaxed mb-12 max-w-xl mx-auto">
+            <p className="font-body text-base sm:text-lg text-on-primary/80 leading-relaxed mb-8 sm:mb-12 max-w-xl mx-auto">
               Join 500+ international students who found their footing — and
               their community — through Hoddle Melbourne.
             </p>

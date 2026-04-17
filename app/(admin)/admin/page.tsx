@@ -72,22 +72,22 @@ export default async function AdminHomePage() {
   ];
 
   return (
-    <Container className="py-16">
-      <header className="mb-12">
-        <h1 className="font-display text-4xl font-bold text-primary mb-2">
+    <Container className="py-10 sm:py-16">
+      <header className="mb-8 sm:mb-12">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-primary mb-2">
           Admin
         </h1>
-        <p className="font-body text-on-surface-variant text-lg">
+        <p className="font-body text-on-surface-variant text-base sm:text-lg">
           Manage mentor invitations, verification, and content moderation.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {cards.map(({ href, icon: Icon, label, description, badge, badgeLabel }) => (
           <Link
             key={href}
             href={href}
-            className="group block bg-surface-container rounded-xl p-8 transition-all duration-200 hover:shadow-ambient hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            className="group block bg-surface-container rounded-xl p-6 sm:p-8 transition-all duration-200 hover:shadow-ambient hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
           >
             <div className="flex items-start justify-between mb-6">
               <div className="w-11 h-11 rounded-lg bg-primary-container flex items-center justify-center">

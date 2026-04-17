@@ -112,7 +112,7 @@ export default async function MentorProfilePage({ params }: PageProps) {
   const nextSession = upcomingSession ?? null;
 
   return (
-    <Container className="py-12 lg:py-16">
+    <Container className="py-8 sm:py-12 lg:py-16">
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-12">
         {/* ── Left column ── */}
         <div>

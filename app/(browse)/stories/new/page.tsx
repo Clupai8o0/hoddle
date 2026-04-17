@@ -15,10 +15,10 @@ export default async function NewStoryPage() {
   if (!user) redirect("/login");
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       <div className="max-w-2xl">
         <nav
-          className="font-body text-xs text-on-surface-variant uppercase tracking-wider mb-8 flex items-center gap-2"
+          className="font-body text-xs text-on-surface-variant uppercase tracking-wider mb-6 sm:mb-8 flex items-center gap-2"
           aria-label="Breadcrumb"
         >
           <a href="/stories" className="hover:text-primary transition-colors">
@@ -28,11 +28,11 @@ export default async function NewStoryPage() {
           <span className="text-on-surface">Share yours</span>
         </nav>
 
-        <header className="mb-12">
-          <h1 className="font-display text-4xl font-extrabold tracking-tight text-on-surface mb-4 leading-[1.1]">
+        <header className="mb-8 sm:mb-12">
+          <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface mb-4 leading-[1.1]">
             Share your story
           </h1>
-          <p className="font-body text-lg text-on-surface-variant leading-relaxed">
+          <p className="font-body text-base sm:text-lg text-on-surface-variant leading-relaxed">
             Tell us about your journey as an international student in Melbourne.
             The honest parts, the hard parts, and the moments that changed
             everything.
