@@ -59,7 +59,13 @@ export async function submitFeedback(
   }
 
   if (!res.ok) {
-    console.error("Airtable feedback submission failed:", res.status, res.statusText);
+    const body = await res.text().catch(() => "<unreadable>");
+    console.error(
+      "Airtable feedback submission failed:",
+      res.status,
+      res.statusText,
+      body,
+    );
     return { ok: false, error: "Failed to submit feedback." };
   }
 
