@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AppNav } from "@/components/layout/app-nav";
 import { QueryProvider } from "@/components/providers/query-provider";
+import { FeedbackWidget } from "@/components/patterns/feedback-widget";
 
 export default async function AppLayout({
   children,
@@ -46,6 +47,7 @@ export default async function AppLayout({
         initialUnreadCount={unreadCount ?? 0}
       />
       {children}
+      <FeedbackWidget />
     </QueryProvider>
   );
 }
