@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 import { newPostSchema, type NewPostFormInput } from "@/lib/validation/forum";
 import { createPost } from "@/lib/actions/forums";
 
@@ -117,7 +117,11 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated, isMen
             aria-label="Send reply"
             className="bg-primary text-on-primary w-14 h-14 rounded-2xl flex items-center justify-center shadow-ambient hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none shrink-0"
           >
-            <Send strokeWidth={1.5} className="w-5 h-5" />
+            {isSubmitting ? (
+              <Loader2 strokeWidth={1.5} className="w-5 h-5 animate-spin" />
+            ) : (
+              <Send strokeWidth={1.5} className="w-5 h-5" />
+            )}
           </button>
         </form>
       </div>

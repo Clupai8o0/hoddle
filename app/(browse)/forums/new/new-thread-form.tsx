@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { newThreadSchema, type NewThreadFormInput } from "@/lib/validation/forum";
 import { createThread } from "@/lib/actions/forums";
 import { Button } from "@/components/ui/button";
@@ -154,12 +155,14 @@ export function NewThreadForm({
 
       <div className="flex items-center gap-4">
         <Button type="submit" disabled={isSubmitting} size="lg">
+          {isSubmitting && <Loader2 strokeWidth={1.5} className="w-4 h-4 animate-spin" />}
           {isSubmitting ? "Posting…" : "Post discussion"}
         </Button>
         <Button
           type="button"
           variant="secondary"
           size="lg"
+          disabled={isSubmitting}
           onClick={() => router.back()}
         >
           Cancel
