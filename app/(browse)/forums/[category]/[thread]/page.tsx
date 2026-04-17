@@ -19,8 +19,11 @@ type PostRow = {
   edited_at: string | null;
   parent_post_id: string | null;
   author_id: string;
+  is_anonymous: boolean;
   profiles: { full_name: string | null; avatar_url: string | null } | null;
   forum_reactions: { reaction: "heart" | "thanks" | "helpful"; profile_id: string }[];
+  // Set by masking logic — not from DB
+  isAnonymous?: boolean;
 };
 
 export async function generateMetadata({ params }: PageProps) {
@@ -44,11 +47,16 @@ export default async function ThreadPage({ params }: PageProps) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const { data: userProfile } = user
+    ? await supabase.from("profiles").select("role").eq("id", user.id).single()
+    : { data: null };
+  const isMentor = userProfile?.role === "mentor";
+
   const [{ data: threadData }, { data: categoryData }] = await Promise.all([
     supabase
       .from("forum_threads")
       .select(
-        `id, slug, title, body, category_slug, pinned, locked, created_at, last_activity_at,
+        `id, slug, title, body, category_slug, pinned, locked, is_anonymous, created_at, last_activity_at,
          author_id,
          profiles!forum_threads_author_id_fkey(full_name, avatar_url)`,
       )
@@ -69,7 +77,7 @@ export default async function ThreadPage({ params }: PageProps) {
   const { data: posts } = await supabase
     .from("forum_posts")
     .select(
-      `id, body, created_at, edited_at, parent_post_id, author_id,
+      `id, body, created_at, edited_at, parent_post_id, author_id, is_anonymous,
        profiles!forum_posts_author_id_fkey(full_name, avatar_url),
        forum_reactions(reaction, profile_id)`,
     )
@@ -93,12 +101,25 @@ export default async function ThreadPage({ params }: PageProps) {
     (mentorProfiles ?? []).map((m) => [m.profile_id, m.slug]),
   );
 
-  const typedPosts = (posts ?? []) as unknown as PostRow[];
+  const rawPosts = (posts ?? []) as unknown as PostRow[];
+
+  // Mask anonymous post author identity from non-owners
+  const typedPosts = rawPosts.map((post) => ({
+    ...post,
+    isAnonymous: post.is_anonymous,
+    profiles:
+      post.is_anonymous && user?.id !== post.author_id ? null : post.profiles,
+  }));
   const threadPath = `/forums/${category}/${threadSlug}`;
-  const threadAuthor = threadData.profiles as {
-    full_name: string | null;
-    avatar_url: string | null;
-  } | null;
+  const viewerIsThreadAuthor = user?.id === threadData.author_id;
+  const threadAuthor =
+    threadData.is_anonymous && !viewerIsThreadAuthor
+      ? null
+      : (threadData.profiles as {
+          full_name: string | null;
+          avatar_url: string | null;
+        } | null);
+  const isAnonymousThread = !!threadData.is_anonymous;
 
   // Separate top-level posts from replies (max 2 levels)
   const topLevel = typedPosts.filter((p) => !p.parent_post_id);
@@ -150,7 +171,11 @@ export default async function ThreadPage({ params }: PageProps) {
           <h1 className="font-display text-3xl md:text-4xl font-extrabold text-on-surface tracking-tight mb-6 leading-tight">
             {threadData.title}
           </h1>
-          <AuthorByline profile={threadAuthor} />
+          <AuthorByline
+            profile={threadAuthor}
+            isAnonymous={isAnonymousThread}
+            isOwn={viewerIsThreadAuthor}
+          />
         </header>
 
         {/* Original post body */}
@@ -179,7 +204,7 @@ export default async function ThreadPage({ params }: PageProps) {
           )}
 
           {topLevel.map((post) => {
-            const isMentor = mentorSet.has(post.author_id);
+            const isPostByMentor = mentorSet.has(post.author_id);
             const mentorSlug = mentorSlugMap[post.author_id];
             const postReplies = repliesByParent[post.id] ?? [];
 
@@ -192,7 +217,7 @@ export default async function ThreadPage({ params }: PageProps) {
             return (
               <div key={post.id}>
                 {/* Mentor highlighted post */}
-                {isMentor ? (
+                {isPostByMentor ? (
                   <MentorPost
                     post={post}
                     mentorSlug={mentorSlug}
@@ -208,6 +233,7 @@ export default async function ThreadPage({ params }: PageProps) {
                     currentUserId={user?.id}
                     threadPath={threadPath}
                     isOwn={isOwn}
+                    isAnonymous={post.isAnonymous ?? false}
                   />
                 )}
 
@@ -228,6 +254,7 @@ export default async function ThreadPage({ params }: PageProps) {
                           threadPath={threadPath}
                           isOwn={user?.id === reply.author_id}
                           compact
+                          isAnonymous={reply.isAnonymous ?? false}
                         />
                       );
                     })}
@@ -245,6 +272,7 @@ export default async function ThreadPage({ params }: PageProps) {
         threadPath={threadPath}
         locked={threadData.locked}
         isAuthenticated={!!user}
+        isMentor={isMentor}
       />
     </>
   );
