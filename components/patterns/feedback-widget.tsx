@@ -72,7 +72,7 @@ export function FeedbackWidget() {
             <button
               onClick={() => setOpen(false)}
               aria-label="Close feedback panel"
-              className="text-on-surface-variant hover:text-on-surface transition-colors"
+              className="text-on-surface-variant hover:text-on-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-container"
             >
               <X size={16} strokeWidth={1.5} />
             </button>
