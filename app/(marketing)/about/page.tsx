@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-const C = "max-w-7xl mx-auto px-5 sm:px-10 lg:px-16";
+const C = "max-w-7xl mx-auto px-4 sm:px-10 lg:px-16";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -128,18 +128,18 @@ export default async function AboutPage() {
             tight mission statement below.
         ─────────────────────────────────────────────────── */}
         <section
-          className="relative overflow-hidden pt-32 pb-24 lg:pt-44 lg:pb-32"
+          className="relative overflow-hidden pt-24 pb-16 sm:pt-32 sm:pb-24 lg:pt-44 lg:pb-32"
           style={{
             background:
               "linear-gradient(160deg, var(--color-surface) 0%, var(--color-primary-container) 100%)",
           }}
         >
-          <div className={`${C} grid lg:grid-cols-12 gap-10 items-end`}>
+          <div className={`${C} grid lg:grid-cols-12 gap-8 lg:gap-10 items-end`}>
             <div className="lg:col-span-8">
-              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-primary mb-6">
+              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-primary mb-5 sm:mb-6">
                 Our mission
               </p>
-              <h1 className="font-display font-extrabold text-5xl lg:text-[4rem] xl:text-[4.5rem] text-on-surface leading-[1.04] tracking-tight mb-8">
+              <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-[4rem] xl:text-[4.5rem] text-on-surface leading-[1.04] tracking-tight mb-6 sm:mb-8">
                 One-to-many mentorship
                 <br />
                 for the students{" "}
@@ -147,7 +147,7 @@ export default async function AboutPage() {
                   everyone forgot.
                 </em>
               </h1>
-              <p className="font-body text-xl text-on-surface-variant leading-relaxed max-w-2xl">
+              <p className="font-body text-base sm:text-xl text-on-surface-variant leading-relaxed max-w-2xl">
                 Hoddle Melbourne is a free mentorship platform built for
                 first-year international students. Not tutoring. Not a job
                 board. Peer wisdom from high-achievers who've overcome exactly
@@ -157,14 +157,14 @@ export default async function AboutPage() {
             </div>
 
             {/* Aside stat column */}
-            <div className="lg:col-span-4 lg:text-right flex lg:flex-col gap-10 lg:gap-8 flex-wrap">
+            <div className="lg:col-span-4 lg:text-right flex lg:flex-col gap-6 sm:gap-10 lg:gap-8 flex-wrap">
               {[
                 { n: "500+", label: "Students guided" },
                 { n: "50+", label: "Verified mentors" },
                 { n: "8", label: "Melbourne universities" },
               ].map(({ n, label }) => (
                 <div key={label}>
-                  <span className="font-display font-extrabold text-4xl text-primary block">
+                  <span className="font-display font-extrabold text-3xl sm:text-4xl text-primary block">
                     {n}
                   </span>
                   <span className="font-body text-xs uppercase tracking-widest text-on-surface-variant">
@@ -180,14 +180,14 @@ export default async function AboutPage() {
             Asymmetric pull-quote layout lifted from the landing page narrative.
             bg-surface keeps it light; the blockquote anchors the emotional weight.
         ─────────────────────────────────────────────────── */}
-        <section className="py-28 bg-surface">
-          <div className={`${C} grid lg:grid-cols-12 gap-16 items-start`}>
+        <section className="py-16 sm:py-28 bg-surface">
+          <div className={`${C} grid lg:grid-cols-12 gap-10 sm:gap-16 items-start`}>
             {/* Pull quote — wide left column */}
             <div className="lg:col-span-5 lg:sticky lg:top-28">
-              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-8">
+              <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-6 sm:mb-8">
                 The problem
               </p>
-              <blockquote className="font-display font-semibold text-3xl lg:text-4xl text-primary leading-[1.2] tracking-tight">
+              <blockquote className="font-display font-semibold text-2xl sm:text-3xl lg:text-4xl text-primary leading-[1.2] tracking-tight">
                 &ldquo;It&rsquo;s 2am. The assignment is due at 9. There&rsquo;s
                 no one to call.&rdquo;
               </blockquote>
@@ -197,7 +197,7 @@ export default async function AboutPage() {
             </div>
 
             {/* Narrative body — right column */}
-            <div className="lg:col-span-7 space-y-6 font-body text-lg text-on-surface leading-[1.8]">
+            <div className="lg:col-span-7 space-y-6 font-body text-base sm:text-lg text-on-surface leading-[1.8]">
               <p>
                 Priya arrived in Melbourne in February. She'd spent three years
                 preparing for this — the visa, the tuition fees, the goodbye at
@@ -239,7 +239,7 @@ export default async function AboutPage() {
               <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
                 How it works
               </p>
-              <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1]">
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1]">
                 Three steps. No pressure.
               </h2>
             </div>
@@ -280,7 +280,7 @@ export default async function AboutPage() {
                 <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
                   Who we are
                 </p>
-                <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1] mb-6">
+                <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1] mb-6">
                   Built by people who remember.
                 </h2>
                 <p className="font-body text-lg text-on-surface-variant leading-relaxed">
@@ -367,7 +367,7 @@ export default async function AboutPage() {
               <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
                 The team
               </p>
-              <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1]">
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1]">
                 Research &amp; development.
               </h2>
               <p className="font-body text-lg text-on-surface-variant leading-relaxed mt-4 max-w-xl">
@@ -444,7 +444,7 @@ export default async function AboutPage() {
               <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-primary/50 mb-6">
                 For mentors
               </p>
-              <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-primary tracking-tight leading-[1.1] mb-6">
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-primary tracking-tight leading-[1.1] mb-6">
                 Your hard-won experience
                 <br />
                 deserves an audience.
@@ -510,7 +510,7 @@ export default async function AboutPage() {
             <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-6">
               Ready to start
             </p>
-            <h2 className="font-display font-extrabold text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1] mb-6">
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-on-surface tracking-tight leading-[1.1] mb-6">
               Find your mentor.
               <br />
               Or become one.

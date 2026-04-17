@@ -34,7 +34,7 @@ export default async function EditMentorPage({ params }: PageProps) {
   };
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       <div className="max-w-2xl">
         <nav className="font-body text-sm text-on-surface-variant mb-3">
           <Link href="/admin" className="hover:text-primary transition-colors">
@@ -58,10 +58,10 @@ export default async function EditMentorPage({ params }: PageProps) {
           <span className="text-on-surface">Edit</span>
         </nav>
 
-        <h1 className="font-display text-4xl font-bold text-primary mb-2">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-primary mb-2">
           Edit mentor
         </h1>
-        <p className="font-body text-on-surface-variant text-lg mb-10">
+        <p className="font-body text-on-surface-variant text-base sm:text-lg mb-8 sm:mb-10">
           Update {profile.full_name ?? "this mentor"}&apos;s profile details.
         </p>
 

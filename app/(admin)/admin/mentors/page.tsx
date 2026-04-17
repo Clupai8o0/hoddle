@@ -37,8 +37,8 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
   const pendingInvites = invitesResult.data ?? [];
 
   return (
-    <Container className="py-16">
-      <header className="flex items-start justify-between mb-10">
+    <Container className="py-10 sm:py-16">
+      <header className="flex flex-col md:flex-row md:items-start md:justify-between gap-5 md:gap-6 mb-8 sm:mb-10">
         <div>
           <nav className="font-body text-sm text-on-surface-variant mb-3">
             <Link href="/admin" className="hover:text-primary transition-colors">
@@ -47,11 +47,11 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
             {" / "}
             <span className="text-on-surface">Mentors</span>
           </nav>
-          <h1 className="font-display text-4xl font-bold text-primary">
+          <h1 className="font-display text-3xl sm:text-4xl font-bold text-primary">
             Mentors
           </h1>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <Button variant="primary" size="default" asChild>
             <Link href="/admin/mentors/new">
               <UserPlus size={16} strokeWidth={1.5} aria-hidden="true" />
@@ -68,7 +68,7 @@ export default async function AdminMentorsPage({ searchParams }: PageProps) {
       </header>
 
       {/* Tab strip */}
-      <div className="flex gap-1 mb-8 bg-surface-container-low rounded-lg p-1 w-fit">
+      <div className="flex gap-1 mb-6 sm:mb-8 bg-surface-container-low rounded-lg p-1 w-fit max-w-full overflow-x-auto">
         <Link
           href="/admin/mentors"
           className={`font-body text-sm font-medium px-4 py-2 rounded-md transition-colors ${

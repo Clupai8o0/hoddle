@@ -32,9 +32,9 @@ export function MentorSidebar({ name, headline, isVerified, avatarUrl }: MentorS
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-[72px] flex flex-col gap-2">
-      {/* Identity */}
-      <div className="bg-surface-container rounded-xl p-5 mb-2">
+    <div className="lg:sticky lg:top-[72px] flex flex-col gap-2">
+      {/* Identity — hidden on mobile to avoid duplicating AppNav */}
+      <div className="hidden lg:block bg-surface-container rounded-xl p-5 mb-2">
         <div className="flex items-center gap-3 mb-3">
           <div className="relative w-10 h-10 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0 overflow-hidden">
             {avatarUrl ? (
@@ -73,8 +73,16 @@ export function MentorSidebar({ name, headline, isVerified, avatarUrl }: MentorS
         )}
       </div>
 
-      {/* Nav links */}
-      <nav aria-label="Mentor navigation">
+      {/* Nav links — horizontal scroll tab bar on mobile, vertical list on desktop */}
+      <nav
+        aria-label="Mentor navigation"
+        className={cn(
+          // Mobile: horizontal scrolling tab strip
+          "flex flex-row gap-1 overflow-x-auto -mx-1 px-1 pb-1",
+          // Desktop: vertical stack
+          "lg:flex-col lg:gap-0 lg:overflow-visible lg:mx-0 lg:px-0 lg:pb-0",
+        )}
+      >
         {NAV_ITEMS.map(({ href, label, icon: Icon, exact }) => {
           const isActive = exact ? pathname === href : pathname.startsWith(href) && !(exact && pathname !== href);
           return (
@@ -82,7 +90,8 @@ export function MentorSidebar({ name, headline, isVerified, avatarUrl }: MentorS
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-lg font-body text-sm font-medium transition-colors duration-150",
+                "flex items-center gap-2 rounded-lg font-body text-sm font-medium transition-colors duration-150 whitespace-nowrap",
+                "px-3 py-2 lg:px-4 lg:py-3 lg:gap-3",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
                 isActive
                   ? "bg-primary-container text-primary"

@@ -245,21 +245,21 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-screen bg-surface">
       {/* Header */}
-      <header className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-[20px] border-b border-outline-variant px-8 py-4 flex justify-between items-center">
+      <header className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-[20px] border-b border-outline-variant px-4 sm:px-8 py-3 sm:py-4 flex justify-between items-center gap-3">
         <span className="font-display font-bold text-lg text-primary">
           Hoddle
         </span>
-        <span className="font-body text-xs text-on-surface-variant uppercase tracking-[0.15em]">
+        <span className="font-body text-[10px] sm:text-xs text-on-surface-variant uppercase tracking-[0.15em]">
           Step {step} of {TOTAL_STEPS}
         </span>
       </header>
 
-      <main className="pt-24 pb-20 px-6 max-w-5xl mx-auto">
+      <main className="pt-20 sm:pt-24 pb-16 sm:pb-20 px-4 sm:px-6 max-w-5xl mx-auto">
         <StepIndicator currentStep={step} totalSteps={TOTAL_STEPS} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 items-start">
           {/* ── Content column ── */}
-          <div className="lg:col-span-7 bg-surface-container-lowest rounded-[var(--radius-md)] p-8 md:p-12 shadow-[0_12px_40px_rgba(0,24,66,0.08)]">
+          <div className="lg:col-span-7 bg-surface-container-lowest rounded-[var(--radius-md)] p-6 sm:p-8 md:p-12 shadow-[0_12px_40px_rgba(0,24,66,0.08)]">
 
             {/* ── Step 1: Name ── */}
             {step === 1 && (

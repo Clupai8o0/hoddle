@@ -19,9 +19,9 @@ export default async function NotificationPreferencesPage() {
     .maybeSingle();
 
   return (
-    <Container className="py-16 max-w-2xl">
-      <div className="mb-10">
-        <h1 className="font-display text-3xl font-bold text-primary mb-2">
+    <Container className="py-10 sm:py-16 max-w-2xl">
+      <div className="mb-8 sm:mb-10">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-primary mb-2">
           Notification preferences
         </h1>
         <p className="font-body text-on-surface-variant">

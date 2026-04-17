@@ -40,7 +40,7 @@ export function BrowseNav({ user }: BrowseNavProps) {
             alt="Hoddle"
             width={56}
             height={56}
-            className="object-contain"
+            className="object-contain w-10 h-10 sm:w-14 sm:h-14"
             priority
           />
         </Link>
@@ -70,6 +70,9 @@ export function BrowseNav({ user }: BrowseNavProps) {
               <NavLink href="/messages" active={pathname.startsWith("/messages")}>
                 Messages
               </NavLink>
+              <NavLink href="/search" active={pathname.startsWith("/search")}>
+                Search
+              </NavLink>
             </>
           ) : (
             <>
@@ -94,12 +97,12 @@ export function BrowseNav({ user }: BrowseNavProps) {
       }
       actions={
         user ? (
-          <div className="flex items-center gap-4">
-            {/* Search */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Search — hidden on mobile, available via the mobile menu */}
             <Link
               href="/search"
               aria-label="Search"
-              className={`flex items-center justify-center w-8 h-8 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm ${
+              className={`hidden md:flex items-center justify-center w-8 h-8 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm ${
                 pathname.startsWith("/search")
                   ? "text-primary"
                   : "text-on-surface-variant hover:text-on-surface"
@@ -121,29 +124,63 @@ export function BrowseNav({ user }: BrowseNavProps) {
                 src={user.avatarUrl ?? undefined}
                 size="sm"
               />
-              <span className="font-body text-sm font-medium text-on-surface hidden sm:block">
+              <span className="font-body text-sm font-medium text-on-surface hidden md:block">
                 {firstName}
               </span>
             </div>
 
-            {/* Sign out */}
-            <form action={signOut}>
+            {/* Sign out — hidden on mobile, available via the mobile menu footer */}
+            <form action={signOut} className="hidden md:block">
               <button
                 type="submit"
                 className="flex items-center gap-1.5 font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
                 aria-label="Sign out"
               >
                 <LogOut size={15} strokeWidth={1.5} />
-                <span className="hidden sm:block">Sign out</span>
+                <span className="hidden lg:block">Sign out</span>
               </button>
             </form>
           </div>
         ) : (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Button asChild variant="ghost" size="sm">
               <Link href="/login">Sign in</Link>
             </Button>
             <Button asChild size="sm">
+              <Link href="/signup">Join free</Link>
+            </Button>
+          </div>
+        )
+      }
+      mobileMenuFooter={
+        user ? (
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Avatar
+                name={user.name}
+                src={user.avatarUrl ?? undefined}
+                size="sm"
+              />
+              <span className="font-body text-sm font-medium text-on-surface truncate">
+                {firstName}
+              </span>
+            </div>
+            <form action={signOut}>
+              <button
+                type="submit"
+                className="flex items-center gap-1.5 font-body text-sm text-on-surface-variant hover:text-on-surface transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm px-3 py-2"
+              >
+                <LogOut size={15} strokeWidth={1.5} />
+                Sign out
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Button asChild variant="ghost" size="sm" className="flex-1">
+              <Link href="/login">Sign in</Link>
+            </Button>
+            <Button asChild size="sm" className="flex-1">
               <Link href="/signup">Join free</Link>
             </Button>
           </div>

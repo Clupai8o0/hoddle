@@ -147,7 +147,7 @@ export default async function ContentArticlePage({ params }: PageProps) {
       : null;
 
   return (
-    <Container className="py-12 lg:py-16">
+    <Container className="py-8 sm:py-12 lg:py-16">
       <ViewTracker contentId={item.id} />
 
       {/* Article structured data */}

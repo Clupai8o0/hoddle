@@ -51,20 +51,20 @@ export default async function MentorSessionsPage() {
   const typedPast = (past ?? []) as unknown as Session[];
 
   return (
-    <div className="space-y-10">
-      <header className="flex items-start justify-between">
-        <div>
+    <div className="space-y-8 sm:space-y-10">
+      <header className="flex items-start justify-between gap-3 flex-wrap">
+        <div className="min-w-0">
           <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-1">
             Live Q&amp;As
           </p>
-          <h1 className="font-display font-bold text-3xl text-primary">
+          <h1 className="font-display font-bold text-2xl sm:text-3xl text-primary">
             Sessions
           </h1>
         </div>
         <Button asChild variant="primary" size="default">
           <Link href="/mentor/sessions/new">
             <Plus size={15} strokeWidth={1.5} aria-hidden="true" />
-            Schedule session
+            <span className="whitespace-nowrap">Schedule session</span>
           </Link>
         </Button>
       </header>
@@ -132,7 +132,7 @@ function SessionCard({
   return (
     <Link
       href={`/mentor/sessions/${session.id}`}
-      className="group bg-surface-container rounded-xl px-5 py-5 flex items-start justify-between gap-4 hover:bg-surface-container-high transition-colors"
+      className="group bg-surface-container rounded-xl px-4 sm:px-5 py-4 sm:py-5 flex items-start justify-between gap-3 sm:gap-4 hover:bg-surface-container-high transition-colors"
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-2 flex-wrap">

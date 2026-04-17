@@ -40,7 +40,7 @@ export default function InviteMentorPage() {
 
   if (invitedEmail) {
     return (
-      <Container className="py-16">
+      <Container className="py-10 sm:py-16">
         <div className="max-w-lg">
           <div className="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center mb-8">
             <CheckCircle
@@ -50,10 +50,10 @@ export default function InviteMentorPage() {
               aria-hidden="true"
             />
           </div>
-          <h1 className="font-display text-3xl font-bold text-primary mb-3">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold text-primary mb-3">
             Invite sent.
           </h1>
-          <p className="font-body text-on-surface-variant text-lg leading-relaxed">
+          <p className="font-body text-on-surface-variant text-base sm:text-lg leading-relaxed">
             A signup link has been sent to{" "}
             <span className="text-on-surface font-medium">{invitedEmail}</span>.
             It expires in 7 days.
@@ -79,7 +79,7 @@ export default function InviteMentorPage() {
   }
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       <div className="max-w-lg">
         <nav className="font-body text-sm text-on-surface-variant mb-3">
           <Link href="/admin" className="hover:text-primary transition-colors">
@@ -96,10 +96,10 @@ export default function InviteMentorPage() {
           <span className="text-on-surface">Invite</span>
         </nav>
 
-        <h1 className="font-display text-4xl font-bold text-primary mb-2">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-primary mb-2">
           Invite a mentor
         </h1>
-        <p className="font-body text-on-surface-variant text-lg mb-10">
+        <p className="font-body text-on-surface-variant text-base sm:text-lg mb-8 sm:mb-10">
           Send a secure signup link. The mentor must use the same email address
           to create their account.
         </p>

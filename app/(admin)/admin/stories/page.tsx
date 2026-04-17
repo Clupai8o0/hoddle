@@ -45,7 +45,7 @@ export default async function AdminStoriesPage() {
   const typedRecent = (recent ?? []) as unknown as StoryRow[];
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       <nav className="font-body text-sm text-on-surface-variant mb-6">
         <Link href="/admin" className="hover:text-primary transition-colors">
           Admin
@@ -54,11 +54,11 @@ export default async function AdminStoriesPage() {
         <span className="text-on-surface">Stories</span>
       </nav>
 
-      <header className="mb-12">
-        <h1 className="font-display text-4xl font-bold text-primary mb-2">
+      <header className="mb-8 sm:mb-12">
+        <h1 className="font-display text-3xl sm:text-4xl font-bold text-primary mb-2">
           Story moderation
         </h1>
-        <p className="font-body text-on-surface-variant text-lg">
+        <p className="font-body text-on-surface-variant text-base sm:text-lg">
           Review submitted stories and approve or reject them for publication.
         </p>
       </header>

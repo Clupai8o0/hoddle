@@ -64,17 +64,17 @@ export function AuthShell({
       {/* ── Form panel ── */}
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Mobile wordmark */}
-        <div className="lg:hidden px-8 pt-8">
+        <div className="lg:hidden px-5 sm:px-8 pt-6 sm:pt-8">
           <Image
             src="/logo-light.png"
             alt="Hoddle"
             width={56}
             height={56}
-            className="object-contain"
+            className="object-contain w-12 h-12 sm:w-14 sm:h-14"
           />
         </div>
 
-        <div className="flex-1 flex flex-col justify-center px-8 py-12 sm:px-12 lg:px-16 xl:px-24">
+        <div className="flex-1 flex flex-col justify-center px-5 py-8 sm:px-12 sm:py-12 lg:px-16 xl:px-24">
           {children}
         </div>
       </div>

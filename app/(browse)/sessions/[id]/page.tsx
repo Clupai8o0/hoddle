@@ -102,7 +102,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
   };
 
   return (
-    <Container className="py-12 lg:py-16">
+    <Container className="py-8 sm:py-12 lg:py-16">
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
@@ -117,7 +117,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
         </span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
         {/* ── Main ── */}
         <div className="lg:col-span-7">
           {/* Status + title */}

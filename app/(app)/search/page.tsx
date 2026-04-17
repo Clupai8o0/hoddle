@@ -100,9 +100,9 @@ export default async function SearchPage({ searchParams }: PageProps) {
   const hasResults = totalResults > 0;
 
   return (
-    <Container className="py-16 max-w-3xl">
+    <Container className="py-10 sm:py-16 max-w-3xl">
       {/* Search form */}
-      <form method="GET" action="/search" className="mb-12">
+      <form method="GET" action="/search" className="mb-8 sm:mb-12">
         <label htmlFor="search-input" className="sr-only">
           Search Hoddle
         </label>

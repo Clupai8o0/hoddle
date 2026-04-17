@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 // ─────────────────────────────────────────
 // Layout constant
 // ─────────────────────────────────────────
-const C = "max-w-7xl mx-auto px-5 sm:px-10 lg:px-16";
+const C = "max-w-7xl mx-auto px-4 sm:px-10 lg:px-16";
 
 // ─────────────────────────────────────────
 // Time-aware greeting
@@ -266,39 +266,39 @@ export default async function DashboardPage() {
           Asymmetric grid: 8/12 editorial greeting, 4/12 meta column.
       ───────────────────────────────────────────────────────────────── */}
       <section
-        className="py-16 lg:py-24"
+        className="py-10 sm:py-16 lg:py-24"
         style={{
           background:
             "linear-gradient(160deg, var(--color-surface) 0%, var(--color-primary-container) 100%)",
         }}
       >
-        <div className={`${C} grid lg:grid-cols-12 gap-8 items-end`}>
+        <div className={`${C} grid lg:grid-cols-12 gap-6 lg:gap-8 items-end`}>
           {/* Greeting */}
           <div className="lg:col-span-8">
-            <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-primary mb-4 block">
+            <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-primary mb-3 sm:mb-4 block">
               Your dashboard
             </span>
-            <p className="font-display font-semibold text-2xl lg:text-3xl text-on-surface-variant leading-tight mb-1">
+            <p className="font-display font-semibold text-xl sm:text-2xl lg:text-3xl text-on-surface-variant leading-tight mb-1">
               {greeting}
             </p>
-            <h1 className="font-display font-extrabold text-5xl lg:text-[4.25rem] text-primary leading-[1.05] tracking-tight">
+            <h1 className="font-display font-extrabold text-4xl sm:text-5xl lg:text-[4.25rem] text-primary leading-[1.05] tracking-tight break-words">
               {firstName}.
             </h1>
-            <p className="font-body text-lg text-on-surface-variant mt-5 max-w-lg leading-relaxed">
+            <p className="font-body text-base sm:text-lg text-on-surface-variant mt-4 sm:mt-5 max-w-lg leading-relaxed">
               Your mentors, sessions, and community are ready. Let&apos;s get
               started.
             </p>
           </div>
 
           {/* Meta column */}
-          <div className="lg:col-span-4 flex flex-col gap-2 lg:items-end">
+          <div className="lg:col-span-4 flex flex-wrap lg:flex-col gap-2 lg:items-end">
             {profile?.university && (
-              <p className="font-body text-sm text-on-surface-variant text-right">
+              <p className="font-body text-sm text-on-surface-variant lg:text-right">
                 {profile.university}
               </p>
             )}
             {profile?.country_of_origin && (
-              <p className="font-body text-sm text-on-surface-variant text-right">
+              <p className="font-body text-sm text-on-surface-variant lg:text-right">
                 From {profile.country_of_origin}
               </p>
             )}
@@ -313,10 +313,10 @@ export default async function DashboardPage() {
           Left 8 cols: onboarding summary cards (goals, challenges, fields)
           Right 4 cols: journey progress sidebar
       ───────────────────────────────────────────────────────────────── */}
-      <section className={`${C} mt-12 grid lg:grid-cols-12 gap-8`}>
+      <section className={`${C} mt-8 sm:mt-12 grid lg:grid-cols-12 gap-6 lg:gap-8`}>
 
         {/* ── Left: Onboarding summary ────────────────── */}
-        <div className="lg:col-span-8 flex flex-col gap-6">
+        <div className="lg:col-span-8 flex flex-col gap-5 sm:gap-6 min-w-0">
           <div className="flex items-center justify-between">
             <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant">
               Your profile
@@ -445,7 +445,7 @@ export default async function DashboardPage() {
           Live recommendations from the matching algorithm (§10).
           Falls back to "Explore all mentors" CTA if none computed yet.
       ───────────────────────────────────────────────────────────────── */}
-      <section className={`${C} mt-20`}>
+      <section className={`${C} mt-12 sm:mt-20`}>
         <div className="flex items-baseline justify-between mb-8">
           <div>
             <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
@@ -466,7 +466,7 @@ export default async function DashboardPage() {
         </div>
 
         {mentorRecs.length > 0 ? (
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {mentorRecs.slice(0, 3).map(({ mentor, reasoning, mentorId }) => (
               <div key={mentor.slug} className="flex flex-col gap-2">
                 <MentorCard mentor={mentor} />
@@ -504,7 +504,7 @@ export default async function DashboardPage() {
 
       {/* ── Latest content ───────────────────────────────────────────── */}
       {(latestContent ?? []).length > 0 && (
-        <section className={`${C} mt-16`}>
+        <section className={`${C} mt-10 sm:mt-16`}>
           <div className="flex items-baseline justify-between mb-6">
             <div>
               <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
@@ -521,7 +521,7 @@ export default async function DashboardPage() {
               Browse all
             </Link>
           </div>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {(latestContent ?? []).map((item) => {
               const mentorName =
                 ((Array.isArray(item.mentors) ? item.mentors[0] : item.mentors) as {
@@ -556,7 +556,7 @@ export default async function DashboardPage() {
 
       {/* ── Upcoming registered sessions ─────────────────────────────── */}
       {upcomingSessions.length > 0 && (
-        <section className={`${C} mt-16`}>
+        <section className={`${C} mt-10 sm:mt-16`}>
           <div className="flex items-baseline justify-between mb-6">
             <div>
               <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
@@ -606,7 +606,7 @@ export default async function DashboardPage() {
 
       {/* ── Recent forum activity ─────────────────────────────────────── */}
       {(recentThreads ?? []).length > 0 && (
-        <section className={`${C} mt-16`}>
+        <section className={`${C} mt-10 sm:mt-16`}>
           <div className="flex items-baseline justify-between mb-6">
             <div>
               <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
@@ -644,7 +644,7 @@ export default async function DashboardPage() {
 
       {/* ── Featured story ────────────────────────────────────────────── */}
       {featuredStory && (
-        <section className={`${C} mt-16`}>
+        <section className={`${C} mt-10 sm:mt-16`}>
           <div className="mb-6">
             <span className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant block mb-2">
               Inspiration

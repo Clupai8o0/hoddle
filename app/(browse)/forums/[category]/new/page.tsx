@@ -42,17 +42,17 @@ export default async function CategoryNewThreadPage({ params }: PageProps) {
   if (!currentCat) notFound();
 
   return (
-    <Container className="py-16 max-w-2xl">
+    <Container className="py-10 sm:py-16 max-w-2xl">
       <Link
         href={`/forums/${category}`}
-        className="inline-flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors font-body mb-8"
+        className="inline-flex items-center gap-1 text-sm text-on-surface-variant hover:text-primary transition-colors font-body mb-6 sm:mb-8"
       >
         <ChevronLeft strokeWidth={1.5} className="w-4 h-4" />
         Back to {currentCat.name}
       </Link>
 
-      <header className="mb-10">
-        <h1 className="font-display text-4xl font-extrabold tracking-tight text-on-surface mb-3">
+      <header className="mb-8 sm:mb-10">
+        <h1 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-on-surface mb-3">
           Start a discussion
         </h1>
         <p className="font-body text-on-surface-variant">

@@ -39,7 +39,7 @@ export default async function AdminMentorDetailPage({ params }: PageProps) {
   const isVerified = !!mentor.verified_at;
 
   return (
-    <Container className="py-16">
+    <Container className="py-10 sm:py-16">
       <nav className="font-body text-sm text-on-surface-variant mb-6">
         <Link href="/admin" className="hover:text-primary transition-colors">
           Admin
@@ -57,7 +57,7 @@ export default async function AdminMentorDetailPage({ params }: PageProps) {
         </span>
       </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
         {/* Left column — profile */}
         <div className="lg:col-span-2 space-y-8">
           <div className="flex items-start gap-5">
@@ -76,11 +76,11 @@ export default async function AdminMentorDetailPage({ params }: PageProps) {
               )}
             </div>
             <div>
-              <h1 className="font-display text-3xl font-bold text-primary leading-tight">
+              <h1 className="font-display text-2xl sm:text-3xl font-bold text-primary leading-tight">
                 {profile.full_name ?? "Unnamed mentor"}
               </h1>
               {mentor.headline && (
-                <p className="font-body text-on-surface-variant text-lg mt-1">
+                <p className="font-body text-on-surface-variant text-base sm:text-lg mt-1">
                   {mentor.headline}
                 </p>
               )}

@@ -28,7 +28,7 @@ export default async function EditStudentProfilePage() {
   if (profile?.role === "mentor") redirect("/mentor/profile/edit");
 
   return (
-    <div className="max-w-2xl mx-auto px-5 sm:px-10 py-12 lg:py-16 space-y-8">
+    <div className="max-w-2xl mx-auto px-4 sm:px-10 py-8 sm:py-12 lg:py-16 space-y-6 sm:space-y-8">
       <header>
         <Link
           href="/dashboard"
@@ -39,7 +39,7 @@ export default async function EditStudentProfilePage() {
         <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mt-6 mb-1">
           Your profile
         </p>
-        <h1 className="font-display font-bold text-3xl text-primary">Edit Profile</h1>
+        <h1 className="font-display font-bold text-2xl sm:text-3xl text-primary">Edit Profile</h1>
         <p className="font-body text-on-surface-variant mt-2">
           Update your goals, challenges, and areas of interest so your mentor
           recommendations stay relevant.

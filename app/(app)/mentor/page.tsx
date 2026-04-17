@@ -59,20 +59,20 @@ export default async function MentorDashboardPage() {
   ];
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 sm:space-y-10">
       {/* Welcome */}
       <section
-        className="rounded-2xl p-8 lg:p-10"
+        className="rounded-2xl p-6 sm:p-8 lg:p-10"
         style={{
           background:
             "linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary) 100%)",
         }}
       >
         <p className="font-body text-on-primary/60 text-sm mb-1">{getGreeting()}</p>
-        <h1 className="font-display font-bold text-3xl lg:text-4xl text-on-primary mb-1">
+        <h1 className="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-on-primary mb-1 break-words">
           {firstName}.
         </h1>
-        <p className="font-body text-on-primary/70 leading-relaxed max-w-md">
+        <p className="font-body text-sm sm:text-base text-on-primary/70 leading-relaxed max-w-md">
           Your mentorship hub — content, sessions, and student questions, all in one place.
         </p>
       </section>
@@ -82,16 +82,16 @@ export default async function MentorDashboardPage() {
         <p className="font-body text-xs font-medium uppercase tracking-[0.18em] text-on-surface-variant mb-4">
           Your impact
         </p>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           {stats.map(({ label, value }) => (
             <div
               key={label}
-              className="bg-surface-container rounded-xl p-5"
+              className="bg-surface-container rounded-xl p-4 sm:p-5"
             >
-              <p className="font-display font-bold text-3xl text-primary mb-1">
+              <p className="font-display font-bold text-2xl sm:text-3xl text-primary mb-1">
                 {value}
               </p>
-              <p className="font-body text-sm text-on-surface-variant">{label}</p>
+              <p className="font-body text-xs sm:text-sm text-on-surface-variant">{label}</p>
             </div>
           ))}
         </div>
@@ -133,11 +133,11 @@ export default async function MentorDashboardPage() {
             {contentItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between bg-surface-container rounded-xl px-5 py-4"
+                className="flex items-center justify-between bg-surface-container rounded-xl px-4 sm:px-5 py-3 sm:py-4 gap-3"
               >
-                <div className="flex items-center gap-4 min-w-0">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-4 min-w-0 flex-1">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <Tag variant={item.published_at ? "success" : "muted"} className="text-[10px] px-2 py-0.5">
                         {item.published_at ? "Published" : "Draft"}
                       </Tag>
@@ -150,8 +150,8 @@ export default async function MentorDashboardPage() {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 flex-shrink-0 ml-4">
-                  <span className="flex items-center gap-1 font-body text-xs text-on-surface-variant">
+                <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                  <span className="hidden sm:flex items-center gap-1 font-body text-xs text-on-surface-variant">
                     <Eye size={12} strokeWidth={1.5} aria-hidden="true" />
                     {(item.view_count ?? 0).toLocaleString()}
                   </span>
@@ -221,10 +221,10 @@ export default async function MentorDashboardPage() {
               return (
                 <div
                   key={session.id}
-                  className="flex items-center justify-between bg-surface-container rounded-xl px-5 py-4"
+                  className="flex items-center justify-between bg-surface-container rounded-xl px-4 sm:px-5 py-3 sm:py-4 gap-3"
                 >
-                  <div>
-                    <p className="font-body font-medium text-sm text-on-surface mb-1">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-body font-medium text-sm text-on-surface mb-1 truncate">
                       {session.title}
                     </p>
                     <p className="font-body text-xs text-on-surface-variant">
@@ -233,7 +233,7 @@ export default async function MentorDashboardPage() {
                   </div>
                   <Link
                     href="/mentor/sessions"
-                    className="flex items-center gap-1 font-body text-xs text-primary hover:underline underline-offset-2"
+                    className="flex items-center gap-1 font-body text-xs text-primary hover:underline underline-offset-2 shrink-0"
                   >
                     View
                     <ArrowRight size={12} strokeWidth={1.5} aria-hidden="true" />
