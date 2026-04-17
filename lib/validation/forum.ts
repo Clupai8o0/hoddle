@@ -43,9 +43,18 @@ export const editThreadSchema = z.object({
     .max(10000, "Body must be under 10,000 characters"),
 });
 
+export const REACTION_TYPES = [
+  "heart",
+  "thanks",
+  "helpful",
+  "insightful",
+] as const;
+
+export type ReactionType = (typeof REACTION_TYPES)[number];
+
 export const reactionSchema = z.object({
   post_id: z.string().uuid(),
-  reaction: z.enum(["heart", "thanks", "helpful"]),
+  reaction: z.enum(REACTION_TYPES),
 });
 
 // Output types (after defaults applied) — used by server actions

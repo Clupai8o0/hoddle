@@ -372,6 +372,7 @@ export type Database = {
           slug: string
           title: string
           updated_at: string
+          view_count: number
         }
         Insert: {
           author_id: string
@@ -387,6 +388,7 @@ export type Database = {
           slug: string
           title: string
           updated_at?: string
+          view_count?: number
         }
         Update: {
           author_id?: string
@@ -402,6 +404,7 @@ export type Database = {
           slug?: string
           title?: string
           updated_at?: string
+          view_count?: number
         }
         Relationships: [
           {
@@ -958,6 +961,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      bump_thread_view: { Args: { thread_slug: string }; Returns: undefined }
       can_chat: { Args: { user_a: string; user_b: string }; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
       is_conversation_participant: {
@@ -976,7 +980,7 @@ export type Database = {
         | "session_starting_soon"
         | "success_story_approved"
         | "new_chat_message"
-      reaction_type: "heart" | "thanks" | "helpful"
+      reaction_type: "heart" | "thanks" | "helpful" | "insightful"
       session_status: "scheduled" | "live" | "completed" | "cancelled"
       story_status: "draft" | "pending" | "published" | "rejected"
       user_role: "student" | "mentor" | "admin"
@@ -1120,7 +1124,7 @@ export const Constants = {
         "success_story_approved",
         "new_chat_message",
       ],
-      reaction_type: ["heart", "thanks", "helpful"],
+      reaction_type: ["heart", "thanks", "helpful", "insightful"],
       session_status: ["scheduled", "live", "completed", "cancelled"],
       story_status: ["draft", "pending", "published", "rejected"],
       user_role: ["student", "mentor", "admin"],

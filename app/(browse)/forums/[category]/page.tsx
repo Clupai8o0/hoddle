@@ -19,6 +19,7 @@ type ThreadRow = {
   locked: boolean;
   last_activity_at: string;
   is_anonymous: boolean;
+  view_count: number;
   profiles: { full_name: string | null; avatar_url: string | null } | null;
   forum_posts: { count: number }[];
 };
@@ -53,7 +54,7 @@ export default async function CategoryPage({ params }: PageProps) {
       supabase
         .from("forum_threads")
         .select(
-          `id, slug, title, category_slug, pinned, locked, last_activity_at, is_anonymous,
+          `id, slug, title, category_slug, pinned, locked, last_activity_at, is_anonymous, view_count,
            profiles!forum_threads_author_id_fkey(full_name, avatar_url),
            forum_posts(count)`,
         )
@@ -210,6 +211,14 @@ function CategoryThreadRow({ thread }: { thread: ThreadRow }) {
           </div>
           <div className="text-[10px] uppercase tracking-widest text-on-surface-variant font-body">
             Replies
+          </div>
+        </div>
+        <div className="text-center">
+          <div className="font-display font-bold text-lg text-on-surface">
+            {(thread.view_count ?? 0).toLocaleString()}
+          </div>
+          <div className="text-[10px] uppercase tracking-widest text-on-surface-variant font-body">
+            Views
           </div>
         </div>
       </div>
