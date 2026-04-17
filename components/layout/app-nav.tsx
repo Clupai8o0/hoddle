@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LogOut, Search } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Avatar } from "@/components/ui/avatar";
 import { NotificationBell } from "@/components/layout/notification-bell";
@@ -73,26 +73,10 @@ export function AppNav({
               </span>
             )}
           </NavLink>
-          <NavLink href="/search" active={activePath.startsWith("/search")}>
-            Search
-          </NavLink>
         </>
       }
       actions={
         <div className="flex items-center gap-3 sm:gap-4">
-          {/* Search — hidden on mobile, available via the mobile menu */}
-          <Link
-            href="/search"
-            aria-label="Search"
-            className={`hidden md:flex items-center justify-center w-8 h-8 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm ${
-              activePath.startsWith("/search")
-                ? "text-primary"
-                : "text-on-surface-variant hover:text-on-surface"
-            }`}
-          >
-            <Search size={17} strokeWidth={1.5} />
-          </Link>
-
           {/* Notification bell */}
           <NotificationBell userId={userId} initialUnreadCount={initialUnreadCount} />
 
