@@ -40,6 +40,13 @@ export async function createThread(
   const userId = await getCurrentUserId(supabase);
   if (!userId) return { ok: false, error: "Not authenticated." };
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", userId)
+    .single();
+  const isMentor = profile?.role === "mentor";
+
   const slug =
     parsed.data.title
       .toLowerCase()
@@ -57,6 +64,7 @@ export async function createThread(
       category_slug: parsed.data.category_slug,
       author_id: userId,
       slug,
+      is_anonymous: isMentor ? false : parsed.data.is_anonymous,
     })
     .select("id, slug, category_slug")
     .single();
@@ -88,6 +96,14 @@ export async function createPost(
   const supabase = await createClient();
   const userId = await getCurrentUserId(supabase);
   if (!userId) return { ok: false, error: "Not authenticated." };
+
+  // Fetch role to enforce mentor cannot post anonymously
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", userId)
+    .single();
+  const isMentor = profile?.role === "mentor";
 
   const { data: thread } = await supabase
     .from("forum_threads")
@@ -123,6 +139,7 @@ export async function createPost(
     author_id: userId,
     body: parsed.data.body,
     parent_post_id: parsed.data.parent_post_id ?? null,
+    is_anonymous: isMentor ? false : parsed.data.is_anonymous,
   });
 
   if (error) return { ok: false, error: "Failed to post reply." };
