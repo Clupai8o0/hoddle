@@ -56,7 +56,7 @@ export function EditThreadControls({
       setIsDeleting(false);
       return;
     }
-    router.push(categoryPath);
+    router.push("/forums");
   }
 
   if (mode === "idle") {
