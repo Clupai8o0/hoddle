@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Trash2, X, Check } from "lucide-react";
+import { Pencil, Trash2, X, Check, Loader2 } from "lucide-react";
 import { editThreadSchema, type EditThreadInput } from "@/lib/validation/forum";
 import { editThread, deleteThread } from "@/lib/actions/forums";
 
@@ -26,6 +26,7 @@ export function EditThreadControls({
   const router = useRouter();
   const [mode, setMode] = useState<"idle" | "editing" | "confirming-delete">("idle");
   const [serverError, setServerError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const {
     register,
@@ -48,10 +49,11 @@ export function EditThreadControls({
 
   async function onDelete() {
     setServerError(null);
+    setIsDeleting(true);
     const result = await deleteThread(threadId, categoryPath);
     if (!result.ok) {
       setServerError(result.error);
-      setMode("idle");
+      setIsDeleting(false);
       return;
     }
     router.push(categoryPath);
@@ -59,21 +61,21 @@ export function EditThreadControls({
 
   if (mode === "idle") {
     return (
-      <div className="flex items-center gap-3 mt-6">
+      <div className="flex items-center gap-3 mt-8 pt-6 border-t border-outline-variant">
         <button
           onClick={() => setMode("editing")}
-          className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary transition-colors font-body"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body text-sm font-medium"
           aria-label="Edit thread"
         >
-          <Pencil strokeWidth={1.5} className="w-3.5 h-3.5" />
-          Edit
+          <Pencil strokeWidth={1.5} className="w-4 h-4" />
+          Edit post
         </button>
         <button
           onClick={() => setMode("confirming-delete")}
-          className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-error transition-colors font-body"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-on-surface-variant hover:bg-error-container hover:text-error transition-colors font-body text-sm font-medium"
           aria-label="Delete thread"
         >
-          <Trash2 strokeWidth={1.5} className="w-3.5 h-3.5" />
+          <Trash2 strokeWidth={1.5} className="w-4 h-4" />
           Delete
         </button>
       </div>
@@ -82,24 +84,37 @@ export function EditThreadControls({
 
   if (mode === "confirming-delete") {
     return (
-      <div className="mt-6 space-y-3">
-        <p className="text-sm text-on-surface-variant font-body">
-          Delete this thread? All replies will also be removed. This cannot be undone.
-        </p>
+      <div className="mt-8 pt-6 border-t border-outline-variant space-y-4">
+        <div className="bg-error-container rounded-2xl px-5 py-4">
+          <p className="font-body text-sm text-on-surface font-medium mb-1">
+            Delete this thread?
+          </p>
+          <p className="font-body text-sm text-on-surface-variant">
+            All replies will also be removed. This cannot be undone.
+          </p>
+        </div>
         {serverError && (
-          <p className="text-xs text-error font-body">{serverError}</p>
+          <p className="text-sm text-error font-body bg-error-container px-4 py-3 rounded-xl">
+            {serverError}
+          </p>
         )}
         <div className="flex items-center gap-3">
           <button
             onClick={onDelete}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-error/10 text-error text-sm font-body font-medium hover:bg-error/20 transition-colors"
+            disabled={isDeleting}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-error text-on-primary text-sm font-body font-semibold hover:opacity-90 transition-opacity disabled:opacity-60 disabled:pointer-events-none"
           >
-            <Trash2 strokeWidth={1.5} className="w-4 h-4" />
-            Delete thread
+            {isDeleting ? (
+              <Loader2 strokeWidth={1.5} className="w-4 h-4 animate-spin" />
+            ) : (
+              <Trash2 strokeWidth={1.5} className="w-4 h-4" />
+            )}
+            {isDeleting ? "Deleting…" : "Delete thread"}
           </button>
           <button
             onClick={() => setMode("idle")}
-            className="flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-on-surface transition-colors font-body"
+            disabled={isDeleting}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface transition-colors font-body text-sm disabled:opacity-50"
           >
             <X strokeWidth={1.5} className="w-4 h-4" />
             Cancel
@@ -111,10 +126,14 @@ export function EditThreadControls({
 
   // editing mode
   return (
-    <form onSubmit={handleSubmit(onEdit)} className="mt-6 space-y-4">
+    <form onSubmit={handleSubmit(onEdit)} className="mt-8 pt-6 border-t border-outline-variant space-y-5">
       <input type="hidden" {...register("id")} />
+
       <div className="space-y-2">
-        <label htmlFor="edit-thread-title" className="block font-body text-sm font-semibold text-on-surface">
+        <label
+          htmlFor="edit-thread-title"
+          className="block font-body text-sm font-semibold text-on-surface"
+        >
           Title
         </label>
         <input
@@ -124,39 +143,52 @@ export function EditThreadControls({
           className="w-full bg-surface-container-low rounded-xl px-4 py-3 font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 border-0"
         />
         {errors.title && (
-          <p className="text-xs text-error font-body">{errors.title.message}</p>
+          <p className="text-sm text-error font-body">{errors.title.message}</p>
         )}
       </div>
+
       <div className="space-y-2">
-        <label htmlFor="edit-thread-body" className="block font-body text-sm font-semibold text-on-surface">
+        <label
+          htmlFor="edit-thread-body"
+          className="block font-body text-sm font-semibold text-on-surface"
+        >
           Details
         </label>
         <textarea
           id="edit-thread-body"
           {...register("body")}
-          rows={8}
+          rows={10}
           className="w-full bg-surface-container-low rounded-xl px-4 py-3 font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 border-0 resize-none"
         />
         {errors.body && (
-          <p className="text-xs text-error font-body">{errors.body.message}</p>
+          <p className="text-sm text-error font-body">{errors.body.message}</p>
         )}
       </div>
+
       {serverError && (
-        <p className="text-xs text-error font-body">{serverError}</p>
+        <p className="text-sm text-error font-body bg-error-container px-4 py-3 rounded-xl">
+          {serverError}
+        </p>
       )}
+
       <div className="flex items-center gap-3">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-on-primary text-sm font-body font-medium hover:bg-primary-dark transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-body font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:pointer-events-none"
         >
-          <Check strokeWidth={1.5} className="w-4 h-4" />
+          {isSubmitting ? (
+            <Loader2 strokeWidth={1.5} className="w-4 h-4 animate-spin" />
+          ) : (
+            <Check strokeWidth={1.5} className="w-4 h-4" />
+          )}
           {isSubmitting ? "Saving…" : "Save changes"}
         </button>
         <button
           type="button"
           onClick={() => setMode("idle")}
-          className="flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-on-surface transition-colors font-body"
+          disabled={isSubmitting}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface transition-colors font-body text-sm disabled:opacity-50"
         >
           <X strokeWidth={1.5} className="w-4 h-4" />
           Cancel

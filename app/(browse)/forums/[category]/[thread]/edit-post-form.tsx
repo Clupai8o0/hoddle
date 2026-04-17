@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Trash2, X, Check } from "lucide-react";
+import { Pencil, Trash2, X, Check, Loader2 } from "lucide-react";
 import { editPostSchema, type EditPostInput } from "@/lib/validation/forum";
 import { editPost, deletePost } from "@/lib/actions/forums";
 
@@ -18,10 +18,9 @@ export function EditPostControls({
   initialBody,
   threadPath,
 }: EditPostFormProps) {
-  const [mode, setMode] = useState<"idle" | "editing" | "confirming-delete">(
-    "idle",
-  );
+  const [mode, setMode] = useState<"idle" | "editing" | "confirming-delete">("idle");
   const [serverError, setServerError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const {
     register,
@@ -44,19 +43,20 @@ export function EditPostControls({
 
   async function onDelete() {
     setServerError(null);
+    setIsDeleting(true);
     const result = await deletePost(postId, threadPath);
     if (!result.ok) {
       setServerError(result.error);
-      setMode("idle");
+      setIsDeleting(false);
     }
   }
 
   if (mode === "idle") {
     return (
-      <div className="flex items-center gap-3 mt-4">
+      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-outline-variant">
         <button
           onClick={() => setMode("editing")}
-          className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary transition-colors font-body"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body text-sm font-medium"
           aria-label="Edit post"
         >
           <Pencil strokeWidth={1.5} className="w-3.5 h-3.5" />
@@ -64,7 +64,7 @@ export function EditPostControls({
         </button>
         <button
           onClick={() => setMode("confirming-delete")}
-          className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-error transition-colors font-body"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-error-container hover:text-error transition-colors font-body text-sm font-medium"
           aria-label="Delete post"
         >
           <Trash2 strokeWidth={1.5} className="w-3.5 h-3.5" />
@@ -76,26 +76,34 @@ export function EditPostControls({
 
   if (mode === "confirming-delete") {
     return (
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 pt-4 border-t border-outline-variant space-y-3">
         <p className="text-sm text-on-surface-variant font-body">
-          Delete this post? This cannot be undone.
+          Delete this reply? This cannot be undone.
         </p>
         {serverError && (
-          <p className="text-xs text-error font-body">{serverError}</p>
+          <p className="text-sm text-error font-body bg-error-container px-3 py-2 rounded-lg">
+            {serverError}
+          </p>
         )}
         <div className="flex items-center gap-3">
           <button
             onClick={onDelete}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-error/10 text-error text-sm font-body font-medium hover:bg-error/20 transition-colors"
+            disabled={isDeleting}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-error text-on-primary text-sm font-body font-semibold hover:opacity-90 transition-opacity disabled:opacity-60 disabled:pointer-events-none"
           >
-            <Trash2 strokeWidth={1.5} className="w-4 h-4" />
-            Delete
+            {isDeleting ? (
+              <Loader2 strokeWidth={1.5} className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Trash2 strokeWidth={1.5} className="w-3.5 h-3.5" />
+            )}
+            {isDeleting ? "Deleting…" : "Delete"}
           </button>
           <button
             onClick={() => setMode("idle")}
-            className="flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-on-surface transition-colors font-body"
+            disabled={isDeleting}
+            className="flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors font-body disabled:opacity-50"
           >
-            <X strokeWidth={1.5} className="w-4 h-4" />
+            <X strokeWidth={1.5} className="w-3.5 h-3.5" />
             Cancel
           </button>
         </div>
@@ -105,34 +113,41 @@ export function EditPostControls({
 
   // editing mode
   return (
-    <form onSubmit={handleSubmit(onEdit)} className="mt-4 space-y-3">
+    <form onSubmit={handleSubmit(onEdit)} className="mt-4 pt-4 border-t border-outline-variant space-y-3">
       <input type="hidden" {...register("id")} />
       <textarea
         {...register("body")}
-        rows={4}
-        className="w-full bg-surface-container-low rounded-xl px-4 py-3 font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 border-0 resize-none"
+        rows={5}
+        className="w-full bg-surface-container rounded-xl px-4 py-3 font-body text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 border-0 resize-none"
       />
       {errors.body && (
-        <p className="text-xs text-error font-body">{errors.body.message}</p>
+        <p className="text-sm text-error font-body">{errors.body.message}</p>
       )}
       {serverError && (
-        <p className="text-xs text-error font-body">{serverError}</p>
+        <p className="text-sm text-error font-body bg-error-container px-3 py-2 rounded-lg">
+          {serverError}
+        </p>
       )}
       <div className="flex items-center gap-3">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-on-primary text-sm font-body font-medium hover:bg-primary-dark transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-on-primary text-sm font-body font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:pointer-events-none"
         >
-          <Check strokeWidth={1.5} className="w-4 h-4" />
+          {isSubmitting ? (
+            <Loader2 strokeWidth={1.5} className="w-3.5 h-3.5 animate-spin" />
+          ) : (
+            <Check strokeWidth={1.5} className="w-3.5 h-3.5" />
+          )}
           {isSubmitting ? "Saving…" : "Save"}
         </button>
         <button
           type="button"
           onClick={() => setMode("idle")}
-          className="flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-on-surface transition-colors font-body"
+          disabled={isSubmitting}
+          className="flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors font-body disabled:opacity-50"
         >
-          <X strokeWidth={1.5} className="w-4 h-4" />
+          <X strokeWidth={1.5} className="w-3.5 h-3.5" />
           Cancel
         </button>
       </div>
