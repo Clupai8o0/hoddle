@@ -405,7 +405,20 @@ Full table definitions in `docs/database-schema.md` §"Phase 3 tables".
 - [ ] Monthly audit export to CSV for governance records
 - [ ] RLS: admins can read; no updates, no deletes from anyone (the table is append-only at the database level via a policy that denies `update` and `delete`)
 
-### 3.12 Cross-cutting & pre-ship
+### 3.12 Comments on articles and sessions
+
+- [ ] Migration: `content_comments` table (id, content_item_id, author_id, body, parent_comment_id for threading, edited_at, created_at) — RLS: author can read/write own; all authenticated can read published-item comments
+- [ ] Migration: `session_comments` table (id, session_id, author_id, body, created_at) — post-session comments only (session status = `completed`)
+- [ ] Server actions `createContentComment`, `editContentComment`, `deleteContentComment` in `lib/actions/content-comments.ts`
+- [ ] Server actions `createSessionComment`, `deleteSessionComment` in `lib/actions/session-comments.ts`
+- [ ] `components/patterns/comment-thread.tsx` — comment list + reply form, shared by both surfaces
+- [ ] Content article page (`app/(browse)/content/[slug]/page.tsx`) — add comment thread below article body
+- [ ] Session detail page (`app/(browse)/sessions/[id]/page.tsx`) — add comment thread, visible only after session is completed
+- [ ] Rate limiting: 20 comments per user per 10 min (extend `lib/utils/rate-limit.ts`)
+- [ ] Notification: `comment_on_your_content` and `comment_on_your_session` for the mentor when a student comments
+- [ ] Mentor can delete comments on their own content/sessions; admin can delete any comment
+
+### 3.13 Cross-cutting & pre-ship
 
 - [ ] Dashboard updates: surface badges on mentor cards, university events on the student dashboard, tier on mentor profile hero
 - [ ] Update matching algorithm display: show the mentor tier visually in the recommendation card
