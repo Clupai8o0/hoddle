@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
-import { newPostSchema, type NewPostInput } from "@/lib/validation/forum";
+import { newPostSchema, type NewPostFormInput } from "@/lib/validation/forum";
 import { createPost } from "@/lib/actions/forums";
 
 interface ReplyFormProps {
@@ -24,14 +24,14 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated, isMen
     reset,
     watch,
     formState: { isSubmitting },
-  } = useForm<NewPostInput>({
+  } = useForm<NewPostFormInput>({
     resolver: zodResolver(newPostSchema),
     defaultValues: { thread_id: threadId, body: "", is_anonymous: false },
   });
 
   const bodyValue = watch("body");
 
-  async function onSubmit(data: NewPostInput) {
+  async function onSubmit(data: NewPostFormInput) {
     setServerError(null);
     const result = await createPost(data, threadPath);
     if (!result.ok) {

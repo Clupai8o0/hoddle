@@ -36,7 +36,12 @@ export const reactionSchema = z.object({
   reaction: z.enum(["heart", "thanks", "helpful"]),
 });
 
+// Output types (after defaults applied) — used by server actions
 export type NewThreadInput = z.infer<typeof newThreadSchema>;
 export type NewPostInput = z.infer<typeof newPostSchema>;
 export type EditPostInput = z.infer<typeof editPostSchema>;
 export type ReactionInput = z.infer<typeof reactionSchema>;
+
+// Input types (before defaults applied) — used by react-hook-form
+export type NewThreadFormInput = z.input<typeof newThreadSchema>;
+export type NewPostFormInput = z.input<typeof newPostSchema>;

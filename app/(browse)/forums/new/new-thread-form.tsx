@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { newThreadSchema, type NewThreadInput } from "@/lib/validation/forum";
+import { newThreadSchema, type NewThreadFormInput } from "@/lib/validation/forum";
 import { createThread } from "@/lib/actions/forums";
 import { Button } from "@/components/ui/button";
 
@@ -29,7 +29,7 @@ export function NewThreadForm({
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<NewThreadInput>({
+  } = useForm<NewThreadFormInput>({
     resolver: zodResolver(newThreadSchema),
     defaultValues: {
       category_slug: defaultCategory ?? "",
@@ -42,7 +42,7 @@ export function NewThreadForm({
   const bodyValue = watch("body");
   const titleValue = watch("title");
 
-  async function onSubmit(data: NewThreadInput) {
+  async function onSubmit(data: NewThreadFormInput) {
     setServerError(null);
     const result = await createThread(data);
     if (!result.ok) {
