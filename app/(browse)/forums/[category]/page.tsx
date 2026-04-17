@@ -18,6 +18,7 @@ type ThreadRow = {
   pinned: boolean;
   locked: boolean;
   last_activity_at: string;
+  is_anonymous: boolean;
   profiles: { full_name: string | null; avatar_url: string | null } | null;
   forum_posts: { count: number }[];
 };
@@ -52,7 +53,7 @@ export default async function CategoryPage({ params }: PageProps) {
       supabase
         .from("forum_threads")
         .select(
-          `id, slug, title, category_slug, pinned, locked, last_activity_at,
+          `id, slug, title, category_slug, pinned, locked, last_activity_at, is_anonymous,
            profiles!forum_threads_author_id_fkey(full_name, avatar_url),
            forum_posts(count)`,
         )
@@ -142,12 +143,17 @@ export default async function CategoryPage({ params }: PageProps) {
 
 function CategoryThreadRow({ thread }: { thread: ThreadRow }) {
   const replyCount = thread.forum_posts[0]?.count ?? 0;
-  const initials = (thread.profiles?.full_name ?? "?")
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const displayName = thread.is_anonymous
+    ? "Anonymous"
+    : (thread.profiles?.full_name ?? "Unknown");
+  const initials = thread.is_anonymous
+    ? "A"
+    : (thread.profiles?.full_name ?? "?")
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
 
   return (
     <Link
@@ -177,7 +183,7 @@ function CategoryThreadRow({ thread }: { thread: ThreadRow }) {
         </h2>
         <div className="flex items-center gap-4 text-sm text-on-surface-variant font-body">
           <div className="flex items-center gap-2">
-            {thread.profiles?.avatar_url ? (
+            {!thread.is_anonymous && thread.profiles?.avatar_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={thread.profiles.avatar_url}
@@ -190,7 +196,7 @@ function CategoryThreadRow({ thread }: { thread: ThreadRow }) {
               </div>
             )}
             <span className="font-medium text-on-surface">
-              {thread.profiles?.full_name ?? "Unknown"}
+              {displayName}
             </span>
           </div>
           <span>• {formatRelativeTime(thread.last_activity_at)}</span>

@@ -398,7 +398,7 @@ function RegularPost({
 
   return (
     <div
-      className={`flex gap-4 p-6 bg-surface-container-low rounded-2xl ${compact ? "p-4" : ""}`}
+      className={`flex gap-4 bg-surface-container-low rounded-2xl ${compact ? "p-4" : "p-6"}`}
     >
       {!isAnonymous && profile?.avatar_url ? (
         // eslint-disable-next-line @next/next/no-img-element

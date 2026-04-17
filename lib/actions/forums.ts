@@ -127,29 +127,35 @@ export async function createPost(
   });
   if (!limit.allowed) return { ok: false, error: limit.error };
 
+  const effectiveIsAnonymous = isMentor ? false : parsed.data.is_anonymous;
+
   const { error } = await supabase.from("forum_posts").insert({
     thread_id: parsed.data.thread_id,
     author_id: userId,
     body: parsed.data.body,
     parent_post_id: parsed.data.parent_post_id ?? null,
-    is_anonymous: isMentor ? false : parsed.data.is_anonymous,
+    is_anonymous: effectiveIsAnonymous,
   });
 
   if (error) return { ok: false, error: "Failed to post reply." };
 
   // Notify thread author if they didn't post this reply themselves
   if (thread.author_id !== userId) {
-    const { data: replierProfile } = await supabase
-      .from("profiles")
-      .select("full_name")
-      .eq("id", userId)
-      .single();
+    let replierName = "Anonymous";
+    if (!effectiveIsAnonymous) {
+      const { data: replierProfile } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", userId)
+        .single();
+      replierName = replierProfile?.full_name ?? "Someone";
+    }
 
     void notify(thread.author_id, "forum_reply_to_your_thread", {
       thread_title: thread.title,
       thread_slug: thread.slug,
       category_slug: thread.category_slug,
-      replier_name: replierProfile?.full_name ?? "Someone",
+      replier_name: replierName,
     });
   }
 
