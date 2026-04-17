@@ -429,6 +429,10 @@ Deliberately empty. Phase 3 is large enough that we don't pre-commit to Phase 4 
 
 ## Shipped
 
+### Unreleased
+
+- [x] Anonymous forum posts — shipped 2026-04-17
+
 ### Phase 1 — v0.1.0
 
 - [x] Foundations: dependencies, fonts, design tokens, Supabase clients, env scaffolding, route groups
