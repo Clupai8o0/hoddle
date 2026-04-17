@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { BrowseNav } from "@/components/layout/browse-nav";
+import { FeedbackWidget } from "@/components/patterns/feedback-widget";
 
 /**
  * Layout for publicly browsable pages: /forums, /stories, /content.
@@ -51,6 +52,7 @@ export default async function BrowseLayout({
     <>
       <BrowseNav user={navUser} />
       {children}
+      {user && <FeedbackWidget />}
     </>
   );
 }
