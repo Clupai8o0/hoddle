@@ -11,6 +11,7 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 ## [Unreleased]
 
 ### Added
+- Anonymous posting option for forum threads and replies (students only; mentors always post as identified)
 - `app/(auth)/confirm/page.tsx` — client-side auth confirm page that handles implicit-flow magic link redirects (hash fragment `#access_token=…`); routes mentor invites through `acceptMentorInvite` and students to `/dashboard`
 - `lib/actions/mentor-magic-link.ts` — `sendMentorMagicLink` server action: generates magic link via admin API and sends via nodemailer, bypassing Supabase SMTP entirely
 - Full name field added to mentor onboarding step 1 (input, validation, payload) and persisted to `profiles.full_name`
