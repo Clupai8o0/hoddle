@@ -305,9 +305,28 @@ function aggregateReactions(
 
 function AuthorByline({
   profile,
+  isAnonymous = false,
+  isOwn = false,
 }: {
   profile: { full_name: string | null; avatar_url: string | null } | null;
+  isAnonymous?: boolean;
+  isOwn?: boolean;
 }) {
+  if (isAnonymous) {
+    return (
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center font-display font-bold text-on-surface-variant">
+          A
+        </div>
+        <div>
+          <p className="font-display font-bold text-on-surface">
+            {isOwn ? "Anonymous (you)" : "Anonymous"}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const initials = (profile?.full_name ?? "?")
     .split(" ")
     .map((n) => n[0])
@@ -345,6 +364,7 @@ type PostProps = {
   threadPath: string;
   isOwn: boolean;
   compact?: boolean;
+  isAnonymous?: boolean;
 };
 
 function RegularPost({
@@ -354,23 +374,33 @@ function RegularPost({
   threadPath,
   isOwn,
   compact = false,
+  isAnonymous = false,
 }: PostProps) {
   const profile = post.profiles as {
     full_name: string | null;
     avatar_url: string | null;
   } | null;
-  const initials = (profile?.full_name ?? "?")
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+
+  const displayName = isAnonymous
+    ? isOwn
+      ? "Anonymous (you)"
+      : "Anonymous"
+    : (profile?.full_name ?? "Unknown");
+
+  const initials = isAnonymous
+    ? "A"
+    : (profile?.full_name ?? "?")
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
 
   return (
     <div
       className={`flex gap-4 p-6 bg-surface-container-low rounded-2xl ${compact ? "p-4" : ""}`}
     >
-      {profile?.avatar_url ? (
+      {!isAnonymous && profile?.avatar_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={profile.avatar_url}
@@ -387,7 +417,7 @@ function RegularPost({
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-center mb-2">
           <span className="font-display font-bold text-on-surface text-sm">
-            {profile?.full_name ?? "Unknown"}
+            {displayName}
           </span>
           <span className="text-xs text-on-surface-variant font-body">
             {formatRelativeTime(post.created_at)}
