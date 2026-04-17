@@ -1,7 +1,20 @@
-export default function MarketingLayout({
+import { createClient } from "@/lib/supabase/server";
+import { FeedbackWidget } from "@/components/patterns/feedback-widget";
+
+export default async function MarketingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return (
+    <>
+      {children}
+      {user && <FeedbackWidget />}
+    </>
+  );
 }
