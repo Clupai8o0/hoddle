@@ -56,19 +56,19 @@ export function EditPostControls({
     }
   }
 
-  if (!canEdit) return null;
-
   if (mode === "idle") {
     return (
       <div className="flex items-center gap-3 mt-4">
-        <button
-          onClick={() => setMode("editing")}
-          className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary transition-colors font-body"
-          aria-label="Edit post"
-        >
-          <Pencil strokeWidth={1.5} className="w-3.5 h-3.5" />
-          Edit
-        </button>
+        {canEdit && (
+          <button
+            onClick={() => setMode("editing")}
+            className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary transition-colors font-body"
+            aria-label="Edit post"
+          >
+            <Pencil strokeWidth={1.5} className="w-3.5 h-3.5" />
+            Edit
+          </button>
+        )}
         <button
           onClick={() => setMode("confirming-delete")}
           className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-error transition-colors font-body"
