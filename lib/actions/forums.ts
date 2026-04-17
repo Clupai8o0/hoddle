@@ -5,6 +5,7 @@ import {
   newThreadSchema,
   newPostSchema,
   editPostSchema,
+  editThreadSchema,
   reactionSchema,
 } from "@/lib/validation/forum";
 import { notify } from "@/lib/actions/notifications";
@@ -273,6 +274,75 @@ export async function deletePost(
   if (error) return { ok: false, error: "Failed to delete post." };
 
   revalidatePath(threadPath);
+
+  return { ok: true };
+}
+
+// ── Edit thread ───────────────────────────────────────────────────────────────
+
+export async function editThread(
+  input: unknown,
+  threadPath: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const parsed = editThreadSchema.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input." };
+  }
+
+  const supabase = await createClient();
+  const userId = await getCurrentUserId(supabase);
+  if (!userId) return { ok: false, error: "Not authenticated." };
+
+  const { data: thread } = await supabase
+    .from("forum_threads")
+    .select("author_id")
+    .eq("id", parsed.data.id)
+    .is("deleted_at", null)
+    .single();
+
+  if (!thread) return { ok: false, error: "Thread not found." };
+  if (thread.author_id !== userId) return { ok: false, error: "Not your thread." };
+
+  const { error } = await supabase
+    .from("forum_threads")
+    .update({ title: parsed.data.title, body: parsed.data.body })
+    .eq("id", parsed.data.id);
+
+  if (error) return { ok: false, error: "Failed to update thread." };
+
+  revalidatePath(threadPath);
+
+  return { ok: true };
+}
+
+// ── Delete thread (soft) ──────────────────────────────────────────────────────
+
+export async function deleteThread(
+  threadId: string,
+  categoryPath: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const supabase = await createClient();
+  const userId = await getCurrentUserId(supabase);
+  if (!userId) return { ok: false, error: "Not authenticated." };
+
+  const { data: thread } = await supabase
+    .from("forum_threads")
+    .select("author_id")
+    .eq("id", threadId)
+    .is("deleted_at", null)
+    .single();
+
+  if (!thread) return { ok: false, error: "Thread not found." };
+  if (thread.author_id !== userId) return { ok: false, error: "Not your thread." };
+
+  const { error } = await supabase
+    .from("forum_threads")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", threadId);
+
+  if (error) return { ok: false, error: "Failed to delete thread." };
+
+  revalidatePath(categoryPath);
 
   return { ok: true };
 }

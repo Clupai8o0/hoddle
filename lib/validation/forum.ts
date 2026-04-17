@@ -31,6 +31,18 @@ export const editPostSchema = z.object({
     .max(5000, "Post must be under 5,000 characters"),
 });
 
+export const editThreadSchema = z.object({
+  id: z.string().uuid(),
+  title: z
+    .string()
+    .min(10, "Title must be at least 10 characters")
+    .max(200, "Title must be under 200 characters"),
+  body: z
+    .string()
+    .min(20, "Body must be at least 20 characters")
+    .max(10000, "Body must be under 10,000 characters"),
+});
+
 export const reactionSchema = z.object({
   post_id: z.string().uuid(),
   reaction: z.enum(["heart", "thanks", "helpful"]),
@@ -40,6 +52,7 @@ export const reactionSchema = z.object({
 export type NewThreadInput = z.infer<typeof newThreadSchema>;
 export type NewPostInput = z.infer<typeof newPostSchema>;
 export type EditPostInput = z.infer<typeof editPostSchema>;
+export type EditThreadInput = z.infer<typeof editThreadSchema>;
 export type ReactionInput = z.infer<typeof reactionSchema>;
 
 // Input types (before defaults applied) — used by react-hook-form

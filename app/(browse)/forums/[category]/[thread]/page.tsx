@@ -7,6 +7,7 @@ import { formatRelativeTime } from "@/lib/utils/format-time";
 import { ReplyForm } from "./reply-form";
 import { ReactionButtons } from "./reaction-buttons";
 import { EditPostControls } from "./edit-post-form";
+import { EditThreadControls } from "./edit-thread-form";
 
 interface PageProps {
   params: Promise<{ category: string; thread: string }>;
@@ -191,6 +192,17 @@ export default async function ThreadPage({ params }: PageProps) {
               threadId={threadData.id}
               currentUserId={user?.id}
               threadPath={threadPath}
+            />
+          )}
+
+          {/* Edit/delete controls for thread author */}
+          {viewerIsThreadAuthor && (
+            <EditThreadControls
+              threadId={threadData.id}
+              initialTitle={threadData.title}
+              initialBody={threadData.body}
+              threadPath={threadPath}
+              categoryPath={`/forums/${category}`}
             />
           )}
         </article>
