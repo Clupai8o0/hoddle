@@ -10,23 +10,18 @@ import { editPost, deletePost } from "@/lib/actions/forums";
 interface EditPostFormProps {
   postId: string;
   initialBody: string;
-  createdAt: string;
   threadPath: string;
 }
 
 export function EditPostControls({
   postId,
   initialBody,
-  createdAt,
   threadPath,
 }: EditPostFormProps) {
   const [mode, setMode] = useState<"idle" | "editing" | "confirming-delete">(
     "idle",
   );
   const [serverError, setServerError] = useState<string | null>(null);
-
-  const age = Date.now() - new Date(createdAt).getTime();
-  const canEdit = age < 30 * 60 * 1000;
 
   const {
     register,
@@ -59,16 +54,14 @@ export function EditPostControls({
   if (mode === "idle") {
     return (
       <div className="flex items-center gap-3 mt-4">
-        {canEdit && (
-          <button
-            onClick={() => setMode("editing")}
-            className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary transition-colors font-body"
-            aria-label="Edit post"
-          >
-            <Pencil strokeWidth={1.5} className="w-3.5 h-3.5" />
-            Edit
-          </button>
-        )}
+        <button
+          onClick={() => setMode("editing")}
+          className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-primary transition-colors font-body"
+          aria-label="Edit post"
+        >
+          <Pencil strokeWidth={1.5} className="w-3.5 h-3.5" />
+          Edit
+        </button>
         <button
           onClick={() => setMode("confirming-delete")}
           className="flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-error transition-colors font-body"

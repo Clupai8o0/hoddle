@@ -444,7 +444,6 @@ function RegularPost({
           <EditPostControls
             postId={post.id}
             initialBody={post.body}
-            createdAt={post.created_at}
             threadPath={threadPath}
           />
         )}
@@ -529,7 +528,6 @@ function MentorPost({
           <EditPostControls
             postId={post.id}
             initialBody={post.body}
-            createdAt={post.created_at}
             threadPath={threadPath}
           />
         )}

@@ -225,21 +225,13 @@ export async function editPost(
 
   const { data: post } = await supabase
     .from("forum_posts")
-    .select("author_id, created_at")
+    .select("author_id")
     .eq("id", parsed.data.id)
     .is("deleted_at", null)
     .single();
 
   if (!post) return { ok: false, error: "Post not found." };
   if (post.author_id !== userId) return { ok: false, error: "Not your post." };
-
-  const age = Date.now() - new Date(post.created_at).getTime();
-  if (age > 30 * 60 * 1000) {
-    return {
-      ok: false,
-      error: "Posts can only be edited within 30 minutes of posting.",
-    };
-  }
 
   const { error } = await supabase
     .from("forum_posts")
