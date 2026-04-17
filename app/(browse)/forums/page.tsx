@@ -32,8 +32,11 @@ type SessionRow = {
 export default async function ForumsPage() {
   const supabase = await createClient();
 
-  const [{ data: categories }, { data: threads }, { data: sessions }] =
-    await Promise.all([
+  const [
+    { data: categories, error: catError },
+    { data: threads, error: threadsError },
+    { data: sessions },
+  ] = await Promise.all([
       supabase
         .from("forum_categories")
         .select("slug, name, description")
@@ -62,6 +65,9 @@ export default async function ForumsPage() {
         .order("scheduled_at")
         .limit(3),
     ]);
+
+  if (catError) console.error("[forums] categories error:", catError);
+  if (threadsError) console.error("[forums] threads error:", threadsError);
 
   const typedThreads = (threads ?? []) as unknown as ThreadRow[];
   const typedSessions = (sessions ?? []) as unknown as SessionRow[];
