@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import {
   newThreadSchema,
   newPostSchema,
@@ -303,7 +304,9 @@ export async function editThread(
   if (!thread) return { ok: false, error: "Thread not found." };
   if (thread.author_id !== userId) return { ok: false, error: "Not your thread." };
 
-  const { error } = await supabase
+  // Use admin client: ownership already verified above; RLS policy blocks author updates.
+  const admin = createAdminClient();
+  const { error } = await admin
     .from("forum_threads")
     .update({ title: parsed.data.title, body: parsed.data.body })
     .eq("id", parsed.data.id);
@@ -335,7 +338,9 @@ export async function deleteThread(
   if (!thread) return { ok: false, error: "Thread not found." };
   if (thread.author_id !== userId) return { ok: false, error: "Not your thread." };
 
-  const { error } = await supabase
+  // Use admin client: ownership already verified above; RLS policy blocks author updates.
+  const admin = createAdminClient();
+  const { error } = await admin
     .from("forum_threads")
     .update({ deleted_at: new Date().toISOString() })
     .eq("id", threadId);
