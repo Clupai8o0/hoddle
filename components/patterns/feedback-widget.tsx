@@ -63,8 +63,7 @@ export function FeedbackWidget() {
       {/* Popover panel */}
       {open && (
         <div
-          className="w-80 rounded-xl p-5 bg-surface-container"
-          style={{ boxShadow: "0 12px 40px rgba(0, 24, 66, 0.10)" }}
+          className="w-80 rounded-xl p-5 bg-surface-container shadow-ambient"
         >
           <div className="flex items-center justify-between mb-4">
             <p className="font-display text-sm font-semibold text-on-surface tracking-wide">
@@ -140,7 +139,7 @@ export function FeedbackWidget() {
           "bg-primary text-on-primary",
           "font-body text-sm font-medium",
           "transition-all duration-200",
-          "hover:shadow-[0_12px_40px_rgba(0,24,66,0.18)] hover:-translate-y-px",
+          "hover:shadow-ambient hover:-translate-y-px",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
         )}
       >
