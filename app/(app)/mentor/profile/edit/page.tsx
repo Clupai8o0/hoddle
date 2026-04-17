@@ -25,6 +25,8 @@ export default async function EditMentorProfilePage() {
 
   if (!mentor) redirect("/mentor");
 
+  const socialLinks = mentor.social_links as Record<string, string> | null;
+
   return (
     <div className="space-y-8">
       <header>
@@ -46,10 +48,10 @@ export default async function EditMentorProfilePage() {
           expertise: mentor.expertise ?? [],
           hometown: mentor.hometown ?? "",
           social_links: {
-            linkedin: mentor.social_links?.linkedin ?? "",
-            twitter: mentor.social_links?.twitter ?? "",
-            instagram: mentor.social_links?.instagram ?? "",
-            website: mentor.social_links?.website ?? "",
+            linkedin: socialLinks?.linkedin ?? "",
+            twitter: socialLinks?.twitter ?? "",
+            instagram: socialLinks?.instagram ?? "",
+            website: socialLinks?.website ?? "",
           },
         }}
         currentAvatarUrl={profile?.avatar_url ?? null}
