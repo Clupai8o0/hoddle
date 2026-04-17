@@ -7,10 +7,30 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "14.5"
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
@@ -150,6 +170,78 @@ export type Database = {
         }
         Relationships: []
       }
+      conversation_read_cursors: {
+        Row: {
+          conversation_id: string
+          last_read_at: string
+          profile_id: string
+        }
+        Insert: {
+          conversation_id: string
+          last_read_at?: string
+          profile_id: string
+        }
+        Update: {
+          conversation_id?: string
+          last_read_at?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_read_cursors_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_read_cursors_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          created_at: string
+          id: string
+          participant_one: string
+          participant_two: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          participant_one: string
+          participant_two: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          participant_one?: string
+          participant_two?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_participant_one_fkey"
+            columns: ["participant_one"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_participant_two_fkey"
+            columns: ["participant_two"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       forum_categories: {
         Row: {
           description: string | null
@@ -179,6 +271,7 @@ export type Database = {
           deleted_at: string | null
           edited_at: string | null
           id: string
+          is_anonymous: boolean
           parent_post_id: string | null
           thread_id: string
         }
@@ -189,6 +282,7 @@ export type Database = {
           deleted_at?: string | null
           edited_at?: string | null
           id?: string
+          is_anonymous?: boolean
           parent_post_id?: string | null
           thread_id: string
         }
@@ -199,6 +293,7 @@ export type Database = {
           deleted_at?: string | null
           edited_at?: string | null
           id?: string
+          is_anonymous?: boolean
           parent_post_id?: string | null
           thread_id?: string
         }
@@ -270,6 +365,7 @@ export type Database = {
           created_at: string
           deleted_at: string | null
           id: string
+          is_anonymous: boolean
           last_activity_at: string
           locked: boolean
           pinned: boolean
@@ -284,6 +380,7 @@ export type Database = {
           created_at?: string
           deleted_at?: string | null
           id?: string
+          is_anonymous?: boolean
           last_activity_at?: string
           locked?: boolean
           pinned?: boolean
@@ -298,6 +395,7 @@ export type Database = {
           created_at?: string
           deleted_at?: string | null
           id?: string
+          is_anonymous?: boolean
           last_activity_at?: string
           locked?: boolean
           pinned?: boolean
@@ -499,7 +597,7 @@ export type Database = {
           hometown: string | null
           profile_id: string
           slug: string
-          social_links: Record<string, string>
+          social_links: Json
           updated_at: string
           verified_at: string | null
         }
@@ -513,7 +611,7 @@ export type Database = {
           hometown?: string | null
           profile_id: string
           slug: string
-          social_links?: Record<string, string>
+          social_links?: Json
           updated_at?: string
           verified_at?: string | null
         }
@@ -527,7 +625,7 @@ export type Database = {
           hometown?: string | null
           profile_id?: string
           slug?: string
-          social_links?: Record<string, string>
+          social_links?: Json
           updated_at?: string
           verified_at?: string | null
         }
@@ -536,6 +634,45 @@ export type Database = {
             foreignKeyName: "mentors_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -650,7 +787,6 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
-          is_admin: boolean
           onboarded_at: string | null
           role: Database["public"]["Enums"]["user_role"]
           university: string | null
@@ -663,7 +799,6 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
-          is_admin?: boolean
           onboarded_at?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           university?: string | null
@@ -676,7 +811,6 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
-          is_admin?: boolean
           onboarded_at?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           university?: string | null
@@ -824,7 +958,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_chat: { Args: { user_a: string; user_b: string }; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
+      is_conversation_participant: {
+        Args: { conv_id: string }
+        Returns: boolean
+      }
       is_mentor: { Args: never; Returns: boolean }
     }
     Enums: {
@@ -966,6 +1105,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       content_type: ["article", "video", "resource"],
@@ -985,3 +1127,4 @@ export const Constants = {
     },
   },
 } as const
+
