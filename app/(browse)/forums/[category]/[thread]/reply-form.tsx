@@ -97,9 +97,11 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated, isMen
           </div>
 
           {!isMentor && (
-            <label className="flex items-center gap-2 shrink-0 cursor-pointer select-none mb-1">
+            <label htmlFor="reply_is_anonymous" className="flex items-center gap-2 shrink-0 cursor-pointer select-none">
               <input
+                id="reply_is_anonymous"
                 type="checkbox"
+                aria-label="Post anonymously"
                 {...register("is_anonymous")}
                 className="w-4 h-4 rounded accent-primary"
               />

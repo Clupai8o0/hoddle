@@ -133,8 +133,9 @@ export function NewThreadForm({
 
       {/* Anonymous option */}
       {!isMentor && (
-        <label className="flex items-start gap-3 cursor-pointer select-none">
+        <label htmlFor="is_anonymous" className="flex items-start gap-3 cursor-pointer select-none">
           <input
+            id="is_anonymous"
             type="checkbox"
             {...register("is_anonymous")}
             className="w-4 h-4 rounded accent-primary mt-0.5"
