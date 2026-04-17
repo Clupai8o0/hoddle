@@ -12,9 +12,10 @@ interface ReplyFormProps {
   threadPath: string;
   locked: boolean;
   isAuthenticated: boolean;
+  isMentor: boolean;
 }
 
-export function ReplyForm({ threadId, threadPath, locked, isAuthenticated }: ReplyFormProps) {
+export function ReplyForm({ threadId, threadPath, locked, isAuthenticated, isMentor }: ReplyFormProps) {
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -25,7 +26,7 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated }: Rep
     formState: { isSubmitting },
   } = useForm<NewPostInput>({
     resolver: zodResolver(newPostSchema),
-    defaultValues: { thread_id: threadId, body: "" },
+    defaultValues: { thread_id: threadId, body: "", is_anonymous: false },
   });
 
   const bodyValue = watch("body");
@@ -37,7 +38,7 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated }: Rep
       setServerError(result.error);
       return;
     }
-    reset({ thread_id: threadId, body: "" });
+    reset({ thread_id: threadId, body: "", is_anonymous: false });
   }
 
   if (locked) {
@@ -94,6 +95,20 @@ export function ReplyForm({ threadId, threadPath, locked, isAuthenticated }: Rep
               </span>
             )}
           </div>
+
+          {!isMentor && (
+            <label className="flex items-center gap-2 shrink-0 cursor-pointer select-none mb-1">
+              <input
+                type="checkbox"
+                {...register("is_anonymous")}
+                className="w-4 h-4 rounded accent-primary"
+              />
+              <span className="font-body text-xs text-on-surface-variant whitespace-nowrap">
+                Post anonymously
+              </span>
+            </label>
+          )}
+
           <button
             type="submit"
             disabled={isSubmitting || bodyValue.trim().length === 0}
