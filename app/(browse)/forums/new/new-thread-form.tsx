@@ -13,11 +13,13 @@ type CategoryOption = { slug: string; name: string };
 interface NewThreadFormProps {
   categories: CategoryOption[];
   defaultCategory?: string;
+  isMentor: boolean;
 }
 
 export function NewThreadForm({
   categories,
   defaultCategory,
+  isMentor,
 }: NewThreadFormProps) {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -33,6 +35,7 @@ export function NewThreadForm({
       category_slug: defaultCategory ?? "",
       title: "",
       body: "",
+      is_anonymous: false,
     },
   });
 
@@ -127,6 +130,20 @@ export function NewThreadForm({
           <p className="text-sm text-error font-body">{errors.body.message}</p>
         )}
       </div>
+
+      {/* Anonymous option */}
+      {!isMentor && (
+        <label className="flex items-start gap-3 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            {...register("is_anonymous")}
+            className="w-4 h-4 rounded accent-primary mt-0.5"
+          />
+          <span className="font-body text-sm text-on-surface-variant">
+            Post anonymously — your name won&apos;t be shown to other students
+          </span>
+        </label>
+      )}
 
       {serverError && (
         <p className="text-sm text-error font-body bg-error/10 px-4 py-3 rounded-xl">

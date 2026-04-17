@@ -12,10 +12,19 @@ export default async function NewThreadPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: categories } = await supabase
-    .from("forum_categories")
-    .select("slug, name")
-    .order("sort_order");
+  const [{ data: categories }, { data: profile }] = await Promise.all([
+    supabase
+      .from("forum_categories")
+      .select("slug, name")
+      .order("sort_order"),
+    supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single(),
+  ]);
+
+  const isMentor = profile?.role === "mentor";
 
   return (
     <Container className="py-10 sm:py-16 max-w-2xl">
@@ -36,7 +45,7 @@ export default async function NewThreadPage() {
         </p>
       </header>
 
-      <NewThreadForm categories={categories ?? []} />
+      <NewThreadForm categories={categories ?? []} isMentor={isMentor} />
     </Container>
   );
 }

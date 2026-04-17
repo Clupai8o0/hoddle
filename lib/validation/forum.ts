@@ -10,7 +10,7 @@ export const newThreadSchema = z.object({
     .min(20, "Body must be at least 20 characters")
     .max(10000, "Body must be under 10,000 characters"),
   category_slug: z.string().min(1, "Please select a category"),
-  is_anonymous: z.boolean().default(false),
+  is_anonymous: z.boolean(),
 });
 
 export const newPostSchema = z.object({
@@ -20,7 +20,7 @@ export const newPostSchema = z.object({
     .min(1, "Reply cannot be empty")
     .max(5000, "Reply must be under 5,000 characters"),
   parent_post_id: z.string().uuid().optional(),
-  is_anonymous: z.boolean().default(false),
+  is_anonymous: z.boolean(),
 });
 
 export const editPostSchema = z.object({
