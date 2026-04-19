@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import { SurveyStatWall } from "@/components/patterns/survey-stat-wall";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -229,6 +230,8 @@ export default async function AboutPage() {
             </div>
           </div>
         </section>
+
+        <SurveyStatWall />
 
         {/* ── How it works ──────────────────────────────────
             Three tonal cards in bento-style row.

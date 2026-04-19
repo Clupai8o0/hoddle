@@ -4,6 +4,9 @@ import { ArrowRight } from "lucide-react";
 import { GlassNav, NavLink } from "@/components/layout/glass-nav";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import { SurveyStrip } from "@/components/patterns/survey-strip";
+import { ReviewsWall } from "@/components/patterns/reviews-wall";
+import type { Review } from "@/components/patterns/review-card";
 
 // ─────────────────────────────────────────
 // Shared layout constant
@@ -20,7 +23,7 @@ export default async function HomePage() {
   const supabase = await createClient();
 
   // Fetch auth user and profile in parallel with mentor data
-  const [{ data: { user } }, { data: mentors }] = await Promise.all([
+  const [{ data: { user } }, { data: mentors }, { data: reviews }] = await Promise.all([
     supabase.auth.getUser(),
     supabase
     .from("mentors")
@@ -33,6 +36,13 @@ export default async function HomePage() {
       .not("verified_at", "is", null)
       .order("verified_at", { ascending: false })
       .limit(3),
+    supabase
+      .from("reviews")
+      .select("id, author_name, author_context, avatar_url, rating, content")
+      .eq("published", true)
+      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: false })
+      .limit(6),
   ]);
 
   // If logged in, fetch their profile for the nav
@@ -59,6 +69,7 @@ export default async function HomePage() {
   };
 
   const typedMentors = (mentors ?? []) as unknown as HomepageMentor[];
+  const typedReviews = (reviews ?? []) as unknown as Review[];
   return (
     <div className="bg-surface text-on-surface">
       {/* ── Navigation ───────────────────────────────────── */}
@@ -352,6 +363,8 @@ export default async function HomePage() {
           </div>
         </section>
 
+        <SurveyStrip />
+
         {/* ── Mentor preview strip ─────────────────────────
             3 placeholder cards — real data from Supabase in Phase 2
         ─────────────────────────────────────────────────── */}
@@ -579,6 +592,8 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        <ReviewsWall reviews={typedReviews} />
 
         {/* ── Members unlock ────────────────────────────────
             Pre-CTA benefits section — shows what's behind a free account
