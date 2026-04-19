@@ -75,7 +75,7 @@ Also fill in your Resend credentials (get a free API key at resend.com):
 
 ```bash
 RESEND_API_KEY=re_your_key_here
-RESEND_FROM_EMAIL=hello@hoddle.com.au
+RESEND_FROM_EMAIL=your-verified-sender@example.com
 ```
 
 ```bash
@@ -136,8 +136,8 @@ npx supabase db push
 
 In the dashboard → **Authentication → URL Configuration**:
 
-- **Site URL:** `https://hoddle.com.au` (your production domain)
-- **Redirect URLs:** add `https://hoddle.com.au/api/auth/callback` and `https://hoddle.com.au/api/auth/mentor-callback`
+- **Site URL:** your deployment URL — currently `https://hoddle-jet.vercel.app`, update to custom domain when live (see `docs/url-configuration.md`)
+- **Redirect URLs:** add `<your-deployment-url>/api/auth/callback` and `<your-deployment-url>/api/auth/mentor-callback`
 
 In **Authentication → Email Templates**, customise the magic link email to match Hoddle branding (Hoddle Blue header, cream body, Plus Jakarta Sans).
 
@@ -168,7 +168,7 @@ Dashboard → **Database → Replication** → find `supabase_realtime` → **Ad
 
 ### Custom domain
 
-In Vercel → **Project → Settings → Domains** → add `hoddle.com.au`. Follow the DNS instructions. Once the domain is live, update **Supabase → Authentication → URL Configuration → Site URL** to match.
+In Vercel → **Project → Settings → Domains** → add your custom domain. Follow the DNS instructions. Once the domain is live, update `NEXT_PUBLIC_APP_URL` and `NEXT_PUBLIC_SITE_URL` in Vercel environment variables, and update **Supabase → Authentication → URL Configuration → Site URL** to match. See `docs/url-configuration.md` for a full checklist.
 
 ### Cron jobs
 
@@ -188,7 +188,7 @@ On the free Hobby plan, cron jobs do not run. Trigger them manually with `curl` 
 
 There is no admin sign-up UI — the role must be set directly in the database. Do this once after first deploying.
 
-1. Go to `https://hoddle.com.au/signup` and sign up with your email (you'll get a magic link)
+1. Go to `<your-deployment-url>/signup` (e.g. `https://hoddle-jet.vercel.app/signup`) and sign up with your email (you'll get a magic link)
 2. Click the magic link and complete the student onboarding wizard (you can skip the content, it just needs to complete)
 3. In Supabase dashboard → **Authentication → Users** — find your user and copy the UUID
 4. In **SQL editor**, run:
@@ -242,7 +242,7 @@ On submission, a formatted email is sent to the address in `ADMIN_EMAIL` (falls 
 To add `ADMIN_EMAIL` to your Vercel env vars:
 
 ```
-ADMIN_EMAIL=admin@hoddle.com.au
+ADMIN_EMAIL=your-admin-email@example.com
 ```
 
 ### Inviting and verifying mentors
@@ -533,8 +533,8 @@ Runs the matching algorithm for every student profile and upserts the top 5 reco
 All cron routes require the `CRON_SECRET` header. To trigger manually:
 
 ```bash
-curl -H "Authorization: Bearer $CRON_SECRET" https://hoddle.com.au/api/cron/session-reminders
-curl -H "Authorization: Bearer $CRON_SECRET" https://hoddle.com.au/api/cron/recompute-recommendations
+curl -H "Authorization: Bearer $CRON_SECRET" https://hoddle-jet.vercel.app/api/cron/session-reminders
+curl -H "Authorization: Bearer $CRON_SECRET" https://hoddle-jet.vercel.app/api/cron/recompute-recommendations
 ```
 
 ---

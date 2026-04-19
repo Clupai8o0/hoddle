@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Apply as a Mentor — Hoddle Melbourne",
     description:
       "Share your Melbourne journey with first-year international students who are walking the same path.",
-    url: "https://hoddle.com.au/apply",
+    url: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://hoddle-jet.vercel.app"}/apply`,
   },
 };
 

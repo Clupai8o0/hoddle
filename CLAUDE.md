@@ -135,6 +135,7 @@ Track work in [`todo.md`](./todo.md). Log shipped work in [`docs/changelog.md`](
 | `docs/component-library.md` | Primitive + pattern components inventory. |
 | `docs/changelog.md` | Shipped work log. Keep-a-changelog format. |
 | `docs/design/` | Reference screens for all 10 pages (static PNGs + reference HTML). |
+| `docs/url-configuration.md` | All files that read `NEXT_PUBLIC_APP_URL`; domain-switch checklist. |
 
 Any new doc lives in `/docs` and is linked here.
 

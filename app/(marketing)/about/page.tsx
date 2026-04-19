@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: "About — Hoddle Melbourne",
     description:
       "Hoddle Melbourne connects first-year international students with high-achieving mentors who've walked the same path.",
-    url: "https://hoddle.com.au/about",
+    url: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://hoddle-jet.vercel.app"}/about`,
   },
 };
 

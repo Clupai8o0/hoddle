@@ -112,7 +112,13 @@ export async function submitMentorApplication(
   const adminEmail =
     process.env.ADMIN_EMAIL ??
     process.env.RESEND_FROM_EMAIL ??
-    "hello@hoddle.com.au";
+    process.env.GMAIL_USER;
+  if (!adminEmail) {
+    console.error(
+      "submitMentorApplication: no admin email configured — set ADMIN_EMAIL in environment.",
+    );
+    return { ok: false, error: "Something went wrong. Please try again." };
+  }
 
   const result = await sendEmail({
     to: adminEmail,

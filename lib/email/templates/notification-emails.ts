@@ -2,7 +2,8 @@ import type { Database } from "@/lib/supabase/database.types";
 
 type NotificationType = Database["public"]["Enums"]["notification_type"];
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://hoddle.com.au";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://hoddle-jet.vercel.app";
 
 function emailShell(body: string): string {
   return `<!DOCTYPE html>

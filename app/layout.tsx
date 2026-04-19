@@ -23,8 +23,11 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+const APP_URL =
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://hoddle-jet.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hoddle.com.au"),
+  metadataBase: new URL(APP_URL),
   title: {
     default: "Hoddle Melbourne — Mentorship for International Students",
     template: "%s | Hoddle Melbourne",
@@ -35,7 +38,7 @@ export const metadata: Metadata = {
     title: "Hoddle Melbourne — Mentorship for International Students",
     description:
       "Connect with high-achieving mentors who've walked the same path. Guidance, community, and real stories for first-year international students in Melbourne.",
-    url: "https://hoddle.com.au",
+    url: APP_URL,
     siteName: "Hoddle Melbourne",
     locale: "en_AU",
     type: "website",
