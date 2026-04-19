@@ -32,11 +32,11 @@ export async function inviteMentor(
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("is_admin")
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "admin") {
+  if (!profile?.is_admin) {
     return { ok: false, error: "Insufficient permissions." };
   }
 
@@ -103,11 +103,11 @@ export async function verifyMentor(
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("is_admin")
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "admin") {
+  if (!profile?.is_admin) {
     return { ok: false, error: "Insufficient permissions." };
   }
 
@@ -137,11 +137,11 @@ export async function unverifyMentor(
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("is_admin")
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "admin") {
+  if (!profile?.is_admin) {
     return { ok: false, error: "Insufficient permissions." };
   }
 

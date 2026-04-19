@@ -28,11 +28,11 @@ async function requireAdmin(): Promise<
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("is_admin")
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "admin") {
+  if (!profile?.is_admin) {
     return { ok: false, error: "Insufficient permissions." };
   }
   return { ok: true, userId: user.id };
