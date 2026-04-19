@@ -71,8 +71,8 @@ export function SurveyStatWall() {
 
         {/* Right column — stat cards */}
         <div className="lg:col-span-7 grid grid-cols-1 gap-5">
-          {STATS.map(({ stat, interpretation, bg, numColor, ruleColor, copyColor }) => (
-            <div key={stat} className={`${bg} rounded-2xl p-8 lg:p-10`}>
+          {STATS.map(({ stat, interpretation, bg, numColor, ruleColor, copyColor }, i) => (
+            <div key={i} className={`${bg} rounded-2xl p-8 lg:p-10`}>
               <p className={`font-display font-extrabold text-5xl lg:text-6xl ${numColor} leading-none mb-4`}>
                 {stat}
               </p>
