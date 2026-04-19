@@ -12,6 +12,28 @@ export async function signOut(): Promise<never> {
   redirect("/login");
 }
 
+export async function signInWithGoogle(): Promise<never> {
+  const headersList = await headers();
+  const host =
+    headersList.get("x-forwarded-host") ??
+    headersList.get("host") ??
+    "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") ?? "http";
+  const origin = `${proto}://${host}`;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: `${origin}/api/auth/callback` },
+  });
+
+  if (error || !data.url) {
+    redirect("/login?error=oauth_failed");
+  }
+
+  redirect(data.url);
+}
+
 export async function sendMagicLink(
   email: string,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
