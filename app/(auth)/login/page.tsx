@@ -1,23 +1,29 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AuthShell } from "@/components/layout/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { OAuthButtons } from "@/components/ui/oauth-buttons";
 import { sendMagicLink } from "@/lib/actions/auth";
 import { createClient } from "@/lib/supabase/browser";
 import { acceptMentorInvite } from "@/lib/actions/mentor-invites";
 
-export default function LoginPage() {
+function LoginPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [sent, setSent] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string | null>(
+    searchParams.get("error") === "oauth_failed"
+      ? "Google sign-in failed. Please try again or use your email below."
+      : null,
+  );
   const hashHandled = useRef(false);
 
   // Handle implicit-flow magic link — access_token lands in the URL hash.
@@ -135,6 +141,8 @@ export default function LoginPage() {
             Enter your email and we&apos;ll send you a secure sign-in link.
           </p>
 
+          <OAuthButtons />
+
           <form onSubmit={handleSubmit} noValidate className="space-y-6">
             <Input
               type="email"
@@ -179,5 +187,13 @@ export default function LoginPage() {
         </div>
       )}
     </AuthShell>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginPageInner />
+    </Suspense>
   );
 }
