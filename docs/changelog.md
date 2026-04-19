@@ -11,6 +11,10 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 ## [Unreleased]
 
 ### Added
+- Homepage platform reviews — admin-curated testimonials stored in Supabase with star ratings, author photos, and context. Rendered as an asymmetric editorial wall on the homepage when at least three reviews are published.
+- Homepage survey proof strip — 3-up bold statistics (72% / 58% / 39%) sourced from the founding student needs research, placed between the Priya narrative and the mentor preview.
+- About page research stat wall — four tonal stat cards between "The problem" and "How it works", anchored by a sticky intro column.
+- Admin Reviews CRUD — `/admin/reviews` list, create, edit, delete with photo upload, Hoddle Blue star rating input, publish/draft toggle, and display-order control. New dashboard card with unpublished-count badge.
 - Forum flexible interactions: `insightful` reaction type for standout mentor answers; emoji+label reaction buttons (Helpful ❤️, Thanks 👍, Hugs 👋, Insightful ⭐) with a `+` picker that shows only reactions already in use
 - Forum thread view counter: `forum_threads.view_count` column, `bump_thread_view(slug)` RPC (SECURITY DEFINER) to atomically increment on every thread load; view count rendered in thread header and listing rows
 - Forum post body rendering (`lib/utils/post-body.tsx`): `> quoted line` → styled blockquote, `@Mention` tokens → highlighted span
