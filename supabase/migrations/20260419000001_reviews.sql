@@ -18,18 +18,9 @@ create table public.reviews (
 create index reviews_published_order_idx
   on public.reviews (published, display_order, created_at desc);
 
--- updated_at trigger (reuses the project convention of in-migration trigger)
-create or replace function public.reviews_set_updated_at()
-returns trigger language plpgsql as $$
-begin
-  new.updated_at := now();
-  return new;
-end;
-$$;
-
 create trigger reviews_set_updated_at
   before update on public.reviews
-  for each row execute function public.reviews_set_updated_at();
+  for each row execute function public.set_updated_at();
 
 -- RLS
 alter table public.reviews enable row level security;
@@ -73,7 +64,8 @@ create policy "reviews_bucket_admin_insert"
 
 create policy "reviews_bucket_admin_update"
   on storage.objects for update
-  using (bucket_id = 'reviews' and public.is_admin());
+  using  (bucket_id = 'reviews' and public.is_admin())
+  with check (bucket_id = 'reviews' and public.is_admin());
 
 create policy "reviews_bucket_admin_delete"
   on storage.objects for delete
