@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users, UserPlus, UserRoundPlus, Clock, BookOpen } from "lucide-react";
+import { Users, UserPlus, UserRoundPlus, Clock, BookOpen, MessageSquareQuote } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { createClient } from "@/lib/supabase/server";
 
@@ -12,6 +12,7 @@ export default async function AdminHomePage() {
     { count: pendingInvites },
     { count: unverifiedMentors },
     { count: pendingStories },
+    { count: unpublishedReviews },
   ] = await Promise.all([
     supabase
       .from("mentor_invites")
@@ -26,6 +27,10 @@ export default async function AdminHomePage() {
       .from("success_stories")
       .select("id", { count: "exact", head: true })
       .eq("status", "pending"),
+    supabase
+      .from("reviews")
+      .select("id", { count: "exact", head: true })
+      .eq("published", false),
   ]);
 
   const cards = [
@@ -68,6 +73,14 @@ export default async function AdminHomePage() {
       description: "Review and approve student story submissions.",
       badge: pendingStories ?? 0,
       badgeLabel: "awaiting review",
+    },
+    {
+      href: "/admin/reviews",
+      icon: MessageSquareQuote,
+      label: "Reviews",
+      description: "Manage platform testimonials shown on the homepage.",
+      badge: unpublishedReviews ?? 0,
+      badgeLabel: "unpublished",
     },
   ];
 
