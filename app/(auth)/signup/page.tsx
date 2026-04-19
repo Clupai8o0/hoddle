@@ -6,6 +6,7 @@ import { Mail } from "lucide-react";
 import { AuthShell } from "@/components/layout/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { OAuthButtons } from "@/components/ui/oauth-buttons";
 import { sendMagicLink } from "@/lib/actions/auth";
 
 export default function SignupPage() {
@@ -89,6 +90,8 @@ export default function SignupPage() {
             Connect with mentors who&apos;ve walked the same path — the same
             trams, laneways, and lecture halls.
           </p>
+
+          <OAuthButtons />
 
           <form onSubmit={handleSubmit} noValidate className="space-y-6">
             <Input
