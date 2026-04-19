@@ -119,9 +119,11 @@ export async function updateReview(
       published: parsed.data.published,
       display_order: parsed.data.display_order,
     })
-    .eq("id", idParsed.data);
+    .eq("id", idParsed.data)
+    .select("id")
+    .single();
 
-  if (error) return { ok: false, error: error.message };
+  if (error) return { ok: false, error: error.code === "PGRST116" ? "Review not found." : error.message };
 
   revalidateReviewSurfaces(idParsed.data);
   return { ok: true };
@@ -145,12 +147,14 @@ export async function deleteReview(
   const admin = createAdminClient();
 
   // Best-effort avatar cleanup — ignore individual errors so delete still proceeds.
-  const { data: files } = await admin.storage
+  const { data: files, error: listError } = await admin.storage
     .from("reviews")
     .list(idParsed.data);
+  if (listError) return { ok: false, error: `Could not list avatar files: ${listError.message}` };
   if (files && files.length > 0) {
     const paths = files.map((f) => `${idParsed.data}/${f.name}`);
-    await admin.storage.from("reviews").remove(paths);
+    const { error: removeError } = await admin.storage.from("reviews").remove(paths);
+    if (removeError) return { ok: false, error: `Failed to remove avatar files: ${removeError.message}` };
   }
 
   const supabase = await createClient();
@@ -249,9 +253,10 @@ export async function removeReviewAvatar(
   }
 
   const admin = createAdminClient();
-  const { data: prior } = await admin.storage
+  const { data: prior, error: listError } = await admin.storage
     .from("reviews")
     .list(idParsed.data);
+  if (listError) return { ok: false, error: `Could not list avatar files: ${listError.message}` };
   if (prior && prior.length > 0) {
     const paths = prior.map((f) => `${idParsed.data}/${f.name}`);
     await admin.storage.from("reviews").remove(paths);
@@ -261,8 +266,10 @@ export async function removeReviewAvatar(
   const { error } = await supabase
     .from("reviews")
     .update({ avatar_url: null })
-    .eq("id", idParsed.data);
-  if (error) return { ok: false, error: error.message };
+    .eq("id", idParsed.data)
+    .select("id")
+    .single();
+  if (error) return { ok: false, error: error.code === "PGRST116" ? "Review not found." : error.message };
 
   revalidateReviewSurfaces(idParsed.data);
   return { ok: true };
