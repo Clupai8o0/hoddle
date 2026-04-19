@@ -20,8 +20,8 @@ function LoginPageInner() {
   const [isPending, setIsPending] = useState(false);
   const [sent, setSent] = useState(false);
   const [serverError, setServerError] = useState<string | null>(
-    searchParams.get("error") === "oauth_failed"
-      ? "Google sign-in failed. Please try again or use your email below."
+    searchParams.get("error")
+      ? "Sign-in failed. Please try again or use your email below."
       : null,
   );
   const hashHandled = useRef(false);

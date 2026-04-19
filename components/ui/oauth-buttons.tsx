@@ -7,6 +7,7 @@ function GoogleIcon() {
       height="18"
       viewBox="0 0 18 18"
       aria-hidden="true"
+      focusable="false"
     >
       <path
         d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"
@@ -34,14 +35,18 @@ export function OAuthButtons() {
       <form action={signInWithGoogle}>
         <button
           type="submit"
-          className="w-full flex items-center justify-center gap-3 bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body font-medium text-sm py-3 px-4 rounded-xl shadow-[0_12px_40px_rgba(0,24,66,0.10)] transition-colors cursor-pointer"
+          className="w-full flex items-center justify-center gap-3 bg-surface-container-lowest ring-1 ring-on-surface/10 hover:bg-surface-container text-on-surface font-body font-medium text-sm py-3 px-4 rounded-xl shadow-[0_12px_40px_rgba(0,24,66,0.10)] transition-colors cursor-pointer"
         >
           <GoogleIcon />
           Continue with Google
         </button>
       </form>
 
-      <p className="font-body text-sm text-on-surface-variant text-center my-6">or</p>
+      <div className="flex items-center gap-4 my-6">
+        <div className="flex-1 h-px bg-on-surface/10" />
+        <span className="font-body text-sm text-on-surface-variant">or</span>
+        <div className="flex-1 h-px bg-on-surface/10" />
+      </div>
     </div>
   );
 }
