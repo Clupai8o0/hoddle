@@ -822,6 +822,45 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          author_context: string | null
+          author_name: string
+          avatar_url: string | null
+          content: string
+          created_at: string
+          display_order: number
+          id: string
+          published: boolean
+          rating: number
+          updated_at: string
+        }
+        Insert: {
+          author_context?: string | null
+          author_name: string
+          avatar_url?: string | null
+          content: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          published?: boolean
+          rating: number
+          updated_at?: string
+        }
+        Update: {
+          author_context?: string | null
+          author_name?: string
+          avatar_url?: string | null
+          content?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          published?: boolean
+          rating?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       session_questions: {
         Row: {
           anonymous: boolean
