@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Camera, CheckCircle, Trash2 } from "lucide-react";
@@ -43,6 +43,7 @@ export function AdminReviewForm({
 
   // Avatar state
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previewUrlRef = useRef<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(currentAvatarUrl ?? null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarUploading, setAvatarUploading] = useState(false);
@@ -56,6 +57,21 @@ export function AdminReviewForm({
   const [content, setContent] = useState(defaultValues?.content ?? "");
   const [published, setPublished] = useState(defaultValues?.published ?? true);
   const [displayOrder, setDisplayOrder] = useState<number>(defaultValues?.display_order ?? 0);
+
+  function setPreview(objectUrl: string | null) {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+    if (objectUrl) previewUrlRef.current = objectUrl;
+    setAvatarPreview(objectUrl);
+  }
+
+  useEffect(() => {
+    return () => {
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
+    };
+  }, []);
 
   function clearError(field: string) {
     setErrors((prev) => {
@@ -81,7 +97,7 @@ export function AdminReviewForm({
     const file = e.target.files?.[0];
     if (!file || !reviewId) return;
 
-    setAvatarPreview(URL.createObjectURL(file));
+    setPreview(URL.createObjectURL(file));
     setAvatarError(null);
     setAvatarUploading(true);
 
@@ -92,18 +108,20 @@ export function AdminReviewForm({
 
     if (!result.ok) {
       setAvatarError(result.error);
-      setAvatarPreview(null);
+      setPreview(null);
       return;
     }
     setAvatarUrl(result.avatarUrl);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   function handleAvatarChangeCreate(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setPendingAvatarFile(file);
-    setAvatarPreview(URL.createObjectURL(file));
+    setPreview(URL.createObjectURL(file));
     setAvatarError(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   async function handleRemoveAvatar() {
@@ -117,7 +135,7 @@ export function AdminReviewForm({
       return;
     }
     setAvatarUrl(null);
-    setAvatarPreview(null);
+    setPreview(null);
   }
 
   function handleSubmit() {
@@ -147,6 +165,7 @@ export function AdminReviewForm({
           const avatarResult = await uploadReviewAvatar(result.id, formData);
           if (!avatarResult.ok) {
             setAvatarError(`Review created but photo upload failed: ${avatarResult.error}`);
+            return;
           }
         }
         router.push("/admin/reviews");
