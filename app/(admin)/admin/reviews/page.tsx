@@ -30,7 +30,7 @@ export default async function AdminReviewsPage() {
 
   return (
     <Container className="py-10 sm:py-16">
-      <nav className="font-body text-sm text-on-surface-variant mb-3">
+      <nav aria-label="Breadcrumb" className="font-body text-sm text-on-surface-variant mb-3">
         <Link href="/admin" className="hover:text-primary transition-colors">
           Admin
         </Link>
@@ -125,6 +125,7 @@ export default async function AdminReviewsPage() {
               <div className="flex md:flex-col md:items-end gap-3 md:gap-2 shrink-0">
                 <Link
                   href={`/admin/reviews/${r.id}/edit`}
+                  aria-label={`Edit review by ${r.author_name}`}
                   className="font-body text-sm font-semibold text-primary hover:underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
                 >
                   Edit →

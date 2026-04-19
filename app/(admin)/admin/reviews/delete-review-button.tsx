@@ -27,7 +27,7 @@ export function DeleteReviewButton({ id, authorName }: { id: string; authorName:
     return (
       <button
         type="button"
-        onClick={() => setConfirming(true)}
+        onClick={() => { setConfirming(true); setError(null); }}
         className="font-body text-sm text-on-surface-variant hover:text-error inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
         aria-label={`Delete review by ${authorName}`}
       >
@@ -49,7 +49,7 @@ export function DeleteReviewButton({ id, authorName }: { id: string; authorName:
       </button>
       <button
         type="button"
-        onClick={() => setConfirming(false)}
+        onClick={() => { setConfirming(false); setError(null); }}
         className="font-body text-sm text-on-surface-variant hover:text-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tertiary rounded-sm"
       >
         Cancel
