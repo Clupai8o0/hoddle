@@ -72,8 +72,9 @@ export async function submitOnboarding(
     };
   }
 
-  // Fire-and-forget: compute recommendations now that onboarding data exists
-  void computeRecommendationsForProfile(user.id).catch((e) =>
+  // Await compute so recommendations are ready before the client navigates to the dashboard.
+  // Failures are non-fatal — the dashboard has its own fallback.
+  await computeRecommendationsForProfile(user.id).catch((e) =>
     console.error("[onboarding] recommendation compute failed:", e),
   );
 
