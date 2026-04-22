@@ -1,3 +1,23 @@
+function extractYouTubeId(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === "www.youtube.com" || parsed.hostname === "youtube.com") {
+      return parsed.searchParams.get("v");
+    }
+    if (parsed.hostname === "youtu.be") {
+      return parsed.pathname.slice(1) || null;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export function getYouTubeThumbnailUrl(url: string): string | null {
+  const id = extractYouTubeId(url);
+  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
+}
+
 /**
  * Parse a YouTube, Vimeo, or Google Maps embed URL and return a safe embed URL.
  * Returns null if the URL is not a recognised embeddable URL.

@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { contentItemSchema, publishSchema } from "@/lib/validation/content-item";
 import { notifyFollowersOfContent } from "@/lib/actions/mentor-follows";
+import { getYouTubeThumbnailUrl } from "@/lib/utils/video-embed";
 import { revalidatePath } from "next/cache";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -54,7 +55,9 @@ export async function createContentItem(
       excerpt: parsed.data.excerpt ?? null,
       body: parsed.data.body ?? null,
       video_url: parsed.data.video_url || null,
-      hero_image_url: parsed.data.hero_image_url || null,
+      hero_image_url:
+        parsed.data.hero_image_url ||
+        (parsed.data.video_url ? getYouTubeThumbnailUrl(parsed.data.video_url) : null),
     })
     .select("id")
     .single();
@@ -86,7 +89,9 @@ export async function updateContentItem(
       excerpt: parsed.data.excerpt ?? null,
       body: parsed.data.body ?? null,
       video_url: parsed.data.video_url || null,
-      hero_image_url: parsed.data.hero_image_url || null,
+      hero_image_url:
+        parsed.data.hero_image_url ||
+        (parsed.data.video_url ? getYouTubeThumbnailUrl(parsed.data.video_url) : null),
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
