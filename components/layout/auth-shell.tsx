@@ -40,7 +40,7 @@ export function AuthShell({
             {/* Wordmark */}
             <div className="relative z-10 p-10">
               <Image
-                src="/logo-dark.png"
+                src="/images/logo-dark.png"
                 alt="Hoddle"
                 width={64}
                 height={64}

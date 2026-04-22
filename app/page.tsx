@@ -230,7 +230,7 @@ export default async function HomePage() {
                 className="relative rounded-[var(--radius-md)] overflow-hidden aspect-[4/5] rotate-1 shadow-[0_24px_64px_rgba(0,24,66,0.18)]"
               >
                 <Image
-                  src="/images/hero-laneway-cafe.webp"
+                  src="/hero.webp"
                   alt="A student working at a Melbourne laneway café"
                   fill
                   className="object-cover"

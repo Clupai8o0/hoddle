@@ -6,8 +6,8 @@ The app URL is managed via two environment variables. When the deployment domain
 
 | Variable | Purpose | Current value |
 |---|---|---|
-| `NEXT_PUBLIC_APP_URL` | OG metadata, email CTAs, notification link base | `https://hoddle-jet.vercel.app` |
-| `NEXT_PUBLIC_SITE_URL` | Supabase auth magic-link redirect base | `https://hoddle-jet.vercel.app` |
+| `NEXT_PUBLIC_APP_URL` | OG metadata, email CTAs, notification link base | `https://www.hoddle.org` |
+| `NEXT_PUBLIC_SITE_URL` | Supabase auth magic-link redirect base | `https://www.hoddle.org` |
 
 Both must have **no trailing slash**.
 
@@ -29,8 +29,12 @@ Both must have **no trailing slash**.
 1. Update `NEXT_PUBLIC_APP_URL` in Vercel → Project Settings → Environment Variables
 2. Update `NEXT_PUBLIC_SITE_URL` in Vercel (same place)
 3. In Supabase Dashboard → Authentication → URL Configuration:
-   - Set **Site URL** to the new domain
-   - Update **Redirect URLs** to include `<new-domain>/api/auth/callback` and `<new-domain>/api/auth/mentor-callback`
+   - Set **Site URL** to the new domain (e.g. `https://www.hoddle.org`)
+   - Add ALL of the following to **Redirect URLs** (magic links land on `/confirm`, OAuth on `/api/auth/callback`):
+     - `<new-domain>/confirm`
+     - `<new-domain>/api/auth/callback`
+     - `<new-domain>/api/auth/mentor-callback`
+   - Add both `www` and bare variants if the domain can be reached either way
 4. Redeploy on Vercel (env var changes take effect on next deploy)
 
 ---

@@ -383,29 +383,29 @@ export default async function AboutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {[
                 {
-                  name: "Luca Paoletti",
-                  role: "Lead Developer & Product",
-                  note: "Architected the platform from database schema to deployment. Previously built student tools at UniMelb.",
+                  name: "Tanvir Kaur Sohi",
+                  role: "Founder",
+                  note: "VC 100% Scholar and Psychology student at Deakin. Founded Hoddle after spending her first year navigating Melbourne alone. headspace ambassador.",
                 },
                 {
-                  name: "Aisha Kamara",
-                  role: "Research Lead",
-                  note: "Led the student needs research across four Melbourne universities. Synthesised 80+ interviews into the product brief.",
+                  name: "Samridh Limbu",
+                  role: "CTO & Co-Founder",
+                  note: "Built Hoddle's platform end-to-end. Co-Founder of TapCraft, DSEC President, and Computer Science student at Deakin University.",
                 },
                 {
-                  name: "James Nguyen",
-                  role: "UI/UX Design",
-                  note: "Designed the visual language, component library, and every interaction from onboarding to the notification system.",
+                  name: "Aarav Verma",
+                  role: "Co-Founder & AI Engineer",
+                  note: "AI Engineer Intern at Brokernote and VC 100% Scholar. Leads Hoddle's matching intelligence and data infrastructure at Deakin.",
                 },
                 {
-                  name: "Meera Iyer",
-                  role: "Backend & Data",
-                  note: "Designed the matching algorithm, RLS policies, and the notification pipeline. Previously interned at a Melbourne fintech.",
+                  name: "Chirag P Agarwal",
+                  role: "Community & Research",
+                  note: "Founder of mymor One and Social Work Master's student at ACAP. Shaped Hoddle's community model and student research programme.",
                 },
                 {
-                  name: "Tom Blackwell",
-                  role: "Content & Community Strategy",
-                  note: "Shaped the editorial voice, forum structure, and the mentorship model. Recruited the founding cohort of mentors.",
+                  name: "Alexander Tse",
+                  role: "Strategy & Development",
+                  note: "Master's student in Information Systems at the University of Melbourne. Former consultant bridging product strategy and technical delivery.",
                 },
               ].map(({ name, role, note }) => (
                 <div
