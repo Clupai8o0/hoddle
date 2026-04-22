@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: PageProps) {
     .select("headline, profiles!mentors_profile_id_fkey(full_name)")
     .eq("slug", slug)
     .not("verified_at", "is", null)
+    .eq("is_hidden", false)
     .maybeSingle();
 
   if (!data) return { title: "Mentor — Hoddle" };
@@ -64,6 +65,7 @@ export default async function MentorProfilePage({ params }: PageProps) {
     )
     .eq("slug", slug)
     .not("verified_at", "is", null)
+    .eq("is_hidden", false)
     .maybeSingle();
 
   if (!mentor) notFound();

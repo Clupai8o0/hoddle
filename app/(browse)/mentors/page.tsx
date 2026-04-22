@@ -24,6 +24,7 @@ export default async function MentorsPage({ searchParams }: PageProps) {
        )`
     )
     .not("verified_at", "is", null)
+    .eq("is_hidden", false)
     .order("verified_at", { ascending: false });
 
   if (expertiseFilter) {
