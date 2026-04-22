@@ -384,27 +384,27 @@ export default async function AboutPage() {
               {[
                 {
                   name: "Tanvir Kaur Sohi",
-                  role: "Founder",
+                  role: "Co-Founder",
                   note: "VC 100% Scholar and Psychology student at Deakin. Founded Hoddle after spending her first year navigating Melbourne alone. headspace ambassador.",
                 },
                 {
                   name: "Samridh Limbu",
-                  role: "CTO & Co-Founder",
+                  role: "Co-Founder & CTO",
                   note: "Built Hoddle's platform end-to-end. Co-Founder of TapCraft, DSEC President, and Computer Science student at Deakin University.",
                 },
                 {
                   name: "Aarav Verma",
-                  role: "Co-Founder & AI Engineer",
-                  note: "AI Engineer Intern at Brokernote and VC 100% Scholar. Leads Hoddle's matching intelligence and data infrastructure at Deakin.",
+                  role: "Co-Founder & Head of Growth",
+                  note: "VC 100% Scholar at Deakin. Leads growth strategy and student acquisition at Hoddle Melbourne.",
                 },
                 {
                   name: "Chirag P Agarwal",
-                  role: "Community & Research",
+                  role: "Co-Founder",
                   note: "Founder of mymor One and Social Work Master's student at ACAP. Shaped Hoddle's community model and student research programme.",
                 },
                 {
                   name: "Alexander Tse",
-                  role: "Strategy & Development",
+                  role: "Co-Founder",
                   note: "Master's student in Information Systems at the University of Melbourne. Former consultant bridging product strategy and technical delivery.",
                 },
               ].map(({ name, role, note }) => (
