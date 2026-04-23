@@ -79,6 +79,9 @@ export function BrowseNav({ user }: BrowseNavProps) {
               <NavLink href="/mentors" active={pathname.startsWith("/mentors")}>
                 Mentors
               </NavLink>
+              <NavLink href="/content" active={pathname.startsWith("/content")}>
+                Library
+              </NavLink>
               <NavLink href="/forums" active={pathname.startsWith("/forums")}>
                 Forums
               </NavLink>

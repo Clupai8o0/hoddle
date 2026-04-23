@@ -105,6 +105,7 @@ export default async function AboutPage() {
               About
             </NavLink>
             <NavLink href="/mentors">Mentors</NavLink>
+            <NavLink href="/content">Library</NavLink>
             <NavLink href="/forums">Forums</NavLink>
             <NavLink href="/stories">Stories</NavLink>
             <NavLink href="/sessions">Sessions</NavLink>
