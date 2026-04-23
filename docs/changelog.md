@@ -25,13 +25,35 @@ When you finish a task in `todo.md`, add a line here under `## [Unreleased]` in 
 - Full name field added to mentor onboarding step 1 (input, validation, payload) and persisted to `profiles.full_name`
 - Avatar upload added to mentor edit profile page: uploads to `avatars/{uid}/avatar.{ext}` in Supabase Storage and updates `profiles.avatar_url`
 - Full name field added to mentor edit profile form: fetched from `profiles.full_name`, editable and saved via `updateMentorProfile`
+- Google OAuth sign-in (`signInWithGoogle` server action in `lib/actions/auth.ts`); `OAuthButtons` UI primitive renders the "Continue with Google" button on the login/signup pages
+- `(browse)` route group — `/mentors`, `/content`, `/forums`, `/sessions`, `/stories` pages moved here; auth is optional, write actions (post, reply, submit story) redirect to login; shares `BrowseNav` + `FeedbackWidget` layout
+- `components/layout/browse-nav.tsx` (`BrowseNav`) — sticky nav for the browse group; shows user avatar + notification badge when authenticated, sign-in CTA when not
+- `components/patterns/feedback-widget.tsx` (`FeedbackWidget`) — floating feedback panel (Bug / Suggestion / Confusion / Other categories) backed by Airtable via `lib/actions/feedback.ts`; shown to authenticated users in the browse layout
+- `components/patterns/review-card.tsx` (`ReviewCard`) — editorial card: star row, quote body, author name/context, optional author photo
+- `components/patterns/reviews-wall.tsx` (`ReviewsWall`) — asymmetric grid of `ReviewCard`s; only renders when ≥ 3 published reviews exist
+- `components/patterns/survey-stat-wall.tsx` (`SurveyStatWall`) — four tonal stat cards for the About page research section
+- `components/patterns/survey-strip.tsx` (`SurveyStrip`) — inline 3-stat proof strip (homepage)
+- `components/patterns/markdown-renderer.tsx` (`MarkdownRenderer`) — renders plain-text markdown with blockquote and `@mention` token support
+- `components/ui/star-row.tsx` (`StarRow`) — filled/empty star display, read-only
+- `components/ui/publish-success-modal.tsx` (`PublishSuccessModal`) — confirmation modal displayed after a mentor publishes a content item
+- `components/ui/markdown-editor.tsx` (`MarkdownEditor`) — client-side Tiptap-based markdown editor with toolbar, used in content authoring and forum forms
+- `components/ui/oauth-buttons.tsx` (`OAuthButtons`) — Google sign-in button with SVG brand icon
+- Direct messaging — students and mentors can exchange private messages: `app/(app)/messages/` (list, conversation, new); `conversations`, `messages`, `conversation_read_cursors` tables; server actions in `lib/actions/messages.ts`; types in `lib/types/messages.ts`; `new_chat_message` notification type (debounced per conversation, 5-min cooldown); rate-limited to 30 messages / 10 min; `MessageMentorButton` pattern on mentor profile pages
+- `components/patterns/messages/` sub-components: `MessagesShell`, `ConversationList`, `ConversationClient`, `MessageThread`, `MessageBubble`, `ComposeInput`, `NewConversationPage`, `MessageMentorButton`
+- `app/(app)/profile/edit/page.tsx` + `profile-edit-form.tsx` — student profile editing (full name, avatar URL, university, country of origin)
+- `app/(admin)/admin/mentors/new/page.tsx` + `admin-mentor-form.tsx` — admin can directly create a mentor record without the invite-email flow
+- `app/(admin)/admin/mentors/[id]/edit/page.tsx` + `edit-mentor-client.tsx` — admin can edit any mentor's profile fields (headline, bio, expertise, hometown, current role)
+- `lib/actions/admin-reviews.ts` — `createReview`, `updateReview`, `deleteReview`, `uploadReviewAvatar`, `removeReviewAvatar` server actions
+- `lib/actions/feedback.ts` — `submitFeedback` server action; forwards to Airtable base defined by `AIRTABLE_API_KEY` + `AIRTABLE_BASE_ID` env vars
+- `lib/validation/feedback.ts` + `lib/validation/reviews.ts` — Zod schemas for feedback submission and admin review CRUD
 
 ### Changed
 - `lib/actions/auth.ts` — `sendMagicLink` now generates link server-side via `admin.auth.admin.generateLink` and sends via nodemailer; removes dependency on Supabase SMTP configuration
 - `lib/actions/mentor-invites.ts` — removed "active invite already exists" guard; re-inviting an email now replaces the old pending invite; invite lookup uses admin client to bypass admin-only RLS; `siteUrl` derived from request headers instead of `NEXT_PUBLIC_SITE_URL`
-- `lib/email/index.ts` — replaced Resend with nodemailer + Gmail SMTP
+- `lib/email/index.ts` — replaced Resend with nodemailer + Gmail SMTP (`GMAIL_USER` + `GMAIL_APP_PASSWORD`)
 - `app/(auth)/mentor-signup/[token]/page.tsx` — invite lookup uses admin client (bypasses admin-only RLS so unauthenticated visitors can view their invite)
 - Magic link `redirect_to` updated to `/auth/confirm` (and `/auth/confirm?token=…` for mentor flow) to handle implicit OAuth flow on the client
+- Mentors, content, forums, sessions, stories pages moved from `app/(app)/` to `app/(browse)/` — URLs unchanged
 
 ### Fixed
 - Magic links landed at `/?code=…` because `NEXT_PUBLIC_SITE_URL` was absent from `.env.example` and Vercel; `sendMagicLink` now reads origin from request headers

@@ -221,6 +221,8 @@ Seeded categories for the community forums.
 | `pinned` | `boolean` | Default `false`, admin only |
 | `locked` | `boolean` | Default `false`, admin only |
 | `last_activity_at` | `timestamptz` | Touched by trigger on new post or reaction |
+| `view_count` | `int` | Default `0`. Atomically incremented by the `bump_thread_view(slug)` RPC (SECURITY DEFINER) on every thread page load. |
+| `anonymous` | `boolean` | Default `false`. When `true`, author identity is hidden from readers (stored for moderation only). |
 | `created_at` / `updated_at` | `timestamptz` | |
 
 **RLS:**
@@ -262,7 +264,7 @@ Replies within a thread. Two-level nesting only — `parent_post_id` may referen
 | Composite PK on (`post_id`, `profile_id`, `reaction`) | | |
 | `created_at` | `timestamptz` | |
 
-**Enum:** `reaction_type as enum ('heart', 'thanks', 'helpful')`
+**Enum:** `reaction_type as enum ('heart', 'thanks', 'helpful', 'insightful')` — `insightful` reserved for standout mentor answers; shown with a ⭐ label.
 
 **RLS:** any authenticated user can insert/delete their own reactions. Read open.
 
@@ -366,7 +368,7 @@ Student-submitted wins. Moderation is required before publication.
 | `read_at` | `timestamptz` | Null = unread |
 | `created_at` | `timestamptz` | |
 
-**Enum:** `notification_type as enum ('mentor_replied_to_your_question', 'new_content_from_mentor_you_follow', 'forum_reply_to_your_thread', 'session_reminder_24h', 'session_starting_soon', 'success_story_approved')`
+**Enum:** `notification_type as enum ('mentor_replied_to_your_question', 'new_content_from_mentor_you_follow', 'forum_reply_to_your_thread', 'session_reminder_24h', 'session_starting_soon', 'success_story_approved', 'new_chat_message')` — `new_chat_message` fires on direct message receipt (debounced; see architecture.md §13).
 
 **RLS:**
 - `select`: `auth.uid() = recipient_id`.
@@ -420,6 +422,80 @@ Materialised results of the matching algorithm. Recomputed on onboarding update 
 
 ---
 
+### `reviews`
+
+Admin-curated platform testimonials shown on the homepage and about page.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `author_name` | `text` | Display name |
+| `author_context` | `text` | Nullable — e.g. "First-year Commerce, UniMelb" |
+| `rating` | `int` | 1–5 |
+| `content` | `text` | Quote body |
+| `avatar_url` | `text` | Nullable. Path in the `reviews` Supabase Storage bucket. |
+| `published` | `boolean` | Default `false`. Only published reviews render on the homepage. |
+| `display_order` | `int` | Manual sort order within the wall. |
+| `created_at` / `updated_at` | `timestamptz` | |
+
+**RLS:**
+- `select`: any authenticated user may read published reviews; admins may read all.
+- `insert` / `update` / `delete`: admin only.
+
+---
+
+### `conversations`
+
+One row per unique student–mentor direct message thread.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `participant_one` | `uuid` | FK → `profiles(id)`. Canonical ordering: `participant_one < participant_two` (UUID lexicographic). Enforces the unique constraint with `participant_two`. |
+| `participant_two` | `uuid` | FK → `profiles(id)` |
+| Unique on (`participant_one`, `participant_two`) | | |
+| `created_at` / `updated_at` | `timestamptz` | `updated_at` is touched on every new message to support conversation-list ordering. |
+
+**RLS:**
+- `select` / `insert` / `update`: either participant. At least one participant must be a mentor or admin (enforced in the server action, not RLS).
+- `delete`: blocked.
+
+---
+
+### `messages`
+
+Individual messages within a conversation.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `uuid` PK | |
+| `conversation_id` | `uuid` | FK → `conversations(id)` on delete cascade |
+| `sender_id` | `uuid` | FK → `profiles(id)` |
+| `body` | `text` | Plain text |
+| `created_at` | `timestamptz` | |
+
+**RLS:**
+- `select`: participants of the parent conversation.
+- `insert`: `auth.uid() = sender_id` and user is a participant.
+- `update` / `delete`: blocked (messages are immutable after sending).
+
+---
+
+### `conversation_read_cursors`
+
+Tracks the last time each participant viewed a conversation, used to compute unread counts.
+
+| Column | Type | Notes |
+|---|---|---|
+| `conversation_id` | `uuid` | FK → `conversations(id)` on delete cascade |
+| `profile_id` | `uuid` | FK → `profiles(id)` on delete cascade |
+| `last_read_at` | `timestamptz` | Upserted on every conversation open |
+| Composite PK on (`conversation_id`, `profile_id`) | | |
+
+**RLS:** owner read/write only (`auth.uid() = profile_id`).
+
+---
+
 ## Storage buckets (Phase 2 additions)
 
 | Bucket | Visibility | Notes |
@@ -428,6 +504,7 @@ Materialised results of the matching algorithm. Recomputed on onboarding update 
 | `content-resources` | Private (signed URLs) | Downloadable files attached to content. Mentors can write to their own folder. |
 | `session-recordings` | Private (signed URLs) | Session recording uploads, owner-only writes |
 | `story-images` | Public read | Hero images for success stories |
+| `reviews` | Public read | Author photos for admin-curated platform reviews. Path: `{review_id}/avatar.{ext}`. Admin-only writes. |
 
 ---
 

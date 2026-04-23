@@ -55,20 +55,87 @@ Variants: `primary`, `secondary`, `hero` (gradient), `ghost`.
 ### `SectionDivider`
 - Not a visual line — a semantic component that renders 48px or 64px of whitespace. Exists so intent is legible in the tree.
 
+### `OAuthButtons`
+- Renders the "Continue with Google" button with the official Google SVG icon (not a Lucide icon).
+- Submits a form to the `signInWithGoogle` server action.
+- Includes an "or" divider below, to sit above the email magic-link form.
+
+### `StarRow`
+- Read-only star rating display. Accepts an integer `rating` (1–5) and renders filled/empty stars.
+- Used in `ReviewCard` and the admin reviews form.
+
+### `PublishSuccessModal`
+- Confirmation modal shown after a mentor successfully publishes a content item.
+- Displays the public URL and a "View article" CTA.
+
+### `MarkdownEditor`
+- Client-side Tiptap-based rich-text editor with a formatting toolbar (bold, italic, headings, lists, blockquote).
+- Used in mentor content authoring (`mentor/content/new`, `mentor/content/[id]/edit`) and forum reply forms.
+- Outputs Tiptap JSON stored in `content_items.body`.
+
 ---
 
 ## Tier 2 — Patterns (`/components/patterns`)
 
 Composed, domain-aware. Can import from `/ui`. Data is passed in as props.
 
-### `MentorCard` _(Phase 1: placeholder data only)_
-- Photography top, no crop artifacts.
+### `MentorCard`
+- Photography top (avatar with initials fallback), no crop artifacts.
 - Name in `title-md` primary blue, role in `body-sm` on-surface-variant.
-- Achievement chips below (using `Tag` success variant for verified).
+- Achievement chips below (using `Tag` success variant for verified badge).
+- Optional `reasoning` prop renders a "Why this mentor" line below the card (used in recommendation sections).
 - Hover: the card-level ambient shadow.
 
-### `ContentBlock` _(Phase 2)_
-- Article/advice preview card. Photography lead, headline in display-sm, excerpt in body-md.
+### `ContentCard`
+- Article/video/resource preview card. Hero image with type badge overlay, headline in `title-md`, mentor byline, view count.
+- `ContentCard` is the production component; `ContentBlock` was a Phase 1 placeholder name.
+
+### `FollowButton`
+- Optimistic follow/unfollow toggle using `toggleFollow` server action.
+- Shows "Following" with a filled icon or "Follow" with an outlined icon.
+- Only rendered when the viewer is authenticated.
+
+### `MarkdownRenderer`
+- Renders plain-text markdown stored in forum posts and success story bodies.
+- Applies special formatting: `> quoted line` → styled blockquote, `@Name` tokens → highlighted span.
+
+### `FeedbackWidget`
+- Floating panel fixed to the bottom-right corner, rendered in the `(browse)` layout for authenticated users.
+- Category picker (Bug / Suggestion / Confusion / Other) + textarea + submit.
+- Calls `lib/actions/feedback.ts` → Airtable base.
+- Collapses via outside-click or the × button.
+
+### `ReviewCard`
+- Editorial review card: `StarRow`, pull-quote body, author name, optional author context line, optional author photo.
+- Used in `ReviewsWall` and will appear in a homepage section when ≥ 3 published reviews exist.
+
+### `ReviewsWall`
+- Asymmetric masonry-style grid of `ReviewCard`s.
+- Only renders when at least 3 published reviews are present (avoids sparse single-card layout).
+- Photography-led layout; no default drop shadows on individual cards.
+
+### `SurveyStatWall`
+- Four tonal stat cards for the About page research section (between "The problem" and "How it works").
+- Sticky intro column on desktop; stacked on mobile.
+
+### `SurveyStrip`
+- Inline 3-stat proof strip on the homepage (72% / 58% / 39% from founding research).
+- Placed between the Priya narrative section and the mentor preview.
+
+### Messages sub-components (`/components/patterns/messages/`)
+
+A suite of Client Components that together form the direct messaging UI at `app/(app)/messages/`:
+
+| Component | Purpose |
+|---|---|
+| `MessagesShell` | Two-pane layout shell: conversation list left, thread right |
+| `ConversationList` | Paginated list of conversations with unread badges and last-message preview |
+| `ConversationClient` | Top-level client orchestrator for a single conversation; manages real-time updates |
+| `MessageThread` | Scrolling message history with load-more pagination |
+| `MessageBubble` | Individual message bubble (sent vs received styling, timestamp, sender avatar) |
+| `ComposeInput` | Sticky textarea + send button at the bottom of the thread |
+| `NewConversationPage` | Profile search + "Start conversation" UI at `/messages/new` |
+| `MessageMentorButton` | CTA button on mentor profile pages; calls `getOrCreateConversation` and redirects to the thread |
 
 ### `OnboardingStep`
 - Wrapper for each wizard step: step indicator (ProgressPill), question headline in display-sm, controls, back/next buttons.
@@ -107,6 +174,13 @@ Shells. May read directly from Supabase when needed.
 - Sticky top-0.
 - Active link style: `text-primary` with a 2px underline in `primary`, no background fill.
 
+### `BrowseNav`
+- Used by the `(browse)` route group.
+- Server Component; receives a pre-fetched `user` prop (name, avatar, unread notification count).
+- When authenticated: shows avatar + notification badge; links to inbox, messages, and the user's dashboard.
+- When unauthenticated: shows "Sign in" CTA.
+- Shares the glass recipe and active-link style with `GlassNav`.
+
 ### `Footer`
 - `bg-surface-container-high`, tonal separation (no border).
 - Minimal: wordmark, three columns of links, credit line.
@@ -116,9 +190,10 @@ Shells. May read directly from Supabase when needed.
 ## What's intentionally missing
 
 - **Decorative icons** — Hoddle does not use icons for emotional or illustrative purposes. Hero visuals, empty states, and mentor context all use cropped photography. Icons from `lucide-react` are permitted for **functional UI only** (nav items, form controls, menu toggles, close buttons, dropdown carets), rendered at `strokeWidth={1.5}` in `on-surface-variant` or `primary`, never as the focal point of a section.
-- **Modal / Dialog** — not needed in Phase 1. If Phase 2 requires one, add it here before building.
-- **Toast / Notification** — not needed in Phase 1. Server action error states render inline near the field or button that triggered them.
-- **Table** — not needed in Phase 1. When it arrives, it will also obey the no-divider rule (zebra-stripe via `surface-container-low`).
+- **Toast / Notification** — server action error states render inline near the field or button that triggered them. Toast-style feedback (`sonner`) is used sparingly in `FeedbackWidget` only.
+- **Table** — admin list views use card rows rather than tables. When a true table is needed it will obey the no-divider rule (zebra-stripe via `surface-container-low`).
+
+`PublishSuccessModal` is the first dialog in the codebase. Any new modal must follow the same token usage (no `#ffffff`, no default CSS shadow) and be documented here before building.
 
 ---
 

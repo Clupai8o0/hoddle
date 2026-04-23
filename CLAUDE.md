@@ -35,8 +35,10 @@ Full product context: [`docs/product-one-pager.md`](./docs/product-one-pager.md)
 /app
   /(marketing)          # public: landing, about, apply
   /(auth)               # login, signup, onboarding flow
-  /(app)                # authenticated: dashboard, mentors, forums, profile
-  /api                  # route handlers (webhooks, server actions fallback)
+  /(app)                # authenticated: dashboard, mentor area, settings, inbox, messages
+  /(browse)             # semi-public: /mentors, /content, /forums, /sessions, /stories — auth optional, writes redirect to login
+  /(admin)              # admin-only: mentor invite/verify, story moderation, reviews CRUD
+  /api                  # route handlers (webhooks, auth callbacks, Vercel crons)
 /components
   /ui                   # primitive components (Button, Card, Input, Tag)
   /patterns             # composed components (MentorCard, ContentBlock, ProgressPill)

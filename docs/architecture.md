@@ -11,14 +11,16 @@ Hoddle is a Next.js App Router application backed by Supabase. Rendering is serv
   Next.js (Vercel)
    ├── (marketing)  ─ public RSC pages, read-only
    ├── (auth)       ─ login / signup / onboarding
-   ├── (app)        ─ authenticated RSC pages
-   └── /api         ─ route handlers (webhooks, auth callback)
+   ├── (app)        ─ authenticated RSC pages (dashboard, mentor area, inbox, messages, settings)
+   ├── (browse)     ─ semi-public RSC pages (mentors, content, forums, sessions, stories)
+   ├── (admin)      ─ admin-only tools (invite, verify, moderation, reviews)
+   └── /api         ─ route handlers (webhooks, auth callbacks, Vercel crons)
       │
       ▼
   Supabase
-   ├── Auth          ─ email magic link
+   ├── Auth          ─ email magic link + Google OAuth
    ├── Postgres      ─ app data, RLS enforced
-   └── Storage       ─ profile photos, content imagery
+   └── Storage       ─ profile photos, content imagery, review avatars
 ```
 
 No separate backend service. No external ORM — Supabase's generated types are the contract.
@@ -31,9 +33,10 @@ App Router route groups are used to share layouts without affecting the URL:
 
 - **`app/(marketing)/`** — unauthenticated landing and marketing pages. Public. Uses the glass nav + editorial shell.
 - **`app/(auth)/`** — login, signup, onboarding wizard. Minimal shell, no nav, heavy photography. Middleware redirects away to `/dashboard` if the user already has a session.
-- **`app/(app)/`** — everything behind auth. Layout includes the authenticated nav with user menu. Middleware redirects to `/login` if no session.
-- **`app/(admin)/`** — admin-only tools: mentor invitation, verification, story moderation. Layout enforces `profiles.role = 'admin'`; non-admins are redirected to `/dashboard`.
-- **`app/api/`** — route handlers. Auth callback (`/api/auth/callback`) and Vercel cron endpoints (`/api/cron/*`).
+- **`app/(app)/`** — everything behind auth: dashboard, mentor area (`/mentor/*`), inbox, messages, settings, profile edit. Layout includes the authenticated nav with user menu. Middleware redirects to `/login` if no session.
+- **`app/(browse)/`** — semi-public content: `/mentors`, `/content`, `/forums`, `/sessions`, `/stories`. Auth is optional — unauthenticated visitors can read everything; write actions (reply, submit story, ask a question) redirect to `/login` at the page level. Layout uses `BrowseNav` (shows user avatar + notification badge when authenticated) and the floating `FeedbackWidget`.
+- **`app/(admin)/`** — admin-only tools: mentor invitation, verification, story moderation, platform reviews CRUD. Layout enforces `profiles.role = 'admin'`; non-admins are redirected to `/dashboard`.
+- **`app/api/`** — route handlers. Auth callback (`/api/auth/callback`), OAuth callback (`/api/auth/google/callback`), and Vercel cron endpoints (`/api/cron/*`).
 
 Each group has its own `layout.tsx`, `error.tsx`, `loading.tsx`, and `not-found.tsx`, all styled on-brand (tonal layering for loading skeletons — no shimmer).
 
@@ -66,16 +69,46 @@ Two clients, strictly separated:
 
 ## 5. Authentication flow
 
-Phase 1 uses **email magic links only**. No password flow, no OAuth providers yet.
+Two paths: email magic link and Google OAuth.
+
+### Magic link (students)
 
 ```
-/signup (email submit)
+/signup or /login (email submit)
     │
     ▼
-Supabase sends magic link
+Server generates magic link via admin.auth.admin.generateLink()
+Sends HTML email via nodemailer + Gmail SMTP
     │
     ▼
-User clicks link → /api/auth/callback?code=...
+User clicks link → /auth/confirm (client component)
+Hash fragment #access_token=… parsed on the client
+    │
+    ▼
+supabase.auth.setSession() called → session cookie written
+    │
+    ▼
+Redirect: first-time user → /onboarding
+          returning user  → /dashboard
+```
+
+### Magic link (mentor invite)
+
+Same flow but the confirmation URL is `/auth/confirm?token={invite_token}`. After setting the session, the client calls `acceptMentorInvite(token)` which: validates the `mentor_invites` row, sets `profiles.role = 'mentor'`, creates the `mentors` row, and redirects to `/mentor-onboarding`.
+
+### Google OAuth
+
+```
+/login (Google button click)
+    │
+    ▼
+signInWithGoogle server action → supabase.auth.signInWithOAuth()
+    │
+    ▼
+Redirect to Google consent screen
+    │
+    ▼
+Google redirects to /api/auth/callback?code=…
     │
     ▼
 Server exchanges code for session, sets cookie
@@ -85,7 +118,7 @@ Redirect: first-time user → /onboarding
           returning user  → /dashboard
 ```
 
-A `profiles` row is auto-created by a Postgres trigger on `auth.users` insert. The onboarding wizard writes to `onboarding_responses` and flips a `profiles.onboarded_at` timestamp; middleware uses that flag to decide whether to force the onboarding redirect.
+A `profiles` row is auto-created by a Postgres trigger on `auth.users` insert regardless of auth method. The onboarding wizard writes to `onboarding_responses` and flips `profiles.onboarded_at`; middleware uses that flag to force the wizard redirect.
 
 ---
 
@@ -188,9 +221,32 @@ Students can follow mentors. `mentor_follows` table stores the relationship. Whe
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | client + server | Safe to expose |
 | `SUPABASE_SERVICE_ROLE_KEY` | server only | **Never** `NEXT_PUBLIC_`. Admin client only. |
 | `NEXT_PUBLIC_SITE_URL` | client + server | Magic link redirect base |
-| `RESEND_API_KEY` | server only | Transactional email via Resend |
-| `RESEND_FROM_EMAIL` | server only | From address (e.g. `hello@hoddle.com.au`) |
+| `GMAIL_USER` | server only | Gmail address used as the SMTP sender (replaces `RESEND_FROM_EMAIL`) |
+| `GMAIL_APP_PASSWORD` | server only | Gmail App Password for the nodemailer transporter |
 | `NEXT_PUBLIC_APP_URL` | client + server | Used in email template CTAs |
 | `CRON_SECRET` | server only | Validates Vercel cron requests |
+| `AIRTABLE_API_KEY` | server only | Personal access token for the feedback widget Airtable base |
+| `AIRTABLE_BASE_ID` | server only | Airtable base that receives feedback submissions |
 
 All listed in `.env.local.example`. Production secrets live in Vercel's environment variables.
+
+---
+
+## 13. Direct messaging
+
+Students can exchange private messages with mentors (and vice versa). Student-to-student messaging is not permitted.
+
+**Data model:**
+- `conversations` — one row per unique participant pair, canonical ordered (`participant_one < participant_two` by UUID to enforce the unique constraint).
+- `messages` — one row per message; FK → `conversations`.
+- `conversation_read_cursors` — upserted on every "open conversation" event to track the last-read timestamp per participant.
+
+**Unread count:** computed at query time by counting `messages` newer than `conversation_read_cursors.last_read_at` for the current user.
+
+**Notification:** on `sendMessage`, a `new_chat_message` in-app + email notification is sent to the recipient, debounced: skipped if another `new_chat_message` for the same conversation was sent within the past 5 minutes, or if the recipient was active (read cursor updated) within the past 2 minutes.
+
+**Rate limiting:** 30 messages per user per 10 minutes via `lib/utils/rate-limit.ts`.
+
+**Routes:** `app/(app)/messages/` — list view, conversation view (`[conversationId]`), new conversation (`new`). `MessageMentorButton` pattern on mentor profile pages initiates a conversation via `getOrCreateConversation` and redirects.
+
+**Database types note:** `conversations`, `messages`, and `conversation_read_cursors` tables were added by a migration after the last `database.types.ts` regeneration. The actions in `lib/actions/messages.ts` use an `untyped()` escape hatch until the types are regenerated.
