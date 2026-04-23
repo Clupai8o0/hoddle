@@ -598,6 +598,7 @@ export type Database = {
           expertise: string[]
           headline: string | null
           hometown: string | null
+          is_hidden: boolean
           profile_id: string
           slug: string
           social_links: Json
@@ -612,6 +613,7 @@ export type Database = {
           expertise?: string[]
           headline?: string | null
           hometown?: string | null
+          is_hidden?: boolean
           profile_id: string
           slug: string
           social_links?: Json
@@ -626,6 +628,7 @@ export type Database = {
           expertise?: string[]
           headline?: string | null
           hometown?: string | null
+          is_hidden?: boolean
           profile_id?: string
           slug?: string
           social_links?: Json

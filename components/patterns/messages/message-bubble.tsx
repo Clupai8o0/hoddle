@@ -18,9 +18,9 @@ export function MessageBubble({ message, isOwn }: MessageBubbleProps) {
   const time = formatTimeMelbourne(message.created_at);
 
   return (
-    <div className={`flex flex-col gap-0.5 ${isOwn ? "items-end" : "items-start"}`}>
+    <div className={`flex flex-col gap-0.5 max-w-[72%] ${isOwn ? "items-end" : "items-start"}`}>
       <div
-        className={`max-w-[72%] px-4 py-2.5 ${
+        className={`px-4 py-2.5 ${
           isOwn
             ? "bg-primary text-on-primary rounded-2xl rounded-br-sm"
             : "bg-surface-container-low text-on-surface rounded-2xl rounded-bl-sm"
